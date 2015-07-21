@@ -25,8 +25,9 @@ It's very common to need to extract text or text lines from within
 program source. The way Python likes to have its text indented,
 however, means that there will often be extra spaces appended to
 the beginning of each line, as well as possibly extra lines at the
-start and end of the text that are present for inclusion in the program
-source, but not useful in the resulting data.
+start and end of the text. They're there to make things look and work
+right in the program
+source, but they're not useful in the resulting data.
 
 Python string methods give easy ways to clean this text up, but
 it's no joy reinventing that particular text-cleanup wheel every
@@ -35,7 +36,7 @@ dropping the code down into low-level constructs rather than
 just "give me the text!"
 
 This module helps clean up included text (or text lines) in a simple,
-reusable way that won't muck up your programs with extra code, or
+reusable way that won't muck up your programs with extra code, and won't
 require constant wheel-reinvention.
 
 Usage
@@ -98,12 +99,13 @@ The API
 Notes
 =====
 
-  * Automated multi-version testing accomplished with
-    `pytest <http://pypi.python.org/pypi/pytest>`_ and `tox
-    <http://pypi.python.org/pypi/tox>`_. Latest version successfully
-    tested against Python 2.6, 2.7, 3.2, 3.3, 3.4, and PyPy 2.4.0 (based
-    on 2.7.8). It should also work on Python 2.5, though
-    it's no longer officially supported; time to upgrade!
+ *  Automated multi-version testing managed with the wonderful
+    `pytest <http://pypi.python.org/pypi/pytest>`_,
+    `pytest-cov <http://pypi.python.org/pypi/pytest>`_,
+    and `tox <http://pypi.python.org/pypi/tox>`_.
+    Successfully packaged for, and tested against, all late-model versions of
+    Python: 2.6, 2.7, 3.2, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
+    and PyPy3 2.4.0 (based on 3.2.5).
 
   * Common line prefix is now computed without considering blank
     lines, so blank lines need not have any indentation on them
