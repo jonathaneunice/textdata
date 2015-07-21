@@ -101,14 +101,14 @@ Unicode and Encodings
 =====================
 
 .. |star| unicode:: 0x2605 .. star
-    :star:
+    :trim:
 
 ``textdata`` doesn't have any unique friction with Unicode
 characters and encodings, but any time you use Unicode characters
 in Python source files--especially in Python 2--care is warranted.
 
 If your text includes Unicode characters, in Python 2 make sure to
-mark the string with a "u" prefix: ``u""" |star| """``. You can
+mark the string with a "u" prefix: ``u"""`` |star| ``"""``. You can
 also do this in Python 3.3 and following. Sadly, there was a dropout
 of compatibility in early Python 3 builds, making it much harder to
 maintain a unified source base with them in the mix. (A
