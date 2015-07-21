@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='textdata',
-    version='1.0.6',
+    version='1.0.7',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Get clean line or text data from multi-line strings',
