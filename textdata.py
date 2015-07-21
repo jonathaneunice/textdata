@@ -8,8 +8,6 @@ try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
-import csv
-from collections import OrderedDict
 
 _PY3 = sys.version_info[0] >= 3
 if _PY3:
@@ -75,4 +73,3 @@ def textlines(text, **kwargs):
     if sep is None or sep is False:
         kwargs['join'] = '\n'
     return lines(text, **kwargs)
-
