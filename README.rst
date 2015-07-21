@@ -67,12 +67,13 @@ joined by newlines into into a single string::
 ``textlines`` is an optional entry point, as ``lines`` has a ``join``
 kwarg that, if set, joins the lines with that string.
 
-Both routines provide  typically-desired cleanups:
+Both routines provide typically-desired cleanups:
 
-  * remove blank lines default), but at least first and last blanks
+  * remove blank lines (default), but at least first and last blanks
     (which usually appear due to Python formatting)
   * remove common line prefix (default)
-  * strip leading/trailing spaces (leading by request, trailing by default)
+  * strip leading/trailing spaces other than the common prefix
+    (leading by request, trailing by default)
   * (optionally) join the lines together with your choice of separator string
 
 The API
@@ -96,6 +97,34 @@ The API
     result as a single string, with lines separated by newlines (by
     default) and without a trailing newline.
 
+Unicode and Encodings
+=====================
+
+.. |star| unicode:: 0x2605 .. star
+    :star:
+
+``textdata`` doesn't have any unique friction with Unicode
+characters and encodings, but any time you use Unicode characters
+in Python source files--especially in Python 2--care is warranted.
+
+If your text includes Unicode characters, in Python 2 make sure to
+mark the string with a "u" prefix: ``u""" |star| """``. You can
+also do this in Python 3.3 and following. Sadly, there was a dropout
+of compatibility in early Python 3 builds, making it much harder to
+maintain a unified source base with them in the mix. (A
+compatibility function such as `six.u`` from
+`six <http://pypi.python.org/pypi/six>`_;
+can help alleviate much--though certainly not all--of the pain.)
+
+It can also be helpful to declare your source encoding: put
+a specially-formatted comment as the first or second line of the source code:
+
+    # -*- coding: <encoding name> -*-
+
+This will usually be ``# -*- coding: utf-8 -*-``, but other encodings are
+possible. Python 3 defaults to a UTF-8 encoding, but Python 2 assumes
+ASCII.
+
 Notes
 =====
 
@@ -104,8 +133,10 @@ Notes
     `pytest-cov <http://pypi.python.org/pypi/pytest>`_,
     and `tox <http://pypi.python.org/pypi/tox>`_.
     Successfully packaged for, and tested against, all late-model versions of
-    Python: 2.6, 2.7, 3.2, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
-    and PyPy3 2.4.0 (based on 3.2.5).
+    Python: 2.6, 2.7, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
+    and PyPy3 2.4.0 (based on 3.2.5). Module should work on Python 3.2, but
+    dropped from testing matrix due to its age and lack of a Unicode literal
+    making test specification much more difficult.)
 
   * Common line prefix is now computed without considering blank
     lines, so blank lines need not have any indentation on them

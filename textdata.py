@@ -14,7 +14,8 @@ if _PY3:
     basestring = (str)
 
 
-def lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join=False):
+def lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True,
+          join=False):
     """
     Grab lines from a string. First and last lines are assumed to be uninteresting if blank.
     :param text:     text to be processed

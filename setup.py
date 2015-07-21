@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='textdata',
-    version='1.0.4',
+    version='1.0.5',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Get clean line or text data from multi-line strings',
@@ -12,7 +12,7 @@ setup(
     url='https://bitbucket.org/jeunice/textdata',
     py_modules=['textdata'],
     install_requires=[],
-    tests_require = ['tox', 'pytest'],
+    tests_require = ['six', 'tox', 'pytest'],
     zip_safe = False,  # it really is, but this will prevent weirdness
     keywords='text data lines dedent',
     classifiers=[

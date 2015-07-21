@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
 
 from textdata import *
 import sys
+import six
+
 
 def _print(*args, **kwargs):
     """
@@ -12,8 +15,8 @@ def _print(*args, **kwargs):
     parts = [str(item) for item in args ]
     parts.append(end)
     f.write(sep.join(parts))
-    
-    
+
+
 def single_trial(name, t, **kwargs):
     _print("---", name, "---")
     reslines = lines(t, **kwargs)
@@ -22,17 +25,22 @@ def single_trial(name, t, **kwargs):
     _print("--- end", name, "---")
 
     _print()
-    
+
 def test_basic():
-    
+
     assert lines("""
                  a
-                 line  
+                 line
                  or
                  two""") == ['a','line','or','two']
-    
+
+def test_encoding():
+    assert lines(u"⍟\n★") == [six.u('\u235F'), six.u('\u2605')]
+    # took py32 out of testing matrix because this test is too
+    # hard to state with it in
+
 def test_mixed_indent():
-    
+
     assert lines("""
     This is a test of lines
     these should all
@@ -40,8 +48,8 @@ def test_mixed_indent():
         except this one, which has a little non-common space
     ok?
     because ends with more than one blank line, those will be captured
-    
-    
+
+
           """) == \
     ['This is a test of lines',
      'these should all',
@@ -49,9 +57,9 @@ def test_mixed_indent():
      '    except this one, which has a little non-common space',
      'ok?',
      'because ends with more than one blank line, those will be captured']
-    
+
 def test_noblanks_false():
-    
+
     assert lines("""
     This is a test of lines
     these should all
@@ -59,8 +67,8 @@ def test_noblanks_false():
         except this one, which has a little non-common space
     ok?
     because ends with more than one blank line, those will be captured
-    
-    
+
+
           """, noblanks=False) == \
     ['This is a test of lines',
      'these should all',
@@ -70,9 +78,9 @@ def test_noblanks_false():
      'because ends with more than one blank line, those will be captured',
      '',
      '']
-    
+
 def test_malindented_blank_lines():
-    
+
     assert textlines(noblanks=False, text="""
         this
 
@@ -80,20 +88,20 @@ def test_malindented_blank_lines():
         ok
 
     """) == "this\n\nis\nok\n"
-    
+
 def test_extra_start_space():
-    
+
     single_trial('test2', """
-                
-                
+
+
     This is a test of lines
-    
+
     here there should be no blanks
      but some that start wiht a little extra space ok?
       which isn't common
-      
 
-    
+
+
           """) == \
     ['This is a test of lines',
      'here there should be no blanks',
@@ -102,37 +110,37 @@ def test_extra_start_space():
 
 def test_textlines():
     data = """
-                
-                
+
+
     This is a test of lines
-    
+
     here there should be no blanks
      but some that start wiht a little extra space ok?
       which isn't common
-      
 
-    
+
+
           """
-    
+
     assert lines(data) == textlines(data).splitlines()
     assert lines(data, join=True) == lines(data, join='')
     assert lines(data, join=True) == ''.join(textlines(data).splitlines())
     assert lines(data, join=' ') == ' '.join(textlines(data).splitlines())
     assert lines(data, join='\n') == textlines(data)
     assert len(lines(data)) == 4
-    
+
 def test_tricky_prefix():
     """
     Common prefixes need not be all spaces. This tests if common non-blank
     prefixes are properly handled.
     """
-    
+
     t = textlines("""
         something
         something else
     """)
     assert t == "something\nsomething else"
-    
+
     t2 = textlines("""
 xxx y
 xxx z
