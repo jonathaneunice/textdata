@@ -1,15 +1,15 @@
 
 | |travisci| |version| |downloads| |supported-versions| |supported-implementations|
 
-.. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.png?branch=master
+.. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.svg?branch=master
     :alt: Travis CI build status
     :target: https://travis-ci.org/jonathaneunice/textdata
 
-.. |version| image:: http://img.shields.io/pypi/v/textdata.png?style=flat
+.. |version| image:: http://img.shields.io/pypi/v/textdata.svg?style=flat
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/textdata
 
-.. |downloads| image:: http://img.shields.io/pypi/dm/textdata.png?style=flat
+.. |downloads| image:: http://img.shields.io/pypi/dm/textdata.svg?style=flat
     :alt: PyPI Package monthly downloads
     :target: https://pypi.python.org/pypi/textdata
 
@@ -21,13 +21,12 @@
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/textdata
 
-It's very common to need to extract text or text lines from within
-program source. The way Python likes to have its text indented,
-however, means that there will often be extra spaces appended to
-the beginning of each line, as well as possibly extra lines at the
-start and end of the text. They're there to make things look and work
-right in the program
-source, but they're not useful in the resulting data.
+It's very common to need to extract text or text lines from within program
+source. The way Python likes to have its text indented, however, means that
+there will often be extra spaces appended to the beginning of each line, as
+well as possibly extra lines at the start and end of the text. They're there
+to make things look and work right in the program source, but they're not
+useful in the resulting data.
 
 Python string methods give easy ways to clean this text up, but
 it's no joy reinventing that particular text-cleanup wheel every
