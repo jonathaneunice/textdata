@@ -45,7 +45,7 @@ This module helps clean up included text (or text lines) in a simple,
 reusable way that won't muck up your programs with extra code, and won't
 require constant wheel-reinvention.
 
-Usage
+Lines
 =====
 
 ::
@@ -64,26 +64,37 @@ will result in::
      'She gave them some broth without any bread;',
      'Then whipped them all soundly and put them to bed.']
 
-If instead you used ``textlines()``, the result is the same, but
-joined by newlines into into a single string::
+Text
+====
+
+``textlines`` is an optional entry point with the same parameters as
+``lines``, but that joins the resulting lines into a unified string.
+
+    data = textlines("""
+        There was an old woman who lived in a shoe.
+        She had so many children, she didn't know what to do;
+        She gave them some broth without any bread;
+        Then whipped them all soundly and put them to bed.
+    """)
+
+Yields::
 
     "There was an old woman who lived in a shoe.\nShe ... to bed."
     # where the ... abbreviates exactly the characters you'd expect
 
-``textlines`` is an optional entry point, as ``lines`` has a ``join``
-kwarg that, if set, joins the lines with that string.
+API Options
+===========
 
-Both routines provide typically-desired cleanups:
+Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
 
-  * remove blank lines (default), but at least first and last blanks
-    (which usually appear due to Python formatting)
-  * remove common line prefix (default)
+  * remove starting and ending blank lines
+    (which are usually due to Python source formatting)
+  * remove blank lines internal to your text block
+  * remove common indentation
   * strip leading/trailing spaces other than the common prefix
-    (leading by request, trailing by default)
-  * (optionally) join the lines together with your choice of separator string
+    (leading spaces removed by request, trailing by default)
+  * join lines together with your choice of separator string
 
-The API
-=======
 
 ``lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join=False)``
 
@@ -95,7 +106,8 @@ The API
     * ``lstrip`` => strip all left (leading) space from each line (default ``False``).
       Note that ``lstrip`` and ``dedent`` are  mutually exclusive ways of handling leading space.
     * ``rstrip`` => strip all right (trailing) space from each line (default ``True``)
-    * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines), or a string that will be used to join the resulting lines (default ``False``)
+    * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines),
+      or a string that will be used to join the resulting lines (default ``False``)
 
 ``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join=False)``
 
@@ -119,7 +131,7 @@ Embedded quotes (either single or double) can be used to construct
 
 ``words`` isn't a full parser, so there are some extreme cases like
 arbitrarily nested quotations that it can't handle. It isn't confused,
-however, by embedded apostropes and other common gotchas. For example::
+however, by embedded apostrophes and other common gotchas. For example::
 
     >>> words("don't be blue")
     ["don't", "be", "blue"]
@@ -138,8 +150,8 @@ Unicode and Encodings
     :trim:
 
 ``textdata`` doesn't have any unique friction with Unicode
-characters and encodings, but any time you use Unicode characters
-in Python source files--especially in Python 2--care is warranted.
+characters and encodings. That said, any time you use Unicode characters
+in Python source files, care is warranted--especially in Python 2!
 
 If your text includes Unicode characters, in Python 2 make sure to
 mark the string with a "u" prefix: ``u"`` |star| ``"``. You can
