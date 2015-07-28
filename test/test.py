@@ -146,3 +146,22 @@ xxx y
 xxx z
 """)
     assert t2 == "xxx y\nxxx z"
+
+
+def test_words():
+
+    assert words('a b c') == 'a b c'.split()
+    assert words(' a b c') == 'a b c'.split()
+    assert words('  a  b   c   ') == 'a b c'.split()
+    assert words(' Billy Bobby "Mr. Smith"') == ['Billy', 'Bobby', 'Mr. Smith']
+    assert words(' Billy Bobby "Mr. Smith" "Mrs. Jones"  ') == \
+                                ['Billy', 'Bobby', 'Mr. Smith', 'Mrs. Jones']
+    assert words(' "" " " "  " "   "') == ['', ' ', '  ', '   ']
+    assert words("don't be daft") == ["don't", 'be', 'daft']
+    assert words(""" "don't be daft" love """) == ["don't be daft", 'love']
+
+    assert words(""" "hey\nthere" joe""") == ['hey\nthere', 'joe']
+
+    assert words("don't be blue") == ["don't", "be", "blue"]
+
+    assert words("don't be blue don't") == ["don't", "be", "blue", "don't"]

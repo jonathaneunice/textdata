@@ -3,11 +3,14 @@ Conveniently get data from text
 """
 
 import os
+import re
 import sys
 try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
+
+__all__ = 'lines textlines words'.split()
 
 _PY3 = sys.version_info[0] >= 3
 if _PY3:
@@ -74,3 +77,23 @@ def textlines(text, **kwargs):
     if sep is None or sep is False:
         kwargs['join'] = '\n'
     return lines(text, **kwargs)
+
+
+WORDRE = re.compile(r"""\s*(?P<word>"[^"]*"|'[^']*'|\S+)\s*""")
+QUOTES = ("'", '"')
+
+def noquotes(s):
+    if s.startswith(QUOTES) and s.endswith(QUOTES):
+        return s.strip("\"'")
+    else:
+        return s
+
+def words(text):
+    """
+    Like qw() in Perl. Returns a series of words. Similar to
+    s.split(), except that it respects quoted spans (for the
+    occasional 'word' with spaces included.)
+    """
+    text = text.strip()
+    parts = re.findall(WORDRE, text)
+    return [noquotes(p) for p in parts]

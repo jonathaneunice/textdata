@@ -21,18 +21,25 @@
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/textdata
 
-It's very common to need to extract text or text lines from within program
-source. The way Python likes to have its text indented, however, means that
-there will often be extra spaces appended to the beginning of each line, as
-well as possibly extra lines at the start and end of the text. They're there
-to make things look and work right in the program source, but they're not
-useful in the resulting data.
+It's very common to need to extract data from program source.
 
-Python string methods give easy ways to clean this text up, but
-it's no joy reinventing that particular text-cleanup wheel every
-time you need it--especially since many of the details are nitsy,
-dropping the code down into low-level constructs rather than
-just "give me the text!"
+The problem is that the Python likes to have its text indented means that
+literal data would often have extra spaces and lines that you really don't
+want. This drives many developers to drop in Python ``list`` data structures
+but that's tedious, more verbose, and often less legible.
+
+``textdata`` makes it easy to have clean, nicely-whitespaced data specified
+in your program, but to get the data that you want without extra whitespace
+cluttering things up. It's permissive of whitespace needed to make the
+program source look and work right, yet doesn't require that they they be
+seen in the resulting data.
+
+Python string methods give easy ways to clean this text up, but it's no joy
+reinventing that particular text-cleanup wheel every time you need
+it--especially since many of the details are nitsy, dropping the code down
+into low-level constructs rather than just "give me the text!" And because
+the details can be a little tricky and frustrating, it's good to not just
+whip up some routine *a la carte*, but to use well-tested code.
 
 This module helps clean up included text (or text lines) in a simple,
 reusable way that won't muck up your programs with extra code, and won't
@@ -96,6 +103,31 @@ The API
     result as a single string, with lines separated by newlines (by
     default) and without a trailing newline.
 
+Words
+=====
+
+Often the data you need to encode is almost, but not quite, a series of
+words. A list of names, a list of color names--values that are mostly
+single words, but sometimes have an embedded spaces. ``textdata`` has you
+covered::
+
+    >>> words(' Billy Bobby "Mr. Smith" "Mrs. Jones"  ')
+    ['Billy', 'Bobby', 'Mr. Smith', 'Mrs. Jones']
+
+Embedded quotes (either single or double) can be used to construct
+"words" (or phrases) containing spaces (or even newlines). This
+function can't handle arbitrary nesting of quotations and other full-parser
+fare, but it does a strong job not being confused by individual quotations
+and other edge cases. For example::
+
+    >>> words("don't be blue")
+    ["don't", "be", "blue"]
+
+``words`` isn't a full parser, but it's a good choice for those middle
+ground situations in which you still want a compact, friendly,
+whitespace-delimited data representation--but a few of your entries need
+more than just ``str.split()``.
+
 Unicode and Encodings
 =====================
 
@@ -109,10 +141,10 @@ in Python source files--especially in Python 2--care is warranted.
 If your text includes Unicode characters, in Python 2 make sure to
 mark the string with a "u" prefix: ``u"""`` |star| ``"""``. You can
 also do this in Python 3.3 and following. Sadly, there was a dropout
-of compatibility in early Python 3 builds, making it much harder to
+of compatibility in early Python 3 releases, making it much harder to
 maintain a unified source base with them in the mix. (A
 compatibility function such as ``six.u`` from
-`six <http://pypi.python.org/pypi/six>`_;
+`six <http://pypi.python.org/pypi/six>`_
 can help alleviate much--though certainly not all--of the pain.)
 
 It can also be helpful to declare your source encoding: put
@@ -127,9 +159,11 @@ ASCII.
 Notes
 =====
 
+  * Version 1.1 added the ``words`` constructor.
+
   * Automated multi-version testing managed with the wonderful
     `pytest <http://pypi.python.org/pypi/pytest>`_,
-    `pytest-cov <http://pypi.python.org/pypi/pytest>`_,
+    `pytest-cov <http://pypi.python.org/pypi/pytest-cov>`_,
     and `tox <http://pypi.python.org/pypi/tox>`_.
     Successfully packaged for, and tested against, all late-model versions of
     Python: 2.6, 2.7, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
@@ -144,8 +178,8 @@ Notes
   * The tricky case where all lines have a common prefix, but it's
     not entirely composed of whitespace, now properly handled.
     This is useful for lines that are already "quoted" such as
-    with leading `"|"` or `">"` symbols (common in Markdown
-    and old-school email usage styles)/
+    with leading ``"|"`` or ``">"`` symbols (common in Markdown
+    and old-school email usage styles).
 
   * ``textlines()`` is now somewhat superfluous, now that ``lines()``
     has a ``join`` kwarg.  But you may prefer it for the implicit
