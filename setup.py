@@ -7,14 +7,14 @@ setup(
     version='1.1.1',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
-    description='Get clean line or text data from multi-line strings',
+    description='Get clean data easily direct from Python source',
     long_description=open('README.rst').read(),
     url='https://bitbucket.org/jeunice/textdata',
     py_modules=['textdata'],
     install_requires=[],
     tests_require=['six', 'tox', 'pytest'],
     zip_safe=False,  # it really is, but this will prevent weirdness
-    keywords='text data lines dedent',
+    keywords='text data lines dedent words qw',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Operating System :: OS Independent',
