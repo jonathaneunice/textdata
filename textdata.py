@@ -84,7 +84,7 @@ QUOTES = ("'", '"')
 
 def noquotes(s):
     if s.startswith(QUOTES) and s.endswith(QUOTES):
-        return s.strip("\"'")
+        return s.strip(s[0])
     else:
         return s
 

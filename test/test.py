@@ -165,3 +165,4 @@ def test_words():
     assert words("don't be blue") == ["don't", "be", "blue"]
 
     assert words("don't be blue don't") == ["don't", "be", "blue", "don't"]
+    assert words(""" "'this'" works '"great"' """) == ["'this'", 'works', '"great"']

@@ -115,18 +115,21 @@ covered::
     ['Billy', 'Bobby', 'Mr. Smith', 'Mrs. Jones']
 
 Embedded quotes (either single or double) can be used to construct
-"words" (or phrases) containing spaces (or even newlines). This
-function can't handle arbitrary nesting of quotations and other full-parser
-fare, but it does a strong job not being confused by individual quotations
-and other edge cases. For example::
+"words" (or phrases) containing whitespace (including tabs and newlines).
+
+``words`` isn't a full parser, so there are some extreme cases like
+arbitrarily nested quotations that it can't handle. It isn't confused,
+however, by embedded apostropes and other common gotchas. For example::
 
     >>> words("don't be blue")
     ["don't", "be", "blue"]
 
-``words`` isn't a full parser, but it's a good choice for those middle
-ground situations in which you still want a compact, friendly,
-whitespace-delimited data representation--but a few of your entries need
-more than just ``str.split()``.
+    >>> words(""" "'this'" works '"great"' """)
+    ["'this'", 'works', '"great"']
+
+``words`` is a good choice for situations where you want a compact,
+friendly, whitespace-delimited data representation--but a few of your
+entries need more than just ``str.split()``.
 
 Unicode and Encodings
 =====================
@@ -139,7 +142,7 @@ characters and encodings, but any time you use Unicode characters
 in Python source files--especially in Python 2--care is warranted.
 
 If your text includes Unicode characters, in Python 2 make sure to
-mark the string with a "u" prefix: ``u"""`` |star| ``"""``. You can
+mark the string with a "u" prefix: ``u"`` |star| ``"``. You can
 also do this in Python 3.3 and following. Sadly, there was a dropout
 of compatibility in early Python 3 releases, making it much harder to
 maintain a unified source base with them in the mix. (A
