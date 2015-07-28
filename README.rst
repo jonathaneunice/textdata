@@ -68,7 +68,7 @@ Text
 ====
 
 ``textlines`` is an optional entry point with the same parameters as
-``lines``, but that joins the resulting lines into a unified string.
+``lines``, but that joins the resulting lines into a unified string.::
 
     data = textlines("""
         There was an old woman who lived in a shoe.
