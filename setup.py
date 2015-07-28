@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='textdata',
-    version='1.1.1',
+    version='1.1.2',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Get clean data easily direct from Python source',
