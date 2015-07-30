@@ -73,9 +73,7 @@ def textlines(text, **kwargs):
     Like ``lines()``, but returns result as unified text. Useful primarily because
     of the nice cleanups ``lines()`` does.
     """
-    sep = kwargs.get('join', None)
-    if sep is None or sep is False:
-        kwargs['join'] = '\n'
+    kwargs.setdefault('join', '\n')
     return lines(text, **kwargs)
 
 

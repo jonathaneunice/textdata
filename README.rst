@@ -109,7 +109,7 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
     * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines),
       or a string that will be used to join the resulting lines (default ``False``)
 
-``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join=False)``
+``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join='\n')``
 
     Does the same helpful cleanups as ``lines()``, but returns
     result as a single string, with lines separated by newlines (by
@@ -174,6 +174,9 @@ ASCII.
 Notes
 =====
 
+  * Version 1.1.3 switches from BSD to Apache License 2.0 and integrates
+    ``tox`` testing with ``setup.py``.
+
   * Version 1.1 added the ``words`` constructor.
 
   * Automated multi-version testing managed with the wonderful
@@ -205,6 +208,17 @@ Notes
     separate ``dedent`` and ``lstrip`` Booleans. The more I use
     singleton classes in Python as designated special values, the
     more useful they seem.
+
+ *  Automated multi-version testing managed with `pytest
+    <http://pypi.python.org/pypi/pytest>`_ and `tox
+    <http://pypi.python.org/pypi/tox>`_. Continuous integration testing
+    with `Travis-CI <https://travis-ci.org/jonathaneunice/intspan>`_.
+    Packaging linting with `pyroma <https://pypi.python.org/pypi/pyroma>`_.
+
+    Successfully packaged for, and
+    tested against, all late-model versions of Python: 2.6, 2.7, 3.2, 3.3,
+    3.4, and 3.5 pre-release (3.5.0b3) as well as PyPy 2.6.0 (based on
+    2.7.9) and PyPy3 2.4.0 (based on 3.2.5).
 
   * The author, `Jonathan Eunice <mailto:jonathan.eunice@gmail.com>`_
     or `@jeunice on Twitter <http://twitter.com/jeunice>`_ welcomes
