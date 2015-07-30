@@ -209,7 +209,7 @@ Notes
     singleton classes in Python as designated special values, the
     more useful they seem.
 
- *  Automated multi-version testing managed with `pytest
+  * Automated multi-version testing managed with `pytest
     <http://pypi.python.org/pypi/pytest>`_ and `tox
     <http://pypi.python.org/pypi/tox>`_. Continuous integration testing
     with `Travis-CI <https://travis-ci.org/jonathaneunice/intspan>`_.
