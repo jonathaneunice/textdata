@@ -27,7 +27,7 @@ class Tox(TestCommand):
 
 setup(
     name='textdata',
-    version='1.1.4',
+    version='1.1.5',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Easily get clean data, direct from Python source',

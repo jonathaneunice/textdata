@@ -1,5 +1,5 @@
 
-| |travisci| |version| |downloads| |supported-versions| |supported-implementations|
+| |travisci| |version| |downloads| |supported-versions| |supported-implementations| |wheel|
 
 .. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.svg?branch=master
     :alt: Travis CI build status
@@ -20,6 +20,10 @@
 .. |supported-implementations| image:: https://img.shields.io/pypi/implementation/textdata.svg
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/textdata
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/intspan.svg
+    :alt: Wheel packaging support
+    :target: https://pypi.python.org/pypi/intspan
 
 It's very common to need to extract data from program source.
 
@@ -174,6 +178,8 @@ ASCII.
 Notes
 =====
 
+  * Version 1.1.5 adds the ``bdist_wheel`` packaging format.
+
   * Version 1.1.3 switches from BSD to Apache License 2.0 and integrates
     ``tox`` testing with ``setup.py``.
 
@@ -227,7 +233,7 @@ Notes
 Installation
 ============
 
-::
+To install or upgrade to the latest version::
 
     pip install -U textdata
 
@@ -235,4 +241,7 @@ To ``easy_install`` under a specific Python version (3.3 in this example)::
 
     python3.3 -m easy_install --upgrade textdata
 
-(You may need to prefix these with "sudo " to authorize installation.)
+(You may need to prefix these with ``sudo`` to authorize
+installation. In environments without super-user privileges, you may want to
+use ``pip``'s ``--user`` option, to install only for a single user, rather
+than system-wide.)
