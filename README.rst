@@ -21,9 +21,9 @@
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/textdata
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/intspan.svg
+.. |wheel| image:: https://img.shields.io/pypi/wheel/textdata.svg
     :alt: Wheel packaging support
-    :target: https://pypi.python.org/pypi/intspan
+    :target: https://pypi.python.org/pypi/textdata
 
 It's very common to need to extract data from program source.
 
