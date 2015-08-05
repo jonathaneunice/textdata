@@ -12,7 +12,7 @@ def _print(*args, **kwargs):
     sep = kwargs.get('sep', ' ')
     end = kwargs.get('end', '\n')
     f   = kwargs.get('file', sys.stdout)
-    parts = [str(item) for item in args ]
+    parts = [str(item) for item in args]
     parts.append(end)
     f.write(sep.join(parts))
 
@@ -26,13 +26,15 @@ def single_trial(name, t, **kwargs):
 
     _print()
 
+
 def test_basic():
 
     assert lines("""
                  a
                  line
                  or
-                 two""") == ['a','line','or','two']
+                 two""") == ['a', 'line', 'or', 'two']
+
 
 def test_encoding():
     assert lines(u"⍟\n★") == [six.u('\u235F'), six.u('\u2605')]
@@ -51,12 +53,13 @@ def test_mixed_indent():
 
 
           """) == \
-    ['This is a test of lines',
-     'these should all',
-     'be nice and dedented',
-     '    except this one, which has a little non-common space',
-     'ok?',
-     'because ends with more than one blank line, those will be captured']
+        ['This is a test of lines',
+         'these should all',
+         'be nice and dedented',
+         '    except this one, which has a little non-common space',
+         'ok?',
+         'because ends with more than one blank line, those will be captured']
+
 
 def test_noblanks_false():
 
@@ -70,14 +73,37 @@ def test_noblanks_false():
 
 
           """, noblanks=False) == \
-    ['This is a test of lines',
-     'these should all',
-     'be nice and dedented',
-     '    except this one, which has a little non-common space',
-     'ok?',
-     'because ends with more than one blank line, those will be captured',
-     '',
-     '']
+        ['This is a test of lines',
+         'these should all',
+         'be nice and dedented',
+         '    except this one, which has a little non-common space',
+         'ok?',
+         'because ends with more than one blank line, those will be captured',
+         '',
+         '']
+
+
+def test_cstrip():
+
+    t = """
+        this
+
+            is
+        ok
+
+    """
+
+    tc = """
+        this  # look, a comment!
+# more comment
+            is
+        ok    # other comment
+   #comment
+    """
+
+    assert lines(t) == lines(tc)
+    assert textlines(t) == textlines(tc)
+
 
 def test_malindented_blank_lines():
 
@@ -88,6 +114,7 @@ def test_malindented_blank_lines():
         ok
 
     """) == "this\n\nis\nok\n"
+
 
 def test_extra_start_space():
 
@@ -103,10 +130,11 @@ def test_extra_start_space():
 
 
           """) == \
-    ['This is a test of lines',
-     'here there should be no blanks',
-     ' but some that start wiht a little extra space ok?',
-     "  which isn't common"]
+        ['This is a test of lines',
+         'here there should be no blanks',
+         ' but some that start wiht a little extra space ok?',
+         "  which isn't common"]
+
 
 def test_textlines():
     data = """
@@ -128,6 +156,7 @@ def test_textlines():
     assert lines(data, join=' ') == ' '.join(textlines(data).splitlines())
     assert lines(data, join='\n') == textlines(data)
     assert len(lines(data)) == 4
+
 
 def test_tricky_prefix():
     """
@@ -155,7 +184,7 @@ def test_words():
     assert words('  a  b   c   ') == 'a b c'.split()
     assert words(' Billy Bobby "Mr. Smith"') == ['Billy', 'Bobby', 'Mr. Smith']
     assert words(' Billy Bobby "Mr. Smith" "Mrs. Jones"  ') == \
-                                ['Billy', 'Bobby', 'Mr. Smith', 'Mrs. Jones']
+        ['Billy', 'Bobby', 'Mr. Smith', 'Mrs. Jones']
     assert words(' "" " " "  " "   "') == ['', ' ', '  ', '   ']
     assert words("don't be daft") == ["don't", 'be', 'daft']
     assert words(""" "don't be daft" love """) == ["don't be daft", 'love']
@@ -165,4 +194,28 @@ def test_words():
     assert words("don't be blue") == ["don't", "be", "blue"]
 
     assert words("don't be blue don't") == ["don't", "be", "blue", "don't"]
-    assert words(""" "'this'" works '"great"' """) == ["'this'", 'works', '"great"']
+    assert words(""" "'this'" works '"great"' """) == \
+				 ["'this'", 'works', '"great"']
+
+
+def test_words_cstrip():
+    w = """ this and
+            that
+            and
+            more
+        """
+    wc = """ this and  # comment
+            that  #comment
+            and#comment
+            more        #comment
+        """
+    assert words(w) == words(wc)
+
+def test_words_cstrip_example():
+    assert words("""
+        __pycache__ *.pyc *.pyo     # compliation artifacts
+        .hg* .git*                  # repository artifacts
+        .coverage                   # code tool artifacts
+        .DS_Store                   # platform artifacts
+    """) == ['__pycache__', '*.pyc', '*.pyo', '.hg*', '.git*',
+             '.coverage', '.DS_Store']

@@ -147,6 +147,39 @@ however, by embedded apostrophes and other common gotchas. For example::
 friendly, whitespace-delimited data representation--but a few of your
 entries need more than just ``str.split()``.
 
+Comments
+========
+
+If you need to embed more than a few lines of immediate data in your program,
+you may want some comments to explain what's going on.  ``textdata``
+routines by default strip out Python-like comments (from ``#`` to
+end of line). So::
+
+    exclude = words("""
+        __pycache__ *.pyc *.pyo     # compilation artifacts
+        .hg* .git*                  # repository artifacts
+        .coverage                   # code tool artifacts
+        .DS_Store                   # platform artifacts
+    """)
+
+Yields::
+
+    ['__pycache__', '*.pyc', '*.pyo', '.hg*', '.git*',
+     '.coverage', '.DS_Store']
+
+Which is the same as::
+
+    exclude = [
+     '__pycache__', '*.pyc', '*.pyo',   # compilation artifacts
+     '.hg*', '.git*',                   # repository artifacts
+     '.coverage',                       # code tool artifacts
+     '.DS_Store'                        # platform artifacts
+    ]
+
+But without all the extra punctuation. If you want to capture the
+comments, just set ``cstrip=False`` (though that makes more
+sense for ``lines`` and ``textlines`` than ``words``).
+
 Unicode and Encodings
 =====================
 
@@ -177,6 +210,8 @@ ASCII.
 
 Notes
 =====
+
+  * Version 1.2 adds comment stripping. Packaging and testing also tweaked.
 
   * Version 1.1.5 adds the ``bdist_wheel`` packaging format.
 
