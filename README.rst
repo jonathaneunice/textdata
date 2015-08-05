@@ -151,8 +151,8 @@ Comments
 ========
 
 If you need to embed more than a few lines of immediate data in your program,
-you may want some comments to explain what's going on.  ``textdata``
-routines by default strip out Python-like comments (from ``#`` to
+you may want some comments to explain what's going on.  By default,
+``textdata`` strip out Python-like comments (from ``#`` to
 end of line). So::
 
     exclude = words("""
@@ -167,7 +167,7 @@ Yields::
     ['__pycache__', '*.pyc', '*.pyo', '.hg*', '.git*',
      '.coverage', '.DS_Store']
 
-Which is the same as::
+You could of course write it out as::
 
     exclude = [
      '__pycache__', '*.pyc', '*.pyo',   # compilation artifacts
@@ -176,9 +176,11 @@ Which is the same as::
      '.DS_Store'                        # platform artifacts
     ]
 
-But without all the extra punctuation. If you want to capture the
-comments, just set ``cstrip=False`` (though that makes more
-sense for ``lines`` and ``textlines`` than ``words``).
+But you'd need more nitsy punctuation.
+
+If however you want to capture
+comments, set ``cstrip=False`` (though that is probably more useful with the
+``lines`` and ``textlines`` APIs than for ``words``).
 
 Unicode and Encodings
 =====================
