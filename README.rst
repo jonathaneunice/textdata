@@ -105,7 +105,7 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
   * join lines together with your choice of separator string
 
 
-``lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join=False)``
+``lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join=False)``
 
     Returns text as a series of cleaned-up lines.
 
@@ -115,11 +115,11 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
     * ``lstrip`` => strip all left (leading) space from each line (default ``False``).
       Note that ``lstrip`` and ``dedent`` are  mutually exclusive ways of handling leading space.
     * ``rstrip`` => strip all right (trailing) space from each line (default ``True``)
-    * ``rstrip`` => strip comments (from ``#`` to the end of each line (default ``True``)
+    * ``cstrip`` => strip comments (from ``#`` to the end of each line (default ``True``)
     * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines with ``\n``),
       or a string that will be used to join the resulting lines (default ``False``)
 
-``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join='\n')``
+``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join='\n')``
 
     Does the same helpful cleanups as ``lines()``, but returns
     result as a single string, with lines separated by newlines (by

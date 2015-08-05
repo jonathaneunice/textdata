@@ -1,6 +1,5 @@
 include README.rst
 include pytest.ini
 include tox.ini
-include CHANGES.rst
 include requirements.txt
 recursive-include test *.py
