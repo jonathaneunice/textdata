@@ -97,6 +97,7 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
   * remove common indentation
   * strip leading/trailing spaces other than the common prefix
     (leading spaces removed by request, trailing by default)
+  * strip any comments from the end of lines
   * join lines together with your choice of separator string
 
 
@@ -110,7 +111,8 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
     * ``lstrip`` => strip all left (leading) space from each line (default ``False``).
       Note that ``lstrip`` and ``dedent`` are  mutually exclusive ways of handling leading space.
     * ``rstrip`` => strip all right (trailing) space from each line (default ``True``)
-    * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines),
+    * ``rstrip`` => strip comments (from ``#`` to the end of each line (default ``True``)
+    * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines with ``\n``),
       or a string that will be used to join the resulting lines (default ``False``)
 
 ``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, join='\n')``
