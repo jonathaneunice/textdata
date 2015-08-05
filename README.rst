@@ -25,31 +25,8 @@
     :alt: Wheel packaging support
     :target: https://pypi.python.org/pypi/textdata
 
-It's very common to need to extract data from program source.
 
-The problem is that the Python likes to have its text indented means that
-literal data would often have extra spaces and lines that you really don't
-want. This drives many developers to drop in Python ``list`` data structures
-but that's tedious, more verbose, and often less legible.
-
-``textdata`` makes it easy to have clean, nicely-whitespaced data specified
-in your program, but to get the data that you want without extra whitespace
-cluttering things up. It's permissive of whitespace needed to make the
-program source look and work right, yet doesn't require that they they be
-seen in the resulting data.
-
-Python string methods give easy ways to clean this text up, but it's no joy
-reinventing that particular text-cleanup wheel every time you need
-it--especially since many of the details are nitsy, dropping the code down
-into low-level constructs rather than just "give me the text!" And because
-the details can be a little tricky and frustrating, it's good to not just
-whip up some routine *a la carte*, but to use well-tested code.
-
-This module helps clean up included text (or text lines) in a simple,
-reusable way that won't muck up your programs with extra code, and won't
-require constant wheel-reinvention.
-
-Lines
+Usage
 =====
 
 ::
@@ -68,11 +45,38 @@ will result in::
      'She gave them some broth without any bread;',
      'Then whipped them all soundly and put them to bed.']
 
+Note that the "extra" newlines and leading spaces have been
+taken care of and discarded.
+
+Discussion
+==========
+
+One often needs to state data in program source.
+Python, however, needs its lines indented *just so*.
+Multi-line strings therefore
+often have extra spaces and newline characters you didn't really
+want. Many developers "fix" this by using Python ``list`` literals,
+but that has its own problems: it's tedious, more verbose, and
+often less legible.
+
+The ``textdata`` package makes it easy to have clean, nicely-whitespaced
+data specified in your program, but to get the data without extra whitespace
+cluttering things up. It's permissive of the layouts needed to make Python
+code look and work right, without reflecting those requirements in the
+resulting data.
+
+Python string methods give easy ways to clean text up, but it's no joy
+reinventing that particular wheel every time you need it--especially since
+many of the details are nitsy, low-level, and a little tricky. ``textdata``
+is a "just give me the text!" module that replaces *a la carte* text
+cleanups with simple, well-tested code that doesn't lengthen your program or
+require constant wheel-reinvention.
+
 Text
 ====
 
-``textlines`` is an optional entry point with the same parameters as
-``lines``, but that joins the resulting lines into a unified string.::
+In addition to ``lines``, ``textlines`` works similarly and with the same
+parametes, but joins the resulting lines into a unified string.::
 
     data = textlines("""
         There was an old woman who lived in a shoe.
@@ -194,8 +198,8 @@ Unicode and Encodings
 characters and encodings. That said, any time you use Unicode characters
 in Python source files, care is warranted--especially in Python 2!
 
-If your text includes Unicode characters, in Python 2 make sure to
-mark the string with a "u" prefix: ``u"`` |star| ``"``. You can
+If your text includes Unicode, in Python 2 make sure to
+mark literal strings with a "u" prefix: ``u"`` |star| ``"``. You can
 also do this in Python 3.3 and following. Sadly, there was a dropout
 of compatibility in early Python 3 releases, making it much harder to
 maintain a unified source base with them in the mix. (A
