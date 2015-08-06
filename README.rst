@@ -90,6 +90,11 @@ Yields::
     "There was an old woman who lived in a shoe.\nShe ... to bed."
     # where the ... abbreviates exactly the characters you'd expect
 
+Note that while ``textlines`` returns a single string, it
+maintains the (useful) newlines. Its result is still line-oriented.
+If you want to elide the newlines, use ``textlines(text, join=' ')``
+and the newline characters will be replaced with spaces.
+
 API Options
 ===========
 

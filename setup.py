@@ -15,7 +15,7 @@ def lines(text):
 
 setup(
     name='textdata',
-    version='1.2.2',
+    version='1.2.3',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Easily get clean data, direct from Python source',
@@ -23,6 +23,7 @@ setup(
     url='https://bitbucket.org/jeunice/textdata',
     license='Apache License 2.0',
     py_modules=['textdata'],
+    setup_requires=[],
     install_requires=[],
     tests_require=['six', 'tox', 'pytest'],
     test_suite="test",
