@@ -315,7 +315,7 @@ Notes
 
   Successfully packaged for, and
   tested against, all late-model versions of Python: 2.6, 2.7, 3.2, 3.3,
-  3.4, and 3.5 pre-release (3.5-dev) as well as PyPy 2.6.0 (based on
+  3.4, and 3.5 pre-release (3.5.0b3) as well as PyPy 2.6.0 (based on
   2.7.9) and PyPy3 2.4.0 (based on 3.2.5).
 
 * The author, `Jonathan Eunice <mailto:jonathan.eunice@gmail.com>`_
