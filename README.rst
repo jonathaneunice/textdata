@@ -51,13 +51,11 @@ taken care of and discarded.
 Discussion
 ==========
 
-One often needs to state data in program source.
-Python, however, needs its lines indented *just so*.
-Multi-line strings therefore
-often have extra spaces and newline characters you didn't really
-want. Many developers "fix" this by using Python ``list`` literals,
-but that has its own problems: it's tedious, more verbose, and
-often less legible.
+One often needs to state data in program source. Python, however, needs its
+lines indented *just so*. Multi-line strings therefore often have extra
+spaces and newline characters you didn't really want. Many developers "fix"
+this by using Python ``list`` literals, but that has its own problems: it's
+tedious, more verbose, and often less legible.
 
 The ``textdata`` package makes it easy to have clean, nicely-whitespaced
 data specified in your program, but to get the data without extra whitespace
@@ -76,7 +74,7 @@ Text
 ====
 
 In addition to ``lines``, ``textlines`` works similarly and with the same
-parametes, but joins the resulting lines into a unified string.::
+parameters, but joins the resulting lines into a unified string.::
 
     data = textlines("""
         There was an old woman who lived in a shoe.
@@ -158,6 +156,7 @@ however, by embedded apostrophes and other common gotchas. For example::
 friendly, whitespace-delimited data representation--but a few of your
 entries need more than just ``str.split()``.
 
+
 Comments
 ========
 
@@ -181,17 +180,60 @@ Yields::
 You could of course write it out as::
 
     exclude = [
-     '__pycache__', '*.pyc', '*.pyo',   # compilation artifacts
-     '.hg*', '.git*',                   # repository artifacts
-     '.coverage',                       # code tool artifacts
-     '.DS_Store'                        # platform artifacts
+        '__pycache__', '*.pyc', '*.pyo',   # compilation artifacts
+        '.hg*', '.git*',                   # repository artifacts
+        '.coverage',                       # code tool artifacts
+        '.DS_Store'                        # platform artifacts
     ]
 
-But you'd need more nitsy punctuation.
+But you'd need more nitsy punctuation, and it's less compact.
 
 If however you want to capture
 comments, set ``cstrip=False`` (though that is probably more useful with the
 ``lines`` and ``textlines`` APIs than for ``words``).
+
+Paragraphs
+==========
+
+Sometimes you want to collect "paragraphs"--contiguous runs of text lines
+that are delineated by blank lines. Markdown and RST document formats,
+for example, use this convention.  ``textdata`` has a ``paras`` routine to
+extract such paragraphs::
+
+    >>> rhyme = """
+        Hey diddle diddle,
+
+        The cat and the fiddle,
+        The cow jumped over the moon.
+        The little dog laughed,
+        To see such sport,
+
+        And the dish ran away with the spoon.
+    """
+    >>> paras(rhyme)
+    [['Hey diddle diddle,'],
+     ['The cat and the fiddle,',
+      'The cow jumped over the moon.',
+      'The little dog laughed,',
+      'To see such sport,'],
+     ['And the dish ran away with the spoon.']]
+
+Or if you'd like paras, but each paragraph in a single string::
+
+    >>> paras(rhyme, join="\n")
+    ['Hey diddle diddle,',
+     'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
+     'And the dish ran away with the spoon.']
+
+Setting ``join`` to a space will of course
+concatenate the lines of each paragraph with
+a space. This can be useful for converting from line-oriented paragraphs
+into each-paragraph as a (potentially very long) single line, a format
+useful for cut-and-pasting into many editors and text entry boxes on the
+Web or for email systems.
+
+On the off chance you want to preserve the exact intra-paragraph spacing,
+setting ``keep_blanks=True`` will accomplish that.
 
 Unicode and Encodings
 =====================
@@ -224,59 +266,61 @@ ASCII.
 Notes
 =====
 
-  * Version 1.2 adds comment stripping. Packaging and testing also tweaked.
+* Version 1.3 adds a paragraph constructor, ``paras``.
 
-  * Version 1.1.5 adds the ``bdist_wheel`` packaging format.
+* Version 1.2 adds comment stripping. Packaging and testing also tweaked.
 
-  * Version 1.1.3 switches from BSD to Apache License 2.0 and integrates
-    ``tox`` testing with ``setup.py``.
+* Version 1.1.5 adds the ``bdist_wheel`` packaging format.
 
-  * Version 1.1 added the ``words`` constructor.
+* Version 1.1.3 switches from BSD to Apache License 2.0 and integrates
+  ``tox`` testing with ``setup.py``.
 
-  * Automated multi-version testing managed with the wonderful
-    `pytest <http://pypi.python.org/pypi/pytest>`_,
-    `pytest-cov <http://pypi.python.org/pypi/pytest-cov>`_,
-    and `tox <http://pypi.python.org/pypi/tox>`_.
-    Successfully packaged for, and tested against, all late-model versions of
-    Python: 2.6, 2.7, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
-    and PyPy3 2.4.0 (based on 3.2.5). Module should work on Python 3.2, but
-    dropped from testing matrix due to its age and lack of a Unicode literal
-    making test specification much more difficult.)
+* Version 1.1 added the ``words`` constructor.
 
-  * Common line prefix is now computed without considering blank
-    lines, so blank lines need not have any indentation on them
-    just to "make things work."
+* Automated multi-version testing managed with the wonderful
+  `pytest <http://pypi.python.org/pypi/pytest>`_,
+  `pytest-cov <http://pypi.python.org/pypi/pytest-cov>`_,
+  and `tox <http://pypi.python.org/pypi/tox>`_.
+  Successfully packaged for, and tested against, all late-model versions of
+  Python: 2.6, 2.7, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
+  and PyPy3 2.4.0 (based on 3.2.5). Module should work on Python 3.2, but
+  dropped from testing matrix due to its age and lack of a Unicode literal
+  making test specification much more difficult.)
 
-  * The tricky case where all lines have a common prefix, but it's
-    not entirely composed of whitespace, now properly handled.
-    This is useful for lines that are already "quoted" such as
-    with leading ``"|"`` or ``">"`` symbols (common in Markdown
-    and old-school email usage styles).
+* Common line prefix is now computed without considering blank
+  lines, so blank lines need not have any indentation on them
+  just to "make things work."
 
-  * ``textlines()`` is now somewhat superfluous, now that ``lines()``
-    has a ``join`` kwarg.  But you may prefer it for the implicit
-    indication that it's turning lines into text.
+* The tricky case where all lines have a common prefix, but it's
+  not entirely composed of whitespace, now properly handled.
+  This is useful for lines that are already "quoted" such as
+  with leading ``"|"`` or ``">"`` symbols (common in Markdown
+  and old-school email usage styles).
 
-  * It's tempting to define a constant such as ``Dedent`` that might
-    be the default for the ``lstrip`` parameter, instead of having
-    separate ``dedent`` and ``lstrip`` Booleans. The more I use
-    singleton classes in Python as designated special values, the
-    more useful they seem.
+* ``textlines()`` is now somewhat superfluous, now that ``lines()``
+  has a ``join`` kwarg.  But you may prefer it for the implicit
+  indication that it's turning lines into text.
 
-  * Automated multi-version testing managed with `pytest
-    <http://pypi.python.org/pypi/pytest>`_ and `tox
-    <http://pypi.python.org/pypi/tox>`_. Continuous integration testing
-    with `Travis-CI <https://travis-ci.org/jonathaneunice/intspan>`_.
-    Packaging linting with `pyroma <https://pypi.python.org/pypi/pyroma>`_.
+* It's tempting to define a constant such as ``Dedent`` that might
+  be the default for the ``lstrip`` parameter, instead of having
+  separate ``dedent`` and ``lstrip`` Booleans. The more I use
+  singleton classes in Python as designated special values, the
+  more useful they seem.
 
-    Successfully packaged for, and
-    tested against, all late-model versions of Python: 2.6, 2.7, 3.2, 3.3,
-    3.4, and 3.5 pre-release (3.5.0b3) as well as PyPy 2.6.0 (based on
-    2.7.9) and PyPy3 2.4.0 (based on 3.2.5).
+* Automated multi-version testing managed with `pytest
+  <http://pypi.python.org/pypi/pytest>`_ and `tox
+  <http://pypi.python.org/pypi/tox>`_. Continuous integration testing
+  with `Travis-CI <https://travis-ci.org/jonathaneunice/intspan>`_.
+  Packaging linting with `pyroma <https://pypi.python.org/pypi/pyroma>`_.
 
-  * The author, `Jonathan Eunice <mailto:jonathan.eunice@gmail.com>`_
-    or `@jeunice on Twitter <http://twitter.com/jeunice>`_ welcomes
-    your comments and suggestions.
+  Successfully packaged for, and
+  tested against, all late-model versions of Python: 2.6, 2.7, 3.2, 3.3,
+  3.4, and 3.5 pre-release (3.5-dev) as well as PyPy 2.6.0 (based on
+  2.7.9) and PyPy3 2.4.0 (based on 3.2.5).
+
+* The author, `Jonathan Eunice <mailto:jonathan.eunice@gmail.com>`_
+  or `@jeunice on Twitter <http://twitter.com/jeunice>`_ welcomes
+  your comments and suggestions.
 
 Installation
 ============

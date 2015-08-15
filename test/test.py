@@ -213,9 +213,86 @@ def test_words_cstrip():
 
 def test_words_cstrip_example():
     assert words("""
-        __pycache__ *.pyc *.pyo     # compliation artifacts
+        __pycache__ *.pyc *.pyo     # compilation artifacts
         .hg* .git*                  # repository artifacts
         .coverage                   # code tool artifacts
         .DS_Store                   # platform artifacts
     """) == ['__pycache__', '*.pyc', '*.pyo', '.hg*', '.git*',
              '.coverage', '.DS_Store']
+
+    assert words("""
+        __pycache__ *.pyc *.pyo     # compilation artifacts
+        .hg* .git*                  # repository artifacts
+        .coverage                   # code tool artifacts
+        .DS_Store                   # platform artifacts
+    """, cstrip=False) == ['__pycache__', '*.pyc', '*.pyo', '#',
+             'compilation', 'artifacts', '.hg*', '.git*', '#', 'repository',
+             'artifacts', '.coverage', '#', 'code', 'tool',
+             'artifacts', '.DS_Store', '#', 'platform', 'artifacts']
+
+def test_paras_example():
+    rhyme = """
+        Hey diddle diddle,
+
+        The cat and the fiddle,
+        The cow jumped over the moon.
+        The little dog laughed,
+        To see such sport,
+
+        And the dish ran away with the spoon.
+    """
+    assert paras(rhyme) == \
+    [['Hey diddle diddle,'],
+     ['The cat and the fiddle,',
+      'The cow jumped over the moon.',
+      'The little dog laughed,',
+      'To see such sport,'],
+     ['And the dish ran away with the spoon.']]
+
+    assert paras(rhyme, join="\n") == \
+    ['Hey diddle diddle,',
+     'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
+     'And the dish ran away with the spoon.']
+
+
+def test_paras_with_comments():
+    rhyme = """
+        Hey diddle diddle,  # some comment!
+
+        The cat and the fiddle,
+        The cow jumped over the moon.
+        The little dog laughed, # how he laughed!
+        To see such sport,
+
+        And the dish ran away with the spoon. # yee-ha!!
+    """
+    assert paras(rhyme) == \
+    [['Hey diddle diddle,'],
+     ['The cat and the fiddle,',
+      'The cow jumped over the moon.',
+      'The little dog laughed,',
+      'To see such sport,'],
+     ['And the dish ran away with the spoon.']]
+
+    assert paras(rhyme, join="\n") == \
+    ['Hey diddle diddle,',
+     'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
+     'And the dish ran away with the spoon.']
+
+    assert paras(rhyme, cstrip=True) == paras(rhyme)
+
+    assert paras(rhyme, cstrip=False) == \
+    [['Hey diddle diddle,  # some comment!'],
+     ['The cat and the fiddle,',
+      'The cow jumped over the moon.',
+      'The little dog laughed, # how he laughed!',
+      'To see such sport,'],
+     ['And the dish ran away with the spoon. # yee-ha!!']]
+
+    assert paras(rhyme, cstrip=False, join="\n") == \
+    ['Hey diddle diddle,  # some comment!',
+    'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed, # how he laughed!\nTo see such sport,',
+    'And the dish ran away with the spoon. # yee-ha!!']
+
+    # NB comments on blank lines => they're no longer blank, unless cstrip=True
+    # that can change entire shape of text paragraphization

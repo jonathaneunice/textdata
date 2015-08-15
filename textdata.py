@@ -4,13 +4,14 @@ Conveniently get data from text
 
 import os
 import re
+from itertools import groupby
 import sys
 try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
 
-__all__ = 'lines textlines words'.split()
+__all__ = 'lines textlines words paras'.split()
 
 _PY3 = sys.version_info[0] >= 3
 if _PY3:
@@ -111,3 +112,34 @@ def words(text, cstrip=True):
     text = text.strip()
     parts = re.findall(WORDRE, text)
     return [noquotes(p) for p in parts]
+
+
+def paras(source, keep_blanks=False, join=False, cstrip=True):
+    """
+    Given a string or list of text lines, return a list of lists where each
+    sub list is a paragraph (list of non-blank lines). If the source is a
+    string, use ``lines`` to split into lines. Optionally can also keep the
+    runs of blanks, and/or join the lines in each paragraph with a desired
+    separator (likely "\n" if you want to preserve multi-line structure
+    in the resulting string, or " " if you don't).  Like ``words``,
+    ``lines``, and ``textlines``, will also strip comments by default.
+    """
+
+    # make sure we have lines
+    if isinstance(source, basestring):
+        sourcelines = lines(source, noblanks=False, cstrip=cstrip)
+    else:
+        if cstrip:
+            source = [ CSTRIP.sub('', line) for line in source ]
+        # TODO: should lines() take a list of lines just pass the lines through it?
+        sourcelines = source
+
+    # get paragraphs
+    results = []
+    line_not_blank = lambda l: l.strip() != ""
+    for non_blank, run in groupby(sourcelines, line_not_blank):
+        if non_blank or keep_blanks:
+            run_list = list(run)
+            payload = join.join(run_list) if join is not False else run_list
+            results.append(payload)
+    return results
