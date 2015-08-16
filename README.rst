@@ -108,11 +108,11 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
   * join lines together with your choice of separator string
 
 
-``lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join=False)``
+``lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join=False)``
 
     Returns text as a series of cleaned-up lines.
 
-    * ``text`` is the text to be processed.
+    * ``source`` is the text to be processed.
     * ``noblanks`` => all blank lines are eliminated, not just starting and ending ones. (default ``True``).
     * ``dedent`` => strip a common prefix (usually whitespace) from each line (default ``True``).
     * ``lstrip`` => strip all left (leading) space from each line (default ``False``).
@@ -122,7 +122,7 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
     * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines with ``\n``),
       or a string that will be used to join the resulting lines (default ``False``)
 
-``textlines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join='\n')``
+``textlines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join='\n')``
 
     Does the same helpful cleanups as ``lines()``, but returns
     result as a single string, with lines separated by newlines (by
@@ -263,19 +263,27 @@ This will usually be ``# -*- coding: utf-8 -*-``, but other encodings are
 possible. Python 3 defaults to a UTF-8 encoding, but Python 2 assumes
 ASCII.
 
+Alternate Data Paths
+====================
+
+``textdata`` is primarily designed to deal with text coming from source
+code, but there's no reason it must be. Text coming from a file, from a
+generator, or other sources can enjoy the module's text cleanups and
+lightweight parsing.
+
+To make this "from whatever source" ability more general, all of the
+``textdata`` entry points (``lines``, ``textlines``, ``words``, and
+``paras``) can accept a sequence of lines. Most often this will be a list of
+lines, but it can also be an iterator, generator, or such that returns a
+sequence of strings.
+
 Notes
 =====
 
-* Version 1.3 adds a paragraph constructor, ``paras``.
+* Version 1.4 allows all routines to accept a list of text lines, in
+  addition to text as a single string.
 
-* Version 1.2 adds comment stripping. Packaging and testing also tweaked.
-
-* Version 1.1.5 adds the ``bdist_wheel`` packaging format.
-
-* Version 1.1.3 switches from BSD to Apache License 2.0 and integrates
-  ``tox`` testing with ``setup.py``.
-
-* Version 1.1 added the ``words`` constructor.
+* See ``CHANGES.yml`` for a more complete change log.
 
 * Automated multi-version testing managed with the wonderful
   `pytest <http://pypi.python.org/pypi/pytest>`_,

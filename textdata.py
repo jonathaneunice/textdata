@@ -17,16 +17,30 @@ _PY3 = sys.version_info[0] >= 3
 if _PY3:
     basestring = str
 
-import re
 
-CSTRIP = re.compile(r'#.*$', re.MULTILINE)
+CSTRIP = re.compile(r'#.*$', re.MULTILINE)  # comment stripping regex
 
 
-def lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True,
+def ensure_text(source):
+    """
+    Given either text or an interable, return the corresponding text.
+    Thus is a common preprocess function used to allow ``textdata``
+    routines to take either text or an iterable, yet confidently process
+    consider only the text case.
+    """
+    if isinstance(source, basestring):
+        return source
+    else:
+        # a list, tuple, iterator, or generator giving lines of text;
+        # convert to a single text for standard cleanups
+        return "\n".join(list(source))
+
+
+def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
           cstrip=True, join=False):
     """
     Grab lines from a string. First and last lines are assumed to be uninteresting if blank.
-    :param text:     text to be processed
+    :param source:   text to be processed, either as a single string or iterable (e.g. list) of lines
     :param dedent:   a common prefix should be stripped from each line (default `True`)
     :param noblanks: allow no blank lines at all (default `True`)
     :param lstrip:   all left space be stripped from each line (default `False`);
@@ -35,6 +49,8 @@ def lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True,
     :param cstrip:   strips comment strings from # to end of each line (like Python itself)
     :param join:     if False, no effect; otherwise a string used to join the lines
     """
+
+    text = ensure_text(source)
 
     if cstrip:
         text = CSTRIP.sub('', text)
@@ -51,6 +67,8 @@ def lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True,
             textlines.pop(0)
         if textlines and textlines[-1].strip() == "":
             textlines.pop()
+
+        # TODO: decided if these should be while loops, eating all prefix/suffix blank lines
 
     if dedent and not lstrip:
         nonblanklines = [line for line in textlines if line.strip() != ""]
@@ -78,33 +96,41 @@ def lines(text, noblanks=True, dedent=True, lstrip=False, rstrip=True,
         return join.join(textlines)
 
 
-def textlines(text, **kwargs):
+def textlines(source, **kwargs):
     """
     Like ``lines()``, but returns result as unified text. Useful primarily because
     of the nice cleanups ``lines()`` does.
     """
     kwargs.setdefault('join', '\n')
-    return lines(text, **kwargs)
+    return lines(source, **kwargs)
 
 
+# define word regular expression and pre-define quotes
 WORDRE = re.compile(r"""\s*(?P<word>"[^"]*"|'[^']*'|\S+)\s*""")
 QUOTES = ("'", '"')
 
 
 def noquotes(s):
+    """
+    Given a string ``s``, if it starts with a quote symbol,
+    return the 'middle' part of the string with the quote symbol
+    stripped off the ends.
+    """
     if s.startswith(QUOTES) and s.endswith(QUOTES):
         return s.strip(s[0])
     else:
         return s
 
 
-def words(text, cstrip=True):
+def words(source, cstrip=True):
     """
-    Like qw() in Perl. Returns a series of words. Similar to
-    s.split(), except that it respects quoted spans (for the
-    occasional 'word' with spaces included.) Like ``lines``,
-    removes comment strings by default.
+    Returns a series of words, somewhat like Like qw() in Perl. Similar to
+    s.split(), except that it respects quoted spans (for the occasional
+    'word' with spaces included.) Like ``lines``, removes comment strings by
+    default.
     """
+
+    text = ensure_text(source)
 
     if cstrip:
         text = CSTRIP.sub('', text)
@@ -125,14 +151,9 @@ def paras(source, keep_blanks=False, join=False, cstrip=True):
     ``lines``, and ``textlines``, will also strip comments by default.
     """
 
-    # make sure we have lines
-    if isinstance(source, basestring):
-        sourcelines = lines(source, noblanks=False, cstrip=cstrip)
-    else:
-        if cstrip:
-            source = [ CSTRIP.sub('', line) for line in source ]
-        # TODO: should lines() take a list of lines just pass the lines through it?
-        sourcelines = source
+    # make sure we have lines, with suitable cleanups
+    # note that lines() will guarantee ensure_text()
+    sourcelines = lines(source, noblanks=False, cstrip=cstrip)
 
     # get paragraphs
     results = []

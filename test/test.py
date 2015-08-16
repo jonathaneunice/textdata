@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from textdata import *
+from textdata import ensure_text
 import sys
 import six
 
@@ -27,6 +28,11 @@ def single_trial(name, t, **kwargs):
     _print()
 
 
+def test_ensure_text():
+    assert ensure_text("this") == "this"
+    assert ensure_text("this is a".split()) == "this\nis\na"
+
+
 def test_basic():
 
     assert lines("""
@@ -34,6 +40,15 @@ def test_basic():
                  line
                  or
                  two""") == ['a', 'line', 'or', 'two']
+
+
+def test_lines_take_lines():
+    """
+    Ensure that lines() treats data coming in as line lists just as it
+    would text.
+    """
+    assert lines(['a', 'line', 'or', 'two']) == ['a', 'line', 'or', 'two']
+    assert lines(['', 'a', 'line', '   ', 'or', 'two', '\n']) == ['a', 'line', 'or', 'two']
 
 
 def test_encoding():
@@ -107,7 +122,7 @@ def test_cstrip():
 
 def test_malindented_blank_lines():
 
-    assert textlines(noblanks=False, text="""
+    assert textlines(noblanks=False, source="""
         this
 
         is
