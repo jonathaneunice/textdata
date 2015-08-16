@@ -285,6 +285,11 @@ Notes
 
 * See ``CHANGES.yml`` for a more complete change log.
 
+* Those who like how ``textdata`` simplifies data extraction from
+  text should also consider `quoter <http://pypi.python.org/pypi/quoter>`_,
+  a module with the same philosophy about wrapping text and
+  joining composite data into strings.
+
 * Automated multi-version testing managed with the wonderful
   `pytest <http://pypi.python.org/pypi/pytest>`_,
   `pytest-cov <http://pypi.python.org/pypi/pytest-cov>`_,
@@ -294,20 +299,6 @@ Notes
   and PyPy3 2.4.0 (based on 3.2.5). Module should work on Python 3.2, but
   dropped from testing matrix due to its age and lack of a Unicode literal
   making test specification much more difficult.)
-
-* Common line prefix is now computed without considering blank
-  lines, so blank lines need not have any indentation on them
-  just to "make things work."
-
-* The tricky case where all lines have a common prefix, but it's
-  not entirely composed of whitespace, now properly handled.
-  This is useful for lines that are already "quoted" such as
-  with leading ``"|"`` or ``">"`` symbols (common in Markdown
-  and old-school email usage styles).
-
-* ``textlines()`` is now somewhat superfluous, now that ``lines()``
-  has a ``join`` kwarg.  But you may prefer it for the implicit
-  indication that it's turning lines into text.
 
 * It's tempting to define a constant such as ``Dedent`` that might
   be the default for the ``lstrip`` parameter, instead of having

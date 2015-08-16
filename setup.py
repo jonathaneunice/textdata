@@ -7,10 +7,12 @@ from codecs import open
 def lines(text):
     """
     Returns each non-blank line in text enclosed in a list.
-    Simple form of what this module is trying to accomplish.
     See http://pypi.python.org/pypi/textdata for more sophisticated version.
     """
     return [l.strip() for l in text.strip().splitlines() if l.strip()]
+
+    # This is almost meta. A simplified subset of what this module does
+    # as a single line function.
 
 
 setup(
@@ -18,7 +20,7 @@ setup(
     version='1.4.0',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
-    description='Easily get clean data, direct from Python source',
+    description='Easily get clean data, direct from text or Python source',
     long_description=open('README.rst', encoding='utf-8').read(),
     url='https://bitbucket.org/jeunice/textdata',
     license='Apache License 2.0',
@@ -28,7 +30,7 @@ setup(
     tests_require=['six', 'tox', 'pytest'],
     test_suite="test",
     zip_safe=False,  # it really is, but this will prevent weirdness
-    keywords='text data lines dedent words qw',
+    keywords='text data lines dedent indent words qw paras paragraphs',
     classifiers=lines("""
         Development Status :: 5 - Production/Stable
         Operating System :: OS Independent

@@ -56,6 +56,7 @@ def test_encoding():
     # took py32 out of testing matrix because this test is too
     # hard to state with it in
 
+
 def test_mixed_indent():
 
     assert lines("""
@@ -226,6 +227,7 @@ def test_words_cstrip():
         """
     assert words(w) == words(wc)
 
+
 def test_words_cstrip_example():
     assert words("""
         __pycache__ *.pyc *.pyo     # compilation artifacts
@@ -244,6 +246,7 @@ def test_words_cstrip_example():
              'compilation', 'artifacts', '.hg*', '.git*', '#', 'repository',
              'artifacts', '.coverage', '#', 'code', 'tool',
              'artifacts', '.DS_Store', '#', 'platform', 'artifacts']
+
 
 def test_paras_example():
     rhyme = """
@@ -268,6 +271,23 @@ def test_paras_example():
     ['Hey diddle diddle,',
      'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
      'And the dish ran away with the spoon.']
+
+
+def test_paras_list_input():
+    assert paras(['Hey diddle diddle,',
+                  '',
+                  'The cat and the fiddle,',
+                  'The cow jumped over the moon.',
+                  'The little dog laughed,',
+                  'To see such sport,',
+                  '',
+                  'And the dish ran away with the spoon.']) == \
+        [['Hey diddle diddle,'],
+         ['The cat and the fiddle,',
+          'The cow jumped over the moon.',
+          'The little dog laughed,',
+          'To see such sport,'],
+         ['And the dish ran away with the spoon.']]
 
 
 def test_paras_with_comments():

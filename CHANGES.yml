@@ -27,6 +27,26 @@
     testing with ``setup.py``.
 
 -
-  version: '1.1'
+  version: 1.1.0
   date: null
   notes: Added the ``words`` constructor.
+
+-
+  version: 1.0
+  date: null
+  notes: >
+    Misc. changes from 1.0 or prior:
+    
+    Common line prefix is now computed without considering blank
+    lines, so blank lines need not have any indentation on them
+    just to "make things work."
+
+    The tricky case where all lines have a common prefix, but it's
+    not entirely composed of whitespace, now properly handled.
+    This is useful for lines that are already "quoted" such as
+    with leading ``"|"`` or ``">"`` symbols (common in Markdown
+    and old-school email usage styles).
+
+    ``textlines()`` is now somewhat superfluous, now that ``lines()``
+    has a ``join`` kwarg.  But you may prefer it for the implicit
+    indication that it's turning lines into text.
