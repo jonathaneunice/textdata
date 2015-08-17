@@ -1,5 +1,5 @@
 
-| |travisci| |version| |downloads| |supported-versions| |supported-implementations| |wheel|
+| |travisci| |version| |downloads| |supported-versions| |supported-implementations| |wheel| |coverage|
 
 .. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.svg?branch=master
     :alt: Travis CI build status
@@ -25,6 +25,9 @@
     :alt: Wheel packaging support
     :target: https://pypi.python.org/pypi/textdata
 
+.. |coverage| image:: https://img.shields.io/badge/test_coverage-100%25-6600CC.svg
+    :alt: Test line coverage
+    :target: https://pypi.python.org/pypi/textdata
 
 Usage
 =====
@@ -127,6 +130,10 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
     Does the same helpful cleanups as ``lines()``, but returns
     result as a single string, with lines separated by newlines (by
     default) and without a trailing newline.
+
+.. note:: Text cleanups inherently convert tabs to sequences of spaces,
+    consistent with Python's ``str.expandtabs``. There is currently no option
+    to turn this behavior off.
 
 Words
 =====
@@ -279,6 +286,8 @@ sequence of strings.
 
 Notes
 =====
+
+* Version 1.4.2 achieves 100% test coverage.
 
 * Version 1.4 allows all routines to accept a list of text lines, in
   addition to text as a single string.
