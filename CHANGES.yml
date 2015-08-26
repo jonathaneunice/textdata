@@ -1,3 +1,8 @@
+-
+  version: 1.4.3
+  date: August 26, 2015
+  notes: >
+    Reorganizes documentation using Sphinx.
 
 -
   version: 1.4.2

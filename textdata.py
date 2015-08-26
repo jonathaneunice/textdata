@@ -39,15 +39,18 @@ def ensure_text(source):
 def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
           cstrip=True, join=False):
     """
-    Grab lines from a string. First and last lines are assumed to be uninteresting if blank.
-    :param source:   text to be processed, either as a single string or iterable (e.g. list) of lines
-    :param dedent:   a common prefix should be stripped from each line (default `True`)
-    :param noblanks: allow no blank lines at all (default `True`)
-    :param lstrip:   all left space be stripped from each line (default `False`);
+    Grab lines from a string. Discard initial and final lines if blank.
+
+    :param str|lines source:  Text (or list of text lines) to be processed
+    :param bool dedent:   a common prefix should be stripped from each line (default `True`)
+    :param bool noblanks: allow no blank lines at all (default `True`)
+    :param bool lstrip:   all left space be stripped from each line (default `False`);
                      dedent and lstrip are mutualy exclusive
-    :param rstrip:   all right space be stripped from each line (default `True`)
-    :param cstrip:   strips comment strings from # to end of each line (like Python itself)
-    :param join:     if False, no effect; otherwise a string used to join the lines
+    :param bool rstrip:   all right space be stripped from each line (default `True`)
+    :param bool cstrip:   strips comment strings from # to end of each line (like Python itself)
+    :param bool|str join:     if False, no effect; otherwise a string used to join the lines
+    :return: a list of strings
+    :rtype: list
     """
 
     text = ensure_text(source)
@@ -100,6 +103,8 @@ def textlines(source, **kwargs):
     """
     Like ``lines()``, but returns result as unified text. Useful primarily because
     of the nice cleanups ``lines()`` does.
+    :return: the cleaned string
+    :rtype: str
     """
     kwargs.setdefault('join', '\n')
     return lines(source, **kwargs)
@@ -115,6 +120,10 @@ def noquotes(s):
     Given a string ``s``, if it starts with a quote symbol,
     return the 'middle' part of the string with the quote symbol
     stripped off the ends.
+
+    :param str s: Input string
+    :return: String without quotes
+    :rtype: str
     """
     if s.startswith(QUOTES) and s.endswith(QUOTES):
         return s.strip(s[0])
@@ -128,6 +137,11 @@ def words(source, cstrip=True):
     s.split(), except that it respects quoted spans (for the occasional
     'word' with spaces included.) Like ``lines``, removes comment strings by
     default.
+
+    :param str|list source: Text (or list of text lines) to gather words from
+    :param bool cstrip: Should comments be stripped? (default: ``True``)
+    :return: list of words/phrases
+    :rtype: list
     """
 
     text = ensure_text(source)
@@ -146,9 +160,16 @@ def paras(source, keep_blanks=False, join=False, cstrip=True):
     sub list is a paragraph (list of non-blank lines). If the source is a
     string, use ``lines`` to split into lines. Optionally can also keep the
     runs of blanks, and/or join the lines in each paragraph with a desired
-    separator (likely "\n" if you want to preserve multi-line structure
+    separator (likely a newline if you want to preserve multi-line structure
     in the resulting string, or " " if you don't).  Like ``words``,
     ``lines``, and ``textlines``, will also strip comments by default.
+
+    :param str|list source: Text (or list of text lines) from which paras are to be gathered
+    :param keep_blanks: Should internal blank lines be retained (default: ``False``)
+    :param bool|str join: Should paras be joined into a string? (default: ``False``).
+    :param bool cstrip: Should comments be stripped? (default: ``True``)
+    :return: list of strings (each a paragraph)
+    :rtype: list
     """
 
     # make sure we have lines, with suitable cleanups
