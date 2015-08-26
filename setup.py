@@ -17,7 +17,7 @@ def lines(text):
 
 setup(
     name='textdata',
-    version='1.4.4',
+    version='1.4.5',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Easily get clean data, direct from text or Python source',

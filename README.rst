@@ -29,7 +29,7 @@
     :alt: Test line coverage
     :target: https://pypi.python.org/pypi/textdata
 
-.. |coverage| image:: https://img.shields.io/badge/branch_coverage-99%25-blue.svg
+.. |br-coverage| image:: https://img.shields.io/badge/branch_coverage-99%25-blue.svg
     :alt: Test branch coverage
     :target: https://pypi.python.org/pypi/textdata
 
