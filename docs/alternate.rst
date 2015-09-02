@@ -7,8 +7,7 @@ generator, or other sources can enjoy the module's text cleanups and
 lightweight parsing.
 
 To make this "from whatever source" ability more general, all of the
-``textdata`` entry points (``lines``, ``textlines``, ``words``, and
+``textdata`` entry points (``lines``, ``text``, ``words``, and
 ``paras``) can accept a sequence of lines. Most often this will be a list of
 lines, but it can also be an iterator, generator, or such that returns a
 sequence of strings.
-

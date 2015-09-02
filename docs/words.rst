@@ -25,5 +25,3 @@ however, by embedded apostrophes and other common gotchas. For example::
 ``words`` is a good choice for situations where you want a compact,
 friendly, whitespace-delimited data representation--but a few of your
 entries need more than just ``str.split()``.
-
-

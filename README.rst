@@ -60,7 +60,16 @@ will result in::
      'Then whipped them all soundly and put them to bed.']
 
 Note that the "extra" newlines and leading spaces have been
-taken care of and discarded.
+taken care of and discarded. Or do you want that as just one
+string? Okay::
+
+    data = text("""
+        There as an old woman...
+                                         ...put them to bed.
+    """)
+
+Does the same stripping of pointless whitespace at the beginning
+and end, returning the data as a clean, convenient string.
 
 Other times, the data you need is almost, but not quite, a series of
 words. A list of names, a list of color names--values that are mostly

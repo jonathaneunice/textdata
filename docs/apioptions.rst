@@ -1,7 +1,7 @@
 Lines and Textlines
 ===================
 
-Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
+Both ``lines`` and ``text`` provide provide routinely-needed cleanups:
 
   * remove starting and ending blank lines
     (which are usually due to Python source formatting)
@@ -27,7 +27,7 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
     * ``join`` => either ``False`` (do nothing), ``True`` (concatenate lines with ``\n``),
       or a string that will be used to join the resulting lines (default ``False``)
 
-``textlines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join='\n')``
+``text(source, noblanks=True, dedent=True, lstrip=False, rstrip=True, cstrip=True, join='\n')``
 
     Does the same helpful cleanups as ``lines()``, but returns
     result as a single string, with lines separated by newlines (by
@@ -36,4 +36,3 @@ Both ``lines`` and ``textlines`` provide provide routinely-needed cleanups:
 .. note:: Text cleanups inherently convert tabs to sequences of spaces,
     consistent with Python's ``str.expandtabs``. There is currently no option
     to turn this behavior off.
-

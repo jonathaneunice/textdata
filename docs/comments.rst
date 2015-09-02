@@ -31,5 +31,4 @@ But you'd need more nitsy punctuation, and it's less compact.
 
 If however you want to capture
 comments, set ``cstrip=False`` (though that is probably more useful with the
-``lines`` and ``textlines`` APIs than for ``words``).
-
+``lines`` and ``text`` APIs than for ``words``).

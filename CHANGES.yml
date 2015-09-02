@@ -1,3 +1,12 @@
+
+-
+  version: 1.5.0
+  date: September 1, 2015
+  notes: >
+    Added ``text()`` as preferred synonym for ``textlines()``, as that
+    is more consistent with the rest of the naming scheme. Deprecated
+    ``textlines()``.
+    
 -
   version: 1.4.3
   date: August 26, 2015

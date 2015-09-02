@@ -11,7 +11,7 @@ try:
 except ImportError:
     from io import StringIO
 
-__all__ = 'lines textlines words paras'.split()
+__all__ = 'lines text textlines words paras'.split()
 
 _PY3 = sys.version_info[0] >= 3
 if _PY3:
@@ -94,21 +94,25 @@ def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
     if join is False:
         return textlines
     else:
-        if join is True:
-            join = ''
+        join = '' if join is True else join
         return join.join(textlines)
 
 
-def textlines(source, **kwargs):
+def text(source, **kwargs):
     """
-    Like ``lines()``, but returns result as unified text. Useful primarily because
-    of the nice cleanups ``lines()`` does.
+    Like ``lines()``, but returns result as unified text. Useful primarily
+    because of the nice cleanups ``lines()`` does.
+
+    :param str join: String to join lines with. Typically "\n" for line-oriented
+        text but change to " " for a single continous line.
     :return: the cleaned string
     :rtype: str
     """
     kwargs.setdefault('join', '\n')
     return lines(source, **kwargs)
 
+
+textlines = text
 
 # define word regular expression and pre-define quotes
 WORDRE = re.compile(r"""\s*(?P<word>"[^"]*"|'[^']*'|\S+)\s*""")

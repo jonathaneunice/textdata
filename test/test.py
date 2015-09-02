@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from textdata import *
-from textdata import ensure_text
+from textdata import ensure_text, noquotes
 import sys
 import six
 
@@ -31,6 +31,12 @@ def single_trial(name, t, **kwargs):
 def test_ensure_text():
     assert ensure_text("this") == "this"
     assert ensure_text("this is a".split()) == "this\nis\na"
+
+
+def test_noquotes():
+	assert noquotes('"this"') == 'this'
+	assert noquotes("'this'") == 'this'
+	assert noquotes('this') == 'this'
 
 
 def test_basic():
@@ -178,6 +184,28 @@ def test_textlines():
     assert lines(data, join=True) == ''.join(textlines(data).splitlines())
     assert lines(data, join=' ') == ' '.join(textlines(data).splitlines())
     assert lines(data, join='\n') == textlines(data)
+    assert len(lines(data)) == 4
+
+
+def test_text_and_textlines():
+    data = """
+
+
+    This is a test of lines
+
+    here there should be no blanks
+     but some that start wiht a little extra space ok?
+      which isn't common
+
+
+
+          """
+
+    assert lines(data) == text(data).splitlines()
+    assert lines(data, join=True) == lines(data, join='')
+    assert lines(data, join=True) == ''.join(text(data).splitlines())
+    assert lines(data, join=' ') == ' '.join(text(data).splitlines())
+    assert lines(data, join='\n') == text(data)
     assert len(lines(data)) == 4
 
 
