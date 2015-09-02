@@ -1,5 +1,5 @@
 
-| |travisci| |version| |downloads| |versions| |impls| |wheel| |coverage| 
+| |travisci| |version| |downloads| |versions| |impls| |wheel| |coverage|
 
 .. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.svg?branch=master
     :alt: Travis CI build status
@@ -65,7 +65,9 @@ string? Okay::
     """)
 
 Does the same stripping of pointless whitespace at the beginning
-and end, returning the data as a clean, convenient string.
+and end, returning the data as a clean, convenient string. Or if you don't
+want most of the line endings, try ``textline`` on the same input
+to get a single no-breaks line.
 
 Other times, the data you need is almost, but not quite, a series of
 words. A list of names, a list of color names--values that are mostly

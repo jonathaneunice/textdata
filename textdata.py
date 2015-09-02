@@ -7,11 +7,11 @@ import re
 from itertools import groupby
 import sys
 try:
-    from StringIO import StringIO
-except ImportError:
     from io import StringIO
+except ImportError:
+    from StringIO import StringIO
 
-__all__ = 'lines text textlines words paras'.split()
+__all__ = 'lines text textlines textline words paras'.split()
 
 _PY3 = sys.version_info[0] >= 3
 if _PY3:
@@ -103,6 +103,8 @@ def text(source, **kwargs):
     Like ``lines()``, but returns result as unified text. Useful primarily
     because of the nice cleanups ``lines()`` does.
 
+
+    :param str|lines source:  Text (or list of text lines) to be processed
     :param str join: String to join lines with. Typically "\n" for line-oriented
         text but change to " " for a single continous line.
     :return: the cleaned string
@@ -113,6 +115,21 @@ def text(source, **kwargs):
 
 
 textlines = text
+
+
+def textline(source, cstrip=True):
+    """
+    Like ``text()``, but returns result as unified string that is not
+    line-oriented. Really a special case of ``text()``
+
+    :param str|list source:
+    :param bool cstrip: Should comments be stripped? (default: ``True``)
+    :return: the cleaned string
+    :rtype: str
+    """
+    pars = paras(source, keep_blanks=False, join=" ", cstrip=cstrip)
+    return "\n\n".join(pars)
+
 
 # define word regular expression and pre-define quotes
 WORDRE = re.compile(r"""\s*(?P<word>"[^"]*"|'[^']*'|\S+)\s*""")

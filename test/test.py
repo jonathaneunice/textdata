@@ -366,3 +366,12 @@ def test_paras_with_comments():
 
     # NB comments on blank lines => they're no longer blank, unless cstrip=True
     # that can change entire shape of text paragraphization
+
+
+def test_textline():
+    assert textline("""
+        this is
+        a question
+    """) == "this is a question"
+
+    assert textline(["    this is", "    a question"]) == "this is a question"

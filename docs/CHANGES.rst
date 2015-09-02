@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+**1.5.0**  (September 1, 2015)
+
+    Added ``text()`` as preferred synonym for ``textlines()``, as that
+    is more consistent with the rest of the naming scheme. Deprecated
+    ``textlines()``.
+
+
 **1.4.3**  (August 26, 2015)
 
     Reorganizes documentation using Sphinx.
