@@ -1,5 +1,5 @@
 
-| |travisci| |version| |downloads| |versions| |impls| |wheel| |coverage| |br-coverage|
+| |travisci| |version| |downloads| |versions| |impls| |wheel| |coverage| 
 
 .. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.svg?branch=master
     :alt: Travis CI build status
@@ -27,10 +27,6 @@
 
 .. |coverage| image:: https://img.shields.io/badge/test_coverage-100%25-6600CC.svg
     :alt: Test line coverage
-    :target: https://pypi.python.org/pypi/textdata
-
-.. |br-coverage| image:: https://img.shields.io/badge/branch_coverage-99%25-blue.svg
-    :alt: Test branch coverage
     :target: https://pypi.python.org/pypi/textdata
 
 One often needs to state data in program source. Python, however, needs its
