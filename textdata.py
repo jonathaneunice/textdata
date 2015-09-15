@@ -6,10 +6,7 @@ import os
 import re
 from itertools import groupby
 import sys
-try:
-    from io import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import StringIO
 
 __all__ = 'lines text textlines textline words paras'.split()
 
@@ -23,10 +20,10 @@ CSTRIP = re.compile(r'#.*$', re.MULTILINE)  # comment stripping regex
 
 def ensure_text(source):
     """
-    Given either text or an interable, return the corresponding text.
-    Thus is a common preprocess function used to allow ``textdata``
-    routines to take either text or an iterable, yet confidently process
-    consider only the text case.
+    Given either text or an interable, return the corresponding text. This
+    common preprocess function allows ``textdata`` routines to take either
+    text or an iterable, yet confidently process considering only the text
+    case.
     """
     if isinstance(source, basestring):
         return source

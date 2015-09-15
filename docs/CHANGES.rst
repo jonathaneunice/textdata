@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+**1.6.1**  (September 15, 2015)
+
+    Added Python 3.5.0 final and PyPy 2.6.1 to the testing matrix.
+
+
+**1.6.0**  (September 1, 2015)
+
+    Added ``textline()`` routine (NB ``textline`` not ``textlines``)
+    as a quick "grab a single very long line" function.  It actually
+    allows multiple paragraphs to be grabbed, each as a single long
+    line, separated by double-newlines (i.e. Markdown style).
+
+
 **1.5.0**  (September 1, 2015)
 
     Added ``text()`` as preferred synonym for ``textlines()``, as that

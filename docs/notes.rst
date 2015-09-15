@@ -16,7 +16,7 @@ Notes
   Packaging linting with `pyroma <https://pypi.python.org/pypi/pyroma>`_.
 
   Successfully packaged for, and tested against, all late-model versions of
-  Python: 2.6, 2.7, 3.3, 3.4, as well as PyPy 2.5.1 (based on 2.7.9)
+  Python: 2.6, 2.7, 3.3, 3.4, and 3.5, as well as PyPy 2.6.1 (based on 2.7.10`)
   and PyPy3 2.4.0 (based on 3.2.5). Module should work on Python 3.2, but
   dropped from testing matrix due to its age and lack of a Unicode literal
   making test specification much more difficult.)
