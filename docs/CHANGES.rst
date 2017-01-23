@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+**1.6.2**  (January 23, 2017)
+
+    Updates testing. Newly qualified under 2.7.13 and 3.6, as well as
+    most recent builds of pypy and pypy3.
+
+
 **1.6.1**  (September 15, 2015)
 
     Added Python 3.5.0 final and PyPy 2.6.1 to the testing matrix.
