@@ -54,7 +54,7 @@ def test_literal_eval():
     assert literal_eval('this') == 'this'
 
 
-def test_attrs():
+def test_html_style_attrs():
 
     # should render attrs
     assert attrs('a=12 b=23') == { 'a': 12, 'b': 23 }
@@ -68,6 +68,7 @@ def test_attrs():
     assert attrs("""a="12 to 13" b='23 or more'""") == \
                      { 'a': '12 to 13', 'b': '23 or more' }
 
+def test_css_style_attrs():
     # should render css attrs with quotes
     assert attrs("""a: "12" b: '23'""") == { 'a': '12', 'b': '23' }
 
@@ -83,10 +84,17 @@ def test_attrs():
     assert attrs('a:12; b:23') == { 'a': 12, 'b': 23 }
     assert attrs('a:12; b:23', literal=False) == { 'a': '12', 'b': '23' }
 
+def test_partial_attrs():
     # should render partial attrs
     assert attrs('a="12" b=') == { 'a': '12', 'b': None }
     assert attrs('a')  == { 'a': None }
     assert attrs('a:') == { 'a': None }
+
+
+def test_quoted_keys():
+    assert attrs('"a"=this b=12') == { 'a': 'this', 'b': 12 }
+    assert attrs('"a":this b:12') == { 'a': 'this', 'b': 12 }
+
 
 def test_literal_or_not():
 

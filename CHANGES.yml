@@ -1,4 +1,11 @@
 -
+    version: 1.7.1
+    date: January 30, 2017
+    notes: >
+        Returned test coverage to 100% of lines (introducing
+        `attrs()` took it briefly down to 99% testing).
+
+-
     version: 1.7.0
     date: January 30, 2017
     notes: >

@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+**1.7.1**  (January 30, 2017)
+
+    Returned test coverage to 100% of lines (introducing `attrs()`
+    took it briefly down to 99% testing).
+
+
 **1.7.0**  (January 30, 2017)
 
     Added `attrs()` function for parsing `dict` instances out of text.
