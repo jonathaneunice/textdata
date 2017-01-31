@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from textdata import *
-from textdata import ensure_text, noquotes
+from textdata.core import ensure_text, noquotes
 import sys
 import six
 

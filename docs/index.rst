@@ -28,6 +28,7 @@ require constant wheel-reinvention.
    Words <words>
    Comments <comments>
    Paragraphs <paragraphs>
+   Attributes (Dicts) <attrs>
    Unicode and Encodings <unicode>
    Alternate Data Paths <alternate>
    API Details <api>

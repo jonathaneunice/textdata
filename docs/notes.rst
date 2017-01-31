@@ -15,8 +15,7 @@ Notes
   with `Travis-CI <https://travis-ci.org/jonathaneunice/textdata>`_.
   Packaging linting with `pyroma <https://pypi.python.org/pypi/pyroma>`_.
 
-* Version 2.2.6 updates testing for early 2017 Python
-  versions. Successfully packaged for, and
+* Successfully packaged for, and
   tested against, all late-model versions of Python: 2.6, 2.7, 3.3,
   3.4, 3.5, and 3.6, as well as PyPy 5.6.0 (based on
   2.7.12) and PyPy3 5.5.0 (based on 3.3.5).

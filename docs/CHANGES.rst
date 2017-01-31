@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+**1.7.0**  (January 30, 2017)
+
+    Added `attrs()` function for parsing `dict` instances out of text.
+
+
 **1.6.2**  (January 23, 2017)
 
     Updates testing. Newly qualified under 2.7.13 and 3.6, as well as

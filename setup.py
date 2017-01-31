@@ -17,17 +17,17 @@ def lines(text):
 
 setup(
     name='textdata',
-    version='1.6.2',
+    version='1.7.0',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Easily get clean data, direct from text or Python source',
     long_description=open('README.rst', encoding='utf-8').read(),
     url='https://bitbucket.org/jeunice/textdata',
     license='Apache License 2.0',
-    py_modules=['textdata'],
+    packages=['textdata'],
     setup_requires=[],
     install_requires=[],
-    tests_require=['tox', 'pytest', 'pytest-cov', 'coverage', 'six>=1.9'],
+    tests_require=['tox', 'pytest', 'pytest-cov', 'coverage', 'six>=1.10'],
     test_suite="test",
     zip_safe=False,  # it really is, but this will prevent weirdness
     keywords='text data lines dedent indent words qw paras paragraphs',

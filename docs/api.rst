@@ -3,4 +3,3 @@ API
 
 .. automodule:: textdata
    :members:
-

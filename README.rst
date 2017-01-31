@@ -124,6 +124,10 @@ Or if you'd like paras, but each paragraph in a single string::
      'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
      'And the dish ran away with the spoon.']
 
+Or maybe you want a ``dict``:
+
+    >>> attrs("a=1 b=2 c='something more'")
+    {'a': 1, 'b': 2, 'c': 'something more'}
 
 ``textdata`` is all about conveniently grabbing the data you want
 from text files and program source, and doing it in a highly
