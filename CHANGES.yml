@@ -1,4 +1,14 @@
 -
+    version: 1.7.2
+    date: May 30, 2017
+    notes: >
+        Update compatibility strategy to make Python 3 centric.
+        Python 2 is now the outlier. More future-proof.
+        
+        Doc tweaks.
+
+
+-
     version: 1.7.1
     date: January 30, 2017
     notes: >

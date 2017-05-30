@@ -18,11 +18,22 @@ compatibility function such as ``six.u`` from
 can help alleviate much--though certainly not all--of the pain.)
 
 It can also be helpful to declare your source encoding: put
-a specially-formatted comment as the first or second line of the source code:
+a specially-formatted comment as the first or second line of the source code::
 
-    # -*- coding: <encoding name> -*-
+    # -*- coding: utf-8 -*-
 
-This will usually be ``# -*- coding: utf-8 -*-``, but other encodings are
-possible. Python 3 defaults to a UTF-8 encoding, but Python 2 assumes
-ASCII.
+This will usually endorse UTF-8, but other encodings are possible. Python 3
+defaults to a UTF-8 encoding, but Python 2 sadly assumes ASCII.
+
+Finally, if you are reading from or writing to a file on Python 2,
+strongly recommend you use an alternate form of ``open`` that
+supports automatic encoding (which is built-in to Python 3). E.g.::
+
+    from codecs import open
+
+    with open('filepath', encoding='utf-8') as f:
+        data = f.read()
+
+This construction works across Python 2 and 3. Just
+add a ``mode='w'`` for writing.
 

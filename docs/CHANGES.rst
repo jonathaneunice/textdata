@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+**1.7.2**  (May 30, 2017)
+
+    Update compatibility strategy to make Python 3 centric. Python 2
+    is now the outlier. More future-proof.
+
+    Doc tweaks.
+
+
 **1.7.1**  (January 30, 2017)
 
     Returned test coverage to 100% of lines (introducing `attrs()`

@@ -17,9 +17,7 @@ Notes
 
 * Successfully packaged for, and
   tested against, all late-model versions of Python: 2.6, 2.7, 3.3,
-  3.4, 3.5, and 3.6, as well as PyPy 5.6.0 (based on
-  2.7.12) and PyPy3 5.5.0 (based on 3.3.5).
-  Python 3.2 should still work, but is deprecatd.
+  3.4, 3.5, and 3.6, as well as recent versions of PyPy and PyPy3.
 
 * It's tempting to define a constant such as ``Dedent`` that might
   be the default for the ``lstrip`` parameter, instead of having

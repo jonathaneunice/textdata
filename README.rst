@@ -1,5 +1,5 @@
 
-| |travisci| |version| |downloads| |versions| |impls| |wheel| |coverage|
+| |travisci| |version| |versions| |impls| |wheel| |coverage|
 
 .. |travisci| image:: https://travis-ci.org/jonathaneunice/textdata.svg?branch=master
     :alt: Travis CI build status
@@ -7,10 +7,6 @@
 
 .. |version| image:: http://img.shields.io/pypi/v/textdata.svg?style=flat
     :alt: PyPI Package latest release
-    :target: https://pypi.python.org/pypi/textdata
-
-.. |downloads| image:: http://img.shields.io/pypi/dm/textdata.svg?style=flat
-    :alt: PyPI Package monthly downloads
     :target: https://pypi.python.org/pypi/textdata
 
 .. |versions| image:: https://img.shields.io/pypi/pyversions/textdata.svg

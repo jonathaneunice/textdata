@@ -10,8 +10,8 @@ from io import StringIO
 
 __all__ = 'lines text textlines textline words paras'.split()
 
-_PY3 = sys.version_info[0] >= 3
-if _PY3:
+_PY2 = sys.version_info[0] == 2
+if not _PY2:
     basestring = str
 
 
@@ -99,7 +99,6 @@ def text(source, **kwargs):
     """
     Like ``lines()``, but returns result as unified text. Useful primarily
     because of the nice cleanups ``lines()`` does.
-
 
     :param str|lines source:  Text (or list of text lines) to be processed
     :param str join: String to join lines with. Typically "\n" for line-oriented
