@@ -1,4 +1,13 @@
 -
+    version: 1.7.3
+    date: October 13, 2017
+    notes: >
+        Added pyproject.toml for PEP 518 compliance. 
+
+        Updated testing matrix to accomodate new PyPy3 version
+        on Travis CI. 
+
+-
     version: 1.7.2
     date: May 30, 2017
     notes: >

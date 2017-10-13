@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+**1.7.3**  (October 13, 2017)
+
+    Added pyproject.toml for PEP 518 compliance.
+
+    Updated testing matrix to accomodate new PyPy3 version on Travis
+    CI.
+
+
 **1.7.2**  (May 30, 2017)
 
     Update compatibility strategy to make Python 3 centric. Python 2
