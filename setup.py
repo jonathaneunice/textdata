@@ -17,7 +17,7 @@ def lines(text):
 
 setup(
     name='textdata',
-    version='1.7.3',
+    version='2.0.0',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Easily get clean data, direct from text or Python source',
@@ -26,11 +26,11 @@ setup(
     license='Apache License 2.0',
     packages=['textdata'],
     setup_requires=[],
-    install_requires=[],
-    tests_require=['tox', 'pytest', 'pytest-cov', 'coverage', 'six>=1.10'],
+    install_requires=['intspan'],
+    tests_require=['tox', 'pytest', 'pytest-cov', 'coverage', 'six>=1.11'],
     test_suite="test",
     zip_safe=False,  # it really is, but this will prevent weirdness
-    keywords='text data lines dedent indent words qw paras paragraphs',
+    keywords='text data lines dedent indent words qw paras paragraphs table',
     classifiers=lines("""
         Development Status :: 5 - Production/Stable
         Operating System :: OS Independent

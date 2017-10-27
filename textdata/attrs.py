@@ -1,9 +1,19 @@
 
-from ast import literal_eval as ast_literal_eval
+import warnings
+try:
+    from collections import OrderedDict
+except ImportError:
+    pass
+from .eval import evaluation
+
+
+# see something, say something
+warnings.simplefilter('always', DeprecationWarning)
+
 
 def indexOfAny(s, sub, start=None, end=None):
     """
-    Like s`tr.find`, except instead of a single sub, accepts
+    Like `str.find`, except instead of a single sub, accepts
     a list of subs. Returns the minimum index of all such
     subs, or `None` if none exists. Search can be constrained to
     given start and end values.
@@ -18,24 +28,17 @@ def indexOfAny(s, sub, start=None, end=None):
 def isWhitespace(s):
     return s.strip() == ''
 
+
 quoteChars  = ["'", '"']
 equalsChars = ['=', ':']
+
 
 def isQuote(s):
     return s in quoteChars
 
-def literal_eval(s):
-    """
-    Wrapper around ``ast.literal_eval`` that returns its return value,
-    if possible, but returns the original string in cases where
-    ``ast.literal_eval`` raises an exception.
-    """
-    try:
-        return ast_literal_eval(s)
-    except ValueError:
-        return s
 
-def attrs(s, literal=True, astype=dict):
+def attrs(s, evaluate='natural', dict=dict,
+          literal=True, astype=None):
     """
     Parse attribute strings into a dict, which is returned. Optionally
     (and by default) evaluate literals (e.g. turn numbers into real
@@ -50,8 +53,17 @@ def attrs(s, literal=True, astype=dict):
     CSS style: x: 1; y: 3
     CSS style quoted: x: "1 and 2"; y: '3'
     """
+    if astype is not None:
+        dict = astype
+        msg = 'astype= parameter deprecated; use dict= instead'
+        warnings.warn(msg, DeprecationWarning)
+    if literal is not True:
+        evaluate = 'minimal'
+        msg = 'literal= parameter deprecated; use evaluate= instead'
+        warnings.warn(msg, DeprecationWarning)
+
     s = s.strip()
-    res = astype()
+    res = dict()
     slen = len(s)
     cursor = 0
 
@@ -84,6 +96,21 @@ def attrs(s, literal=True, astype=dict):
             if endValueIndex is None:
                 endValueIndex = slen
             valueStr = s[rcursor:endValueIndex]
-            res[left] = literal_eval(valueStr) if literal else valueStr
+            res[left] = evaluation(valueStr, evaluate)
             cursor = endValueIndex + 1
     return res
+
+
+class Dict(dict):
+    """
+    Attribute-accessible dict subclass. Does whatever a dict does, but its
+    keys are also accessible via .attribute notation. Provided here as a
+    convenience.
+    """
+    def __init__(self, *args, **kwargs):
+        super(Dict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+    def __repr__(self):
+        clsname = self.__class__.__name__
+        inner = ', '.join('{0}={1!r}'.format(k,v) for k,v in self.items())
+        return '{0}({1})'.format(clsname, inner)

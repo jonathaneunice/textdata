@@ -6,19 +6,42 @@ Unicode and Encodings
 
 ``textdata`` doesn't have any unique friction with Unicode
 characters and encodings. That said, any time you use Unicode characters
-in Python source files, care is warranted--especially in Python 2!
+in Python 2 source files, care is warranted.
 
-If your text includes Unicode, in Python 2 make sure to
-mark literal strings with a "u" prefix: ``u"`` |star| ``"``. You can
-also do this in Python 3.3 and following. Sadly, there was a dropout
-of compatibility in early Python 3 releases, making it much harder to
-maintain a unified source base with them in the mix. (A
+Best advice is: It's time to upgrade already! Python 3 is lovely
+and ever-improving. Python 2 is now showing its age.
+
+If you do need to continue supporting Python 2, either
+make sure your literal strings are marked with a "u" prefix:
+``u"`` |star| ``"``. To turn Unicode literal processing on
+by default:
+
+.. code-block: python
+
+    from __future__ import unicode_literals
+
+    # or better yet:
+    # from __future__ import unicode_literals, print_function, division
+
+You can explicitly mark strings as unicode in Python 3.3 and following,
+though it's only necessary if you're maintaing backwards portability,
+since Python 3 strings are by default Unicode strings.
+
+There was a dropout of compatibility in early Python 3 releases (3.0, 3.1,
+and 3.2), making it much harder to
+maintain a unified source base with them in the mix. A
 compatibility function such as ``six.u`` from
 `six <http://pypi.python.org/pypi/six>`_
-can help alleviate much--though certainly not all--of the pain.)
+can help alleviate much--though certainly not all--of the pain.
+Best advice is: Avoid Python 3 before 3.3 *at all costs*. They're thoroughly
+obsolte--in many ways, even more than Python 2.7 is. Run!
 
-It can also be helpful to declare your source encoding: put
-a specially-formatted comment as the first or second line of the source code::
+It can also be helpful (amd in Python 2, often strictly necessary)
+to declare your source encoding by putting a specially-formatted
+`PEP 263 <https://www.python.org/dev/peps/pep-0263/>`_
+comment as the first or second line of the source code:
+
+.. code-block:: python
 
     # -*- coding: utf-8 -*-
 
@@ -36,4 +59,3 @@ supports automatic encoding (which is built-in to Python 3). E.g.::
 
 This construction works across Python 2 and 3. Just
 add a ``mode='w'`` for writing.
-

@@ -47,22 +47,19 @@ def test_indexOfAny():
     assert indexOfAny('this/that', ['*', ':']) is None
 
 
-def test_literal_eval():
-    assert literal_eval('12') == 12
-    assert literal_eval('1.5') == 1.5
-    assert literal_eval('5j') == 5j
-    assert literal_eval('this') == 'this'
-
-
 def test_html_style_attrs():
 
     # should render attrs
     assert attrs('a=12 b=23') == { 'a': 12, 'b': 23 }
-    assert attrs('a=12 b=23', literal=False) == { 'a': '12', 'b': '23' }
+    assert attrs('a=12 b=23', evaluate='minimal') == { 'a': '12', 'b': '23' }
+    with pytest.warns(DeprecationWarning):
+        assert attrs('a=12 b=23', literal=False) == { 'a': '12', 'b': '23' }
 
     # should render attrs with quotes
     assert attrs("""a="12" b='23' """) == { 'a': '12', 'b': '23' }
-    assert attrs("""a="12" b='23' """, literal=False) == { 'a': '12', 'b': '23' }
+    assert attrs("""a="12" b='23' """, evaluate='minimal') == { 'a': '12', 'b': '23' }
+    with pytest.warns(DeprecationWarning):
+        assert attrs("""a="12" b='23' """, literal=False) == { 'a': '12', 'b': '23' }
 
     # should render attrs with spaces in quotes
     assert attrs("""a="12 to 13" b='23 or more'""") == \
@@ -78,11 +75,15 @@ def test_css_style_attrs():
 
     # should render attrs with : format
     assert attrs('a:12 b:23') == { 'a': 12, 'b': 23 }
-    assert attrs('a:12 b:23', literal=False) == { 'a': '12', 'b': '23' }
+    assert attrs('a:12 b:23', evaluate='minimal') == { 'a': '12', 'b': '23' }
+    with pytest.warns(DeprecationWarning):
+        assert attrs('a:12 b:23', literal=False) == { 'a': '12', 'b': '23' }
 
     # should render attrs with : format separated with ;
     assert attrs('a:12; b:23') == { 'a': 12, 'b': 23 }
-    assert attrs('a:12; b:23', literal=False) == { 'a': '12', 'b': '23' }
+    assert attrs('a:12; b:23', evaluate='minimal') == { 'a': '12', 'b': '23' }
+    with pytest.warns(DeprecationWarning):
+        assert attrs('a:12; b:23', literal=False) == { 'a': '12', 'b': '23' }
 
 def test_partial_attrs():
     # should render partial attrs
@@ -108,10 +109,22 @@ def test_literal_or_not():
     assert attrs('c=3j')  == { 'c': 3j }
 
     # or strings otherwise
-    assert attrs('a=None', literal=False) == { 'a': 'None' }
-    assert attrs('b=1.5', literal=False) == { 'b': '1.5' }
-    assert attrs('b=2e3', literal=False) == { 'b': '2e3' }
-    assert attrs('c=3j', literal=False)  == { 'c': '3j' }
+    assert attrs('a=None', evaluate='minimal') == { 'a': 'None' }
+    assert attrs('b=1.5', evaluate='minimal') == { 'b': '1.5' }
+    assert attrs('b=2e3', evaluate='minimal') == { 'b': '2e3' }
+    assert attrs('c=3j', evaluate='minimal')  == { 'c': '3j' }
+
+    with pytest.warns(DeprecationWarning):
+        assert attrs('a=None', literal=False) == { 'a': 'None' }
+
+    with pytest.warns(DeprecationWarning):
+        assert attrs('b=1.5', literal=False) == { 'b': '1.5' }
+
+    with pytest.warns(DeprecationWarning):
+        assert attrs('b=2e3', literal=False) == { 'b': '2e3' }
+
+    with pytest.warns(DeprecationWarning):
+        assert attrs('c=3j', literal=False)  == { 'c': '3j' }
 
 
 @pytest.mark.skipif(_PYVER < (2,7),
@@ -130,3 +143,20 @@ def test_astype():
     assert oa == a
     assert isinstance(oa, OrderedDict)
     assert list(oa.keys()) == ['a', 'b', 'c']
+
+
+def test_Dict():
+    D = Dict(a=1, b=12, c=100.1, msg='Hello')
+    d = {'a': 1, 'b': 12, 'c': 100.1, 'msg': 'Hello'}
+
+    assert D == d
+    for key in d.keys():
+        assert D[key] == d[key]
+        assert getattr(D, key) == d[key]
+
+
+    D2 = Dict(one=1, two='too')
+    D2_repr = repr(D2)
+
+    assert D2_repr in ["Dict(one=1, two='too')",
+                       "Dict(two='too', one=1)"]

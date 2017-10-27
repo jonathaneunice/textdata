@@ -32,10 +32,12 @@ this by using Python ``list`` literals, but that's
 tedious, verbose, and often less legible.
 
 The ``textdata`` package makes it easy to have clean, nicely-whitespaced
-data specified in your program, but to get the data without extra whitespace
+data specified in your program, but to get the data without extra syntax
 cluttering things up. It's permissive of the layouts needed to make Python
 code look and work right, without reflecting those requirements in the
-resulting data. For example::
+resulting data. For example:
+
+.. code-block:: pycon
 
     data = lines("""
         There was an old woman who lived in a shoe.
@@ -44,7 +46,9 @@ resulting data. For example::
         Then whipped them all soundly and put them to bed.
     """)
 
-will result in::
+will result in:
+
+.. code-block:: pycon
 
     ['There was an old woman who lived in a shoe.',
      "She had so many children, she didn't know what to do;",
@@ -53,7 +57,9 @@ will result in::
 
 Note that the "extra" newlines and leading spaces have been
 taken care of and discarded. Or do you want that as just one
-string? Okay::
+string? Okay:
+
+.. code-block:: pycon
 
     data = text("""
         There as an old woman...
@@ -68,7 +74,9 @@ to get a single no-breaks line.
 Other times, the data you need is almost, but not quite, a series of
 words. A list of names, a list of color names--values that are mostly
 single words, but sometimes have an embedded spaces. ``textdata`` has you
-covered::
+covered:
+
+.. code-block:: pycon
 
     >>> words(' Billy Bobby "Mr. Smith" "Mrs. Jones"  ')
     ['Billy', 'Bobby', 'Mr. Smith', 'Mrs. Jones']
@@ -77,7 +85,9 @@ Embedded quotes (either single or double) can be used to construct
 "words" (or phrases) containing whitespace (including tabs and newlines).
 
 ``words``, like the other ``textdata`` facilities, allows you to
-comment individual lines that would otherwise muck up string literals::
+comment individual lines that would otherwise muck up string literals:
+
+.. code-block:: pycon
 
     exclude = words("""
         __pycache__ *.pyc *.pyo     # compilation artifacts
@@ -86,14 +96,21 @@ comment individual lines that would otherwise muck up string literals::
         .DS_Store                   # platform artifacts
     """)
 
-Yields::
+Yields:
+
+.. code-block:: pycon
 
     ['__pycache__', '*.pyc', '*.pyo', '.hg*', '.git*',
      '.coverage', '.DS_Store']
 
-Finally, you might wan to collect "paragraphs"--contiguous runs of text lines
-that are delineated by blank lines. Markdown and RST document formats,
-for example, use this convention.  ``textdata`` makes it easy::
+Paragraphs
+----------
+
+Instead of words, you might wan to collect "paragraphs"--contiguous runs of text
+lines delineated by blank lines. Markdown and RST document formats, for example,
+use this convention.
+
+.. code-block:: pycon
 
     >>> rhyme = """
         Hey diddle diddle,
@@ -113,22 +130,71 @@ for example, use this convention.  ``textdata`` makes it easy::
       'To see such sport,'],
      ['And the dish ran away with the spoon.']]
 
-Or if you'd like paras, but each paragraph in a single string::
+Or if you'd like paras, but each paragraph in a single string:
+
+.. code-block:: pycon
 
     >>> paras(rhyme, join="\n")
     ['Hey diddle diddle,',
      'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
      'And the dish ran away with the spoon.']
 
-Or maybe you want a ``dict``:
+Dictionaries
+------------
+
+Or maybe you want a ``dict``. The ``attrs`` function makes it easy to
+grab
+
+.. code-block:: pycon
 
     >>> attrs("a=1 b=2 c='something more'")
     {'a': 1, 'b': 2, 'c': 'something more'}
 
-``textdata`` is all about conveniently grabbing the data you want
-from text files and program source, and doing it in a highly
-functional, well-tested way.
-Take it for a spin today!
+Or maybe you have tabular data.
+
+.. code-block:: pycon
+
+    >>> text = """
+    ...     name  age  strengths
+    ...     ----  ---  ---------
+    ...     Joe   12   woodworking
+    ...     Jill  12   slingshot
+    ...     Meg   13   snark, snapchat
+    ... """
+
+    >>> table(text)
+    [['name', 'age', 'strengths'],
+     ['Joe', 12, 'woodworking'],
+     ['Jill', 12, 'slingshot'],
+     ['Meg', 13, 'snark, snapchat']]
+
+    >>> records(text)
+    [{'name': 'Joe', 'age': 12, 'strengths': 'woodworking'},
+     {'name': 'Jill', 'age': 12, 'strengths': 'slingshot'},
+     {'name': 'Meg', 'age': 13, 'strengths': 'snark, snapchat'}]
+
+This works even if you have a table with a lot of extra fluff:
+
+.. code-block:: pycon
+
+    >>> fancy = """
+    ... +------+-----+-----------------+
+    ... | name | age | strengths       |
+    ... +------+-----+-----------------+
+    ... | Joe  |  12 | woodworking     |
+    ... | Jill |  12 | slingshot       |
+    ... | Meg  |  13 | snark, snapchat |
+    ... +------+-----+-----------------+
+    ... """
+    >>> assert table(text) == table(fancy)
+    >>> assert records(text) == records(fancy)
+
+In Summary
+----------
+
+``textdata`` is all about conveniently grabbing the data you want from text
+files and program source, and doing it in a highly functional, convenient,
+well-tested way. Take it for a spin today!
 
 See `the full documentation
 at Read the Docs <http://textdata.readthedocs.org/en/latest/>`_.

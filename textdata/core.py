@@ -20,8 +20,8 @@ CSTRIP = re.compile(r'#.*$', re.MULTILINE)  # comment stripping regex
 
 def ensure_text(source):
     """
-    Given either text or an interable, return the corresponding text. This
-    common preprocess function allows ``textdata`` routines to take either
+    Given either text or an iterable, return the corresponding text. This
+    common pre-process function allows ``textdata`` routines to take either
     text or an iterable, yet confidently process considering only the text
     case.
     """
