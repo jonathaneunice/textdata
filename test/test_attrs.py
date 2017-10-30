@@ -92,6 +92,16 @@ def test_partial_attrs():
     assert attrs('a:') == { 'a': None }
 
 
+def test_attr_cstrip():
+    t1 = """ a=1 b="two" # a comment """
+    assert attrs(t1) == {'a': 1, 'b': 'two'}
+    assert attrs(t1) == attrs(t1, cstrip=True)
+    t2 = """
+        a:1
+        b: "# not a comment"
+    """
+    assert attrs(t2, cstrip=False) == {'a': 1, 'b': '# not a comment'}
+
 def test_quoted_keys():
     assert attrs('"a"=this b=12') == { 'a': 'this', 'b': 12 }
     assert attrs('"a":this b:12') == { 'a': 'this', 'b': 12 }

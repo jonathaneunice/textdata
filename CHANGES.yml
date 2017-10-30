@@ -1,4 +1,17 @@
 -
+    version: 2.0.0
+    date: October 30, 2017
+    notes: >
+        *Major* release.
+        
+        Added ``table()`` and ``records()`` functions for
+        ingesting tabular and record-oriented data respectively.\
+        
+        Regularized handling of object evaluation, comment stripping,
+        and other attributes.
+        
+
+-
     version: 1.7.3
     date: October 13, 2017
     notes: >

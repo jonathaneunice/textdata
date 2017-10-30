@@ -70,6 +70,43 @@ staging  fedcba9876543210
             ['staging', 'fedcba9876543210']
         ]
     ),
+    Dict(name="t003a",
+         source="https://www.npmjs.com/package/text-table",
+         text="""
+master   0123456789abcdef   # is comment
+staging  fedcba9876543210   # this too
+""",
+         options=dict(cstrip=True),
+         expected=[
+            ['master', '0123456789abcdef'],
+            ['staging', 'fedcba9876543210']
+        ]
+    ),
+    Dict(name="t003b",
+         source="https://www.npmjs.com/package/text-table",
+         text="""
+master   0123456789abcdef   # is comment
+staging  fedcba9876543210   # this too
+""",
+         options=dict(header='name key'),
+         expected=[
+            ['name', 'key'],
+            ['master', '0123456789abcdef'],
+            ['staging', 'fedcba9876543210']
+        ]
+    ),
+    Dict(name="t003c",
+         source="https://www.npmjs.com/package/text-table",
+         text="""
+master   0123456789abcdef   # not comment
+staging  fedcba9876543210   # this too
+""",
+         options=dict(cstrip=False),
+         expected=[
+            ['master', '0123456789abcdef', '#', 'not comment'],
+            ['staging', 'fedcba9876543210', '#', 'this too']
+        ]
+    ),
     Dict(name="t004",
          source="http://search.cpan.org/~shlomif/Text-Table-1.133/lib/Text/Table.pm",
          text="""
@@ -889,6 +926,7 @@ ucode   | Toggles advanced unicode. (Enhanced characters)                       
 |       BTC |        |             |                        |         |
 +-----------+--------+-------------+------------------------+---------+
 """,
+         options=dict(cstrip=False),
          expected=[
             ['User Name', 'Salary', 'Designation', 'Address', 'Lucky#'],
             ['Ram', 2000, 'Manager', '#99, Silk board', 1111],

@@ -14,6 +14,7 @@ except NameError:
     basestring = str
 
 from .eval import evaluation
+from .core import CSTRIP
 
 """
 Cases:
@@ -136,7 +137,7 @@ def find_columns(lines):
     return seps, nonseps, hranges
 
 
-def discover_table(text, evaluate='natural'):
+def discover_table(text, evaluate='natural', cstrip=True):
     """
     Return a list of lists representing a table.
 
@@ -146,9 +147,13 @@ def discover_table(text, evaluate='natural'):
             table cells. By default, "natural" means as Python literals.
             Other options are None or 'none', 'minimal' meaning just string
             trimming, or provide a custom function.
+        cstrip (bool): strip comments?
     Returns:
         List of lists, where each inner list represents a row.
     """
+
+    if cstrip:
+        text = CSTRIP.sub('', text)
 
     # import text into lines
     lines = [line.rstrip() for line in text.splitlines() if line.strip()]
@@ -172,9 +177,23 @@ def discover_table(text, evaluate='natural'):
     return rows
 
 
-def table(text, header=None, evaluate='natural'):
+def table(text, header=None, evaluate='natural', cstrip=True):
+    """
+    Return a list of lists representing a table.
 
-    rows = discover_table(text, evaluate)
+    Args:
+        text (basestring): text in which to find table
+        header (str|list|None): Header for the table
+        evaluate (Union[str, function, None]): Indicates how to post-process
+            table cells. By default, "natural" means as Python literals.
+            Other options are None or 'none', 'minimal' meaning just string
+            trimming, or provide a custom function.
+        cstrip (bool): strip comments?
+    Returns:
+        List of lists, where each inner list represents a row.
+    """
+
+    rows = discover_table(text, evaluate, cstrip)
 
     if header:
         if isinstance(header, basestring):

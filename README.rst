@@ -35,21 +35,19 @@ The ``textdata`` package makes it easy to have clean, nicely-whitespaced
 data specified in your program, but to get the data without extra syntax
 cluttering things up. It's permissive of the layouts needed to make Python
 code look and work right, without reflecting those requirements in the
-resulting data. For example:
+resulting data.
+
+Text (Strings and Lists)
+------------------------
 
 .. code-block:: pycon
 
-    data = lines("""
-        There was an old woman who lived in a shoe.
-        She had so many children, she didn't know what to do;
-        She gave them some broth without any bread;
-        Then whipped them all soundly and put them to bed.
-    """)
-
-will result in:
-
-.. code-block:: pycon
-
+    >>> lines("""
+    ...     There was an old woman who lived in a shoe.
+    ...     She had so many children, she didn't know what to do;
+    ...     She gave them some broth without any bread;
+    ...     Then whipped them all soundly and put them to bed.
+    ... """)
     ['There was an old woman who lived in a shoe.',
      "She had so many children, she didn't know what to do;",
      'She gave them some broth without any bread;',
@@ -61,18 +59,24 @@ string? Okay:
 
 .. code-block:: pycon
 
-    data = text("""
-        There as an old woman...
-                                         ...put them to bed.
-    """)
+    >>> text("""
+    ...     There was an old woman who lived in a shoe.
+    ...     She had so many children, she didn't know what to do;
+    ...     She gave them some broth without any bread;
+    ...     Then whipped them all soundly and put them to bed.
+    ... """)
+    "There was an old woman who lived in a shoe.\nShe ...put them to bed."
 
-Does the same stripping of pointless whitespace at the beginning
-and end, returning the data as a clean, convenient string. Or if you don't
-want most of the line endings, try ``textline`` on the same input
-to get a single no-breaks line.
+Here ``text()`` does the same stripping of pointless whitespace at the beginning
+and end of lines, returning the data as a clean, convenient string. Or if you
+don't want most of the line endings, try ``textline`` on the same input to get a
+single no-breaks line.
+
+Words and Phrases
+-----------------
 
 Other times, the data you need is almost, but not quite, a series of
-words. A list of names, a list of color names--values that are mostly
+words. A list of names, a list of colors--values that are mostly
 single words, but sometimes have an embedded spaces. ``textdata`` has you
 covered:
 
@@ -150,13 +154,34 @@ grab
     >>> attrs("a=1 b=2 c='something more'")
     {'a': 1, 'b': 2, 'c': 'something more'}
 
+Or maybe you want to cut and paste data directly from JavaScript, HTML, CSS, or
+XML. Easy peasy! No text editing required.
+
+.. code-block:: pycon
+
+    >>> # JavaScript
+    >>> attrs("a: 1, b: 2, c: 'something more'")
+    {'a': 1, 'b': 2, 'c': 'something more'}
+
+    >>> # HTML or XML
+    >>> attrs('a="1" b="2" c="something more"')
+    {'a': 1, 'b': 2, 'c': 'something more'}
+
+    >>> # CSS
+    >>> attrs("a: 1; b: 2; c: 'something more'")
+    {'a': 1, 'b': 2, 'c': 'something more'}
+
+
+Tables
+------
+
 Or maybe you have tabular data.
 
 .. code-block:: pycon
 
     >>> text = """
     ...     name  age  strengths
-    ...     ----  ---  ---------
+    ...     ----  ---  ---------------
     ...     Joe   12   woodworking
     ...     Jill  12   slingshot
     ...     Meg   13   snark, snapchat
@@ -188,6 +213,10 @@ This works even if you have a table with a lot of extra fluff:
     ... """
     >>> assert table(text) == table(fancy)
     >>> assert records(text) == records(fancy)
+
+It works with tables formatted in a variety of ways
+including Markdown, RST, ANSI/Unicode line drawing
+characters, plain text columns and borders, ...
 
 In Summary
 ----------

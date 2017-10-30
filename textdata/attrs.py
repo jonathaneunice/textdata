@@ -5,10 +5,11 @@ try:
 except ImportError:
     pass
 from .eval import evaluation
+from .core import CSTRIP
 
 
 # see something, say something
-warnings.simplefilter('always', DeprecationWarning)
+warnings.simplefilter('once', DeprecationWarning)
 
 
 def indexOfAny(s, sub, start=None, end=None):
@@ -37,7 +38,8 @@ def isQuote(s):
     return s in quoteChars
 
 
-def attrs(s, evaluate='natural', dict=dict,
+def attrs(text, evaluate='natural', dict=dict,
+          cstrip=True,
           literal=True, astype=None):
     """
     Parse attribute strings into a dict, which is returned. Optionally
@@ -52,7 +54,17 @@ def attrs(s, evaluate='natural', dict=dict,
     Partial: x
     CSS style: x: 1; y: 3
     CSS style quoted: x: "1 and 2"; y: '3'
+
+
+    Args:
+        text (str|unicode): Text to parse
+        evaluate (str|bool): How to evaluate resullting values
+        dict (type): Type of mapping to return
+        cstrip (bool): Should comments be removed?
+    Returns:
+        dict (or given dict type)
     """
+    # deprecated API warnings and patchups
     if astype is not None:
         dict = astype
         msg = 'astype= parameter deprecated; use dict= instead'
@@ -62,40 +74,43 @@ def attrs(s, evaluate='natural', dict=dict,
         msg = 'literal= parameter deprecated; use evaluate= instead'
         warnings.warn(msg, DeprecationWarning)
 
-    s = s.strip()
+    text = text.strip()
+
+    if cstrip:
+        text = CSTRIP.sub('', text)
     res = dict()
-    slen = len(s)
+    tlen = len(text)
     cursor = 0
 
-    while cursor < slen:
-        assignIndex = indexOfAny(s, equalsChars, cursor)
+    while cursor < tlen:
+        assignIndex = indexOfAny(text, equalsChars, cursor)
         if assignIndex is None:
-            remaining = s[cursor:].strip()
+            remaining = text[cursor:].strip()
             if remaining:
                 res[remaining] = None
             return res
 
-        left = s[cursor:assignIndex].strip()
+        left = text[cursor:assignIndex].strip()
         if left and isQuote(left[0]):
             left = left[1:-1]
         rcursor = assignIndex + 1
         # find the non-whitespace rhs of the attribute definition
-        while rcursor < slen and isWhitespace(s[rcursor]):
+        while rcursor < tlen and isWhitespace(text[rcursor]):
             rcursor += 1
-        if rcursor >= slen:
+        if rcursor >= tlen:
             res[left] = None
             return res
-        elif isQuote(s[rcursor]):
+        elif isQuote(text[rcursor]):
             # find the end of quote as boundary of value
-            endQuoteIndex = s.index(s[rcursor], rcursor+1)
-            res[left] = s[rcursor + 1:endQuoteIndex]
+            endQuoteIndex = text.index(text[rcursor], rcursor+1)
+            res[left] = text[rcursor + 1:endQuoteIndex]
             cursor = endQuoteIndex + 1
         else:
             # no quote value, ends with whitespace or ; or ,
-            endValueIndex = indexOfAny(s, [';', ',', ' ', '\t', '\n'], rcursor + 1);
+            endValueIndex = indexOfAny(text, [';', ',', ' ', '\t', '\n'], rcursor + 1);
             if endValueIndex is None:
-                endValueIndex = slen
-            valueStr = s[rcursor:endValueIndex]
+                endValueIndex = tlen
+            valueStr = text[rcursor:endValueIndex]
             res[left] = evaluation(valueStr, evaluate)
             cursor = endValueIndex + 1
     return res
