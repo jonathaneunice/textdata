@@ -32,7 +32,7 @@ def isWhitespace(s):
 
 quoteChars  = ["'", '"']
 equalsChars = ['=', ':']
-terminalChars = [';', ',', ' ', '\t', '\n']
+terminalChars = [' ', ';', ',', '\t', '\n']
 
 
 def isQuote(s):
@@ -75,10 +75,11 @@ def attrs(text, evaluate='natural', dict=dict,
         msg = 'literal= parameter deprecated; use evaluate= instead'
         warnings.warn(msg, DeprecationWarning)
 
+    # trim comments (optionally) and excess whitespace at ends
+    if cstrip:
+        text = CSTRIP.sub('', text).strip()
     text = text.strip()
 
-    if cstrip:
-        text = CSTRIP.sub('', text)
     res = dict()
     tlen = len(text)
     cursor = 0
@@ -87,6 +88,7 @@ def attrs(text, evaluate='natural', dict=dict,
     while cursor < tlen and text[cursor] in terminalChars:
         cursor += 1
 
+    # while still more data, tease it out
     while cursor < tlen:
         assignIndex = indexOfAny(text, equalsChars, cursor)
         if assignIndex is None:

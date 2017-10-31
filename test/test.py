@@ -3,7 +3,6 @@
 from textdata import *
 from textdata.core import ensure_text, noquotes
 import sys
-import six
 
 
 def _print(*args, **kwargs):
@@ -58,9 +57,7 @@ def test_lines_take_lines():
 
 
 def test_encoding():
-    assert lines(u"⍟\n★") == [six.u('\u235F'), six.u('\u2605')]
-    # took py32 out of testing matrix because this test is too
-    # hard to state with it in
+    assert lines(u"⍟\n★") == [u'\u235F', u'\u2605']
 
 
 def test_lstrip_and_rstrip():

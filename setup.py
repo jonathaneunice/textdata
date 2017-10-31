@@ -27,7 +27,7 @@ setup(
     packages=['textdata'],
     setup_requires=[],
     install_requires=['intspan'],
-    tests_require=['tox', 'pytest', 'pytest-cov', 'coverage', 'six>=1.11'],
+    tests_require=['tox', 'pytest', 'pytest-cov', 'coverage'],
     test_suite="test",
     zip_safe=False,  # it really is, but this will prevent weirdness
     keywords='text data lines dedent indent words qw paras paragraphs table',

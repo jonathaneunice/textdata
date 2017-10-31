@@ -46,11 +46,6 @@ def all_indices(s, substr):
     return indices
 
 
-# print all_indices('abca', 'a')
-# print all_indices('a  bc a', ' ')
-# print all_indices('a  bc a', ' ')
-
-
 def is_separator(line):
     """
     Does the given line consist solely of separator characters?
@@ -137,19 +132,9 @@ def find_columns(lines):
     return seps, nonseps, hranges
 
 
-def discover_table(text, evaluate='natural', cstrip=True):
+def discover_table(text, evaluate=True, cstrip=True):
     """
     Return a list of lists representing a table.
-
-    Args:
-        text (basestring): text in which to find table
-        evaluate (Union[str, function, None]): Indicates how to post-process
-            table cells. By default, "natural" means as Python literals.
-            Other options are None or 'none', 'minimal' meaning just string
-            trimming, or provide a custom function.
-        cstrip (bool): strip comments?
-    Returns:
-        List of lists, where each inner list represents a row.
     """
 
     if cstrip:
@@ -164,20 +149,34 @@ def discover_table(text, evaluate='natural', cstrip=True):
 
     # find the columns
     seps, nonseps, column_indices = find_columns(lines)
+    n_columns = len(column_indices)
+
+    # extend evaluate for each column, as needed
+    if isinstance(evaluate, (list, tuple)):
+        # already a sequence; determine if needs extension
+        needed = n_columns - len(evaluate)
+        if needed > 0:
+            evaluates = list(evaluate) + ([evaluate[-1]] * needed)
+        else:
+            evaluates = evaluate[:]
+    else:
+        # multiple scalar to n_columns copies
+        evaluates = [evaluate] * n_columns
 
     # construct table based on discovered understanding
     # of where column breaks are
     rows = []
     for l in nonseps:
         row = []
-        for r in column_indices:
+        for r, col_evaluate in zip(column_indices, evaluates):
             segment = l[r[0]:r[1]]
-            row.append(evaluation(segment, evaluate))
+            print('segment:', repr(segment))
+            row.append(evaluation(segment, col_evaluate))
         rows.append(row)
     return rows
 
 
-def table(text, header=None, evaluate='natural', cstrip=True):
+def table(text, header=None, evaluate=True, cstrip=True):
     """
     Return a list of lists representing a table.
 
@@ -185,9 +184,9 @@ def table(text, header=None, evaluate='natural', cstrip=True):
         text (basestring): text in which to find table
         header (str|list|None): Header for the table
         evaluate (Union[str, function, None]): Indicates how to post-process
-            table cells. By default, "natural" means as Python literals.
-            Other options are None or 'none', 'minimal' meaning just string
-            trimming, or provide a custom function.
+            table cells. By default, True or "natural" means as Python literals.
+            Other options are False or 'minimal' (just string trimming), or
+            None or 'none'.  Can also provide a custom function.
         cstrip (bool): strip comments?
     Returns:
         List of lists, where each inner list represents a row.

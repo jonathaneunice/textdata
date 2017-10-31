@@ -1,6 +1,6 @@
 """
-Common support functions for evaluating values into
-natural Python values, or possibly custom post-processing.
+Support module for evaluating strings, often into
+natural Python values.
 """
 
 from ast import literal_eval as ast_literal_eval
@@ -18,12 +18,22 @@ def literal_eval(s):
         return s
 
 
+# evaluation functions
+identity = lambda s: s
+minimal  = lambda s: s.strip()
+natural  = lambda s: literal_eval(s.strip())
+
+
+# mapping of evaluate parameter to evaluation functions
 EVALUATE = {
-    None:      lambda s: s,
-    'none':    lambda s: s,
-    'minimal': lambda s: s.strip(),
-    False:     lambda s: s.strip(),
-    'natural': lambda s: literal_eval(s.strip()),
+    'none':    identity,
+    None:      identity,
+
+    'minimal': minimal,
+    False:     minimal,
+
+    'natural': natural,
+    True:      natural,
 }
 
 
@@ -33,5 +43,8 @@ def evaluation(value, how='natural'):
     Python literal encoding.
     """
     if hasattr(how, '__call__'):
-        return how(value)
+        try:
+            return how(value)
+        except Exception:
+            return minimal(value)
     return EVALUATE[how](value)

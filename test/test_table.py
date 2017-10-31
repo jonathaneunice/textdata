@@ -3,6 +3,7 @@
 from __future__ import print_function, division, unicode_literals
 from textdata import *
 from pprint import pprint
+from datetime import datetime, date
 import sys
 import pytest
 
@@ -987,6 +988,73 @@ ucode   | Toggles advanced unicode. (Enhanced characters)                       
             ['Meg', 13, 'snark, snapchat'],
         ]
     ),
+    Dict(name="t039",
+         source="homegrown",
+         text="""
+    Joe   12.3   2017-10-27
+    Jill  12.9   2017-09-11
+    Meg   13.2   2017-10-16
+""",
+         options = dict(header='name age joined', evaluate=False),
+         expected=[
+            ['name', 'age', 'joined'],
+            ['Joe', '12.3', '2017-10-27'],
+            ['Jill', '12.9', '2017-09-11'],
+            ['Meg', '13.2', '2017-10-16'],
+        ]
+    ),
+    Dict(name="t039a",
+         source="homegrown",
+         text="""
+    Joe   12.3   2017-10-27
+    Jill  12.9   2017-09-11
+    Meg   13.2   2017-10-16
+""",
+         options = dict(header='name age joined',
+                        evaluate=['natural', 'natural']
+                        ),
+         expected=[
+            ['name', 'age', 'joined'],
+            ['Joe', 12.3, '2017-10-27'],
+            ['Jill', 12.9, '2017-09-11'],
+            ['Meg', 13.2, '2017-10-16'],
+        ]
+    ),
+    Dict(name="t039b",
+         source="homegrown",
+         text="""
+    Joe   12.3   2017-10-27
+    Jill  12.9   2017-09-11
+    Meg   13.2   2017-10-16
+""",
+         options = dict(header='name age joined',
+                        evaluate=[str, float, 'natural']
+                        ),
+         expected=[
+            ['name', 'age', 'joined'],
+            ['Joe', 12.3, '2017-10-27'],
+            ['Jill', 12.9, '2017-09-11'],
+            ['Meg', 13.2, '2017-10-16'],
+        ]
+    ),
+    Dict(name="t039c",
+         source="homegrown",
+         text="""
+    Joe   12.3   2017-10-27
+    Jill  12.9   2017-09-11
+    Meg   13.2   2017-10-16
+""",
+         options = dict(header='name age joined',
+                        evaluate=[str, float,
+                                  lambda d: datetime.strptime(d, '%Y-%m-%d').date()]
+                        ),
+         expected=[
+            ['name', 'age', 'joined'],
+            ['Joe', 12.3, date(2017, 10, 27)],
+            ['Jill', 12.9, date(2017, 9, 11)],
+            ['Meg', 13.2, date(2017, 10, 16)],
+        ]
+    ),
 ]
 
 
@@ -1043,6 +1111,8 @@ psamples = [(t.name, t.text, getattr(t, 'options', {}), t.expected)
 
 @pytest.mark.parametrize("name,text,options,expected", psamples)
 def test_table(name, text, options, expected):
+    if not options.get('active'):
+        return
     result = table(text, **options)
     if _PY2:
         py2_patches(name, expected)
