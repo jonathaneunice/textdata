@@ -1,10 +1,13 @@
 
-from textdata import *
-from textdata.attrs import *
+
+from numbers import Number
 import sys
 import pytest
+from textdata import *
+from textdata.attrs import *
 
 _PYVER = sys.version_info[:3]
+
 
 def test_isQuote():
 
@@ -102,9 +105,81 @@ def test_attr_cstrip():
     """
     assert attrs(t2, cstrip=False) == {'a': 1, 'b': '# not a comment'}
 
+
 def test_quoted_keys():
     assert attrs('"a"=this b=12') == { 'a': 'this', 'b': 12 }
     assert attrs('"a":this b:12') == { 'a': 'this', 'b': 12 }
+
+
+def construct_spec(keys, values, quote, equals, terminal):
+
+    quoteChars  = [None, "'", '"']
+    terminalChars = [' ', ',', ';']
+    pieces = []
+    for key, value in zip(keys, values):
+        if isinstance(value, Number):
+            value_str = str(value)
+        else:
+            if isinstance(value, str):
+                if quote is None:
+                    # check if needs overriding
+                    if indexOfAny(value, terminalChars) >= 0 and quote is None:
+                        quote = "'"
+                    else:
+                        qi = indexOfAny(quoteChars[1:])
+                        if qi >= 0:
+                            quote = "'" if value[qi] == '"' else '"'
+            value_str = str(value) if quote is None else '{0}{1}{0}'.format(quote, value)
+        piece = '{0}{1}{2}'.format(key, equals, value_str)
+        pieces.append(piece)
+    return terminal.join(pieces)
+
+
+def test_mixed_syntax():
+    spec = "a:1 b:2 c:'something more' d=sweet!"
+    expected = {'a': 1, 'b': 2, 'c': 'something more', 'd': 'sweet!'}
+    # from docs
+    assert attrs(spec) == expected
+
+    keys = list('abcd')
+    values = [1, 2, 'something more', 'sweet!']
+    quoteValues  = [None, "'", '"']
+    equalsValues = ['=', ':']
+    terminalValues = [' ', '  ', ',', ', ', ';', '; ']
+    for quote in quoteValues:
+        for equals in equalsValues:
+            for terminal in terminalValues:
+                spec = construct_spec(keys, values, quote, equals, terminal)
+                result = attrs(spec)
+                assert result == expected
+
+    # TODO: randomized testing of inter-mixed parameters
+
+
+def test_perverse_terminators():
+    # other tests broader but this one targets perverse/difficult cases
+    # that have either caused problems in the past, or are imagined could do so
+    expected = {'a': 1, 'b': 2, 'c': 'something more', 'd': 'sweet!'}
+
+    # quote then terminator
+    spec = "a:1 b:2 c:'something more', d=sweet!"
+    result = attrs(spec)
+    assert result == expected
+
+    # multiple or empty terminators
+    spec = "a:1 b:2,, c:'something more', d=sweet!"
+    result = attrs(spec)
+    assert result == expected
+
+    # many empty terminators
+    spec = "a:1 b:2,, ;   ; c:'something more';, ; d=sweet!;,  \n;"
+    result = attrs(spec)
+    assert result == expected
+
+    # terminators before start
+    spec = ",;; a:1 b:2,, ;   ; c:'something more';, ; d=sweet!;,  \n;"
+    result = attrs(spec)
+    assert result == expected
 
 
 def test_literal_or_not():

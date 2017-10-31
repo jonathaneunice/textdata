@@ -32,6 +32,7 @@ def isWhitespace(s):
 
 quoteChars  = ["'", '"']
 equalsChars = ['=', ':']
+terminalChars = [';', ',', ' ', '\t', '\n']
 
 
 def isQuote(s):
@@ -82,6 +83,10 @@ def attrs(text, evaluate='natural', dict=dict,
     tlen = len(text)
     cursor = 0
 
+    # possible that cursor rests on terminator even to start
+    while cursor < tlen and text[cursor] in terminalChars:
+        cursor += 1
+
     while cursor < tlen:
         assignIndex = indexOfAny(text, equalsChars, cursor)
         if assignIndex is None:
@@ -106,13 +111,17 @@ def attrs(text, evaluate='natural', dict=dict,
             res[left] = text[rcursor + 1:endQuoteIndex]
             cursor = endQuoteIndex + 1
         else:
-            # no quote value, ends with whitespace or ; or ,
+            # no quote value, ends with terminating whitespace or ; or ,
             endValueIndex = indexOfAny(text, [';', ',', ' ', '\t', '\n'], rcursor + 1);
             if endValueIndex is None:
                 endValueIndex = tlen
             valueStr = text[rcursor:endValueIndex]
             res[left] = evaluation(valueStr, evaluate)
             cursor = endValueIndex + 1
+
+        # possible that cursor still rests on terminator
+        while cursor < tlen and text[cursor] in terminalChars:
+            cursor += 1
     return res
 
 
