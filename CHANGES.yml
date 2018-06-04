@@ -1,24 +1,32 @@
 -
+    version: 2.0.1
+    data: June 4, 2018
+    notes: >
+        Updated for new pypi.org URLs.
+
+        Plus other minor tweaks, like tightening tox targets in favor of Travis CI.
+
+-
     version: 2.0.0
     date: October 30, 2017
     notes: >
         *Major* release.
-        
+
         Added ``table()`` and ``records()`` functions for
         ingesting tabular and record-oriented data respectively.\
-        
+
         Regularized handling of object evaluation, comment stripping,
         and other attributes.
-        
+
 
 -
     version: 1.7.3
     date: October 13, 2017
     notes: >
-        Added pyproject.toml for PEP 518 compliance. 
+        Added pyproject.toml for PEP 518 compliance.
 
         Updated testing matrix to accomodate new PyPy3 version
-        on Travis CI. 
+        on Travis CI.
 
 -
     version: 1.7.2
@@ -26,7 +34,7 @@
     notes: >
         Update compatibility strategy to make Python 3 centric.
         Python 2 is now the outlier. More future-proof.
-        
+
         Doc tweaks.
 
 
@@ -50,7 +58,7 @@
     notes: >
         Updates testing. Newly qualified under 2.7.13 and 3.6,
         as well as most recent builds of pypy and pypy3.
-        
+
 -
   version: 1.6.1
   date: September 15, 2015
@@ -73,7 +81,7 @@
     Added ``text()`` as preferred synonym for ``textlines()``, as that
     is more consistent with the rest of the naming scheme. Deprecated
     ``textlines()``.
-    
+
 -
   version: 1.4.3
   date: August 26, 2015
@@ -86,7 +94,7 @@
   notes: >
     Achieves 100% test coverage. Updated testing scheme to automatically
     evaluate and report combined coverage across multiple Python versions.
-    
+
 -
   version: 1.4.0
   date: null
@@ -124,7 +132,7 @@
   date: null
   notes: >
     Misc. changes from 1.0 or prior:
-    
+
     Common line prefix is now computed without considering blank
     lines, so blank lines need not have any indentation on them
     just to "make things work."

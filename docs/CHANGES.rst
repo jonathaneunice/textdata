@@ -1,6 +1,25 @@
 Change Log
 ==========
 
+**2.0.1** 
+
+    Updated for new pypi.org URLs.
+
+    Plus other minor tweaks, like tightening tox targets in favor of
+    Travis CI.
+
+
+**2.0.0**  (October 30, 2017)
+
+    *Major* release.
+
+    Added ``table()`` and ``records()`` functions for ingesting
+    tabular and record-oriented data respectively.\
+
+    Regularized handling of object evaluation, comment stripping, and
+    other attributes.
+
+
 **1.7.3**  (October 13, 2017)
 
     Added pyproject.toml for PEP 518 compliance.

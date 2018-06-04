@@ -492,7 +492,7 @@ first second
         ]
     ),
     Dict(name="t022",
-         source="https://pypi.python.org/pypi/plaintable",
+         source="https://pypi.org/project/plaintable",
          text="""
             one   two   three  four  five
             ----  ----  -----  ----  -----
@@ -1053,6 +1053,25 @@ ucode   | Toggles advanced unicode. (Enhanced characters)                       
             ['Joe', 12.3, date(2017, 10, 27)],
             ['Jill', 12.9, date(2017, 9, 11)],
             ['Meg', 13.2, date(2017, 10, 16)],
+        ]
+    ),
+    Dict(name="t039d",
+         source="homegrown",
+         text="""
+    Joe   12.3   2017-10-27
+    Jill  12.9   2017-09-11
+    Meg   13.2   2017-10-16
+""",
+         options = dict(header='name age joined',
+                        evaluate=[str, float, float]
+                        # final float should fail to evaluate
+                        # rendering a string instead
+                        ),
+         expected=[
+            ['name', 'age', 'joined'],
+            ['Joe', 12.3, '2017-10-27'],
+            ['Jill', 12.9, '2017-09-11'],
+            ['Meg', 13.2, '2017-10-16'],
         ]
     ),
 ]

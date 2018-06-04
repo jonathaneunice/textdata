@@ -16,22 +16,6 @@ except NameError:
 from .eval import evaluation
 from .core import CSTRIP
 
-"""
-Cases:
-
-1. Bordered table with explicit column vertical separators. Read positions
-   of separators, use those.
-2. Some separator, but no (or insufficient) vertical indicators. Use the
-   indicators given, but also use rivers.
-3. No separators. Use rivers exclusively. Current code focused on this
-   approach, but gave ability to provide an explicit colguide
-
-Need to evaluate whether some separators span the entire table,
-and so should not be used for finding spaces. In those cases, maybe
-use shortest separator line?
-
-"""
-
 
 def all_indices(s, substr):
     """
@@ -202,9 +186,6 @@ def table(text, header=None, evaluate=True, cstrip=True):
 
     return rows
 
-# add converters / data type setters and date guesser
-# add auto interpretation of column headers (heuristic)
-
 
 def records(t, dict=dict, keyclean=None, **kwargs):
     rows = table(t, **kwargs)
@@ -288,6 +269,6 @@ if __name__ == '__main__':   # pragma: no cover
         pprint(records(t5, dict=Dict))
         print('---')
         kc = lambda h: h.lower().replace(' ', '_')
-        # https://pypi.python.org/pypi/pydentifier/0.1.3
+        # https://pypi.org/project/pydentifier/0.1.3
         # for the full identifier cleanup
         pprint(records(t5, dict=Dict, keyclean=kc))

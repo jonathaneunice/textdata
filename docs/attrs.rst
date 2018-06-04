@@ -14,23 +14,25 @@ form.
     >>> attrs("a=1 b=2 c='something more'")
     {'a': 1, 'b': 2, 'c': 'something more'}
 
-(The order in which key-value pairs appears may vary. Python
-versions earlier than 3.6 were almost perversly eager to
+(The order in which key-value pairs appear may vary depending on what Python
+verssion you're running. Python prior to 3.6 was almost perversly eager to
 randomize dictionary order; see below for some workarounds.)
 
-Note that quotes are not required for keys, there are no required
-separators between key-value pairs, and that the values for numercial
-values are rendered from string representation into
-"natural" Python types such as ``int``, ``float``, ``complex``, etc. Pretty
-slick, huh?
+Note that:
+1. Quotes are not required for keys; they're assumed to be strings.
+2. No separators are required between key-value pairs (though commas and
+   semicolons may be optionally used; more on this in a minute).
+3. What would "natrually" be a numercial value in Python is indeed a
+   numerical value, not the string representation you might assume a
+   parsing routine would render.
 
 Even better, colons may also be used as key-value separators, and
 quotes are only required if the value includes spaces.::
 
 .. code-block:: pycon
 
-    >>> attrs("a:1 b:2 c:'something more'")
-    {'a': 1, 'b': 2, 'c': 'something more'}
+    >>> attrs("a:1 b:2 c:'something more' d=sweet!")
+    {'a': 1, 'b': 2, 'c': 'something more', d: 'sweet!'}
 
 That may seem overkill, but it makes it much easier to directly import content
 from JavaScript, HTML, CSS, or XML. To make it easier to import from CSS,
@@ -114,5 +116,3 @@ been superceeded by ``evaluate`` (set ``evaluate='natural'``
 for the old ``literal=True`` or
 ``evaluate='minimal'`` or ``evaluate=False``) for the old ``literal=False``).
 ``dict`` for ``astype`` is just a name change.
-
-

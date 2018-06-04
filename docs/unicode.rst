@@ -31,7 +31,7 @@ There was a dropout of compatibility in early Python 3 releases (3.0, 3.1,
 and 3.2), making it much harder to
 maintain a unified source base with them in the mix. A
 compatibility function such as ``six.u`` from
-`six <http://pypi.python.org/pypi/six>`_
+`six <https://pypi.org/project/six>`_
 can help alleviate much--though certainly not all--of the pain.
 Best advice is: Avoid Python 3 before 3.3 *at all costs*. They're thoroughly
 obsolte--in many ways, even more than Python 2.7 is. Run!

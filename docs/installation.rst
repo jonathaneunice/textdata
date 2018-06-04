@@ -5,14 +5,14 @@ To install or upgrade to the latest version::
 
     pip install -U textdata
 
-To ``easy_install`` under a specific Python version (3.3 in this example)::
-
-    python3.3 -m easy_install --upgrade textdata
-
-(You may need to prefix these with ``sudo`` to authorize
+You may need to prefix these with ``sudo`` to authorize
 installation. In environments without super-user privileges, you may want to
 use ``pip``'s ``--user`` option, to install only for a single user, rather
-than system-wide.)
+than system-wide. Sometimes you need to use ``pip2`` or ``pip3`` to install
+under a given version of Python. If your ``pip`` programs don't seem well
+configured for the version of Python you want, you can install directly::
+
+    python3.6 -m pip install -U textdata
 
 Testing
 -------

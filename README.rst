@@ -7,29 +7,29 @@
 
 .. |version| image:: http://img.shields.io/pypi/v/textdata.svg?style=flat
     :alt: PyPI Package latest release
-    :target: https://pypi.python.org/pypi/textdata
+    :target: https://pypi.org/project/textdata
 
 .. |versions| image:: https://img.shields.io/pypi/pyversions/textdata.svg
     :alt: Supported versions
-    :target: https://pypi.python.org/pypi/textdata
+    :target: https://pypi.org/project/textdata
 
 .. |impls| image:: https://img.shields.io/pypi/implementation/textdata.svg
     :alt: Supported implementations
-    :target: https://pypi.python.org/pypi/textdata
+    :target: https://pypi.org/project/textdata
 
 .. |wheel| image:: https://img.shields.io/pypi/wheel/textdata.svg
     :alt: Wheel packaging support
-    :target: https://pypi.python.org/pypi/textdata
+    :target: https://pypi.org/project/textdata
 
 .. |coverage| image:: https://img.shields.io/badge/test_coverage-100%25-6600CC.svg
     :alt: Test line coverage
-    :target: https://pypi.python.org/pypi/textdata
+    :target: https://pypi.org/project/textdata
 
 One often needs to state data in program source. Python, however, needs its
-lines indented *just so*. Multi-line strings therefore often have extra
+program lines indented *just so*. Multi-line strings therefore often have extra
 spaces and newline characters you didn't really want. Many developers "fix"
-this by using Python ``list`` literals, but that's
-tedious, verbose, and often less legible.
+this by using Python ``list`` literals, but that's tedious, verbose, and often
+less legible.
 
 The ``textdata`` package makes it easy to have clean, nicely-whitespaced
 data specified in your program, but to get the data without extra syntax
@@ -147,15 +147,15 @@ Dictionaries
 ------------
 
 Or maybe you want a ``dict``. The ``attrs`` function makes it easy to
-grab
+grab::
 
 .. code-block:: pycon
 
     >>> attrs("a=1 b=2 c='something more'")
     {'a': 1, 'b': 2, 'c': 'something more'}
 
-Or maybe you want to cut and paste data directly from JavaScript, HTML, CSS, or
-XML. Easy peasy! No text editing required.
+If you want to cut and paste data directly from JavaScript, HTML, CSS, or
+XML, easy peasy! No text editing required.
 
 .. code-block:: pycon
 
@@ -179,7 +179,7 @@ Or maybe you have tabular data.
 
 .. code-block:: pycon
 
-    >>> text = """
+    >>> tabledata = """
     ...     name  age  strengths
     ...     ----  ---  ---------------
     ...     Joe   12   woodworking
@@ -187,13 +187,13 @@ Or maybe you have tabular data.
     ...     Meg   13   snark, snapchat
     ... """
 
-    >>> table(text)
+    >>> table(tabledata)
     [['name', 'age', 'strengths'],
      ['Joe', 12, 'woodworking'],
      ['Jill', 12, 'slingshot'],
      ['Meg', 13, 'snark, snapchat']]
 
-    >>> records(text)
+    >>> records(tabledata)
     [{'name': 'Joe', 'age': 12, 'strengths': 'woodworking'},
      {'name': 'Jill', 'age': 12, 'strengths': 'slingshot'},
      {'name': 'Meg', 'age': 13, 'strengths': 'snark, snapchat'}]
@@ -211,8 +211,8 @@ This works even if you have a table with a lot of extra fluff:
     ... | Meg  |  13 | snark, snapchat |
     ... +------+-----+-----------------+
     ... """
-    >>> assert table(text) == table(fancy)
-    >>> assert records(text) == records(fancy)
+    >>> assert table(tabledata) == table(fancy)
+    >>> assert records(tabledata) == records(fancy)
 
 It works with tables formatted in a variety of ways
 including Markdown, RST, ANSI/Unicode line drawing
@@ -226,4 +226,4 @@ files and program source, and doing it in a highly functional, convenient,
 well-tested way. Take it for a spin today!
 
 See `the full documentation
-at Read the Docs <http://textdata.readthedocs.org/en/latest/>`_.
+at Read the Docs <https://textdata.readthedocs.org/en/latest/>`_.

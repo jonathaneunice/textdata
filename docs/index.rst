@@ -26,6 +26,7 @@ wheel-reinvention.
    Comments <comments>
    Paragraphs <paragraphs>
    Attributes (Dicts) <attrs>
+   Tables <tables>
    Unicode and Encodings <unicode>
    Alternate Data Paths <alternate>
    API Details <api>

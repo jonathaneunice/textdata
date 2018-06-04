@@ -7,7 +7,7 @@ from codecs import open
 def lines(text):
     """
     Returns each non-blank line in text enclosed in a list.
-    See http://pypi.python.org/pypi/textdata for more sophisticated version.
+    See https://pypi.org/project/textdata for more sophisticated version.
     """
     return [l.strip() for l in text.strip().splitlines() if l.strip()]
 
@@ -17,7 +17,7 @@ def lines(text):
 
 setup(
     name='textdata',
-    version='2.0.0',
+    version='2.0.1',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description='Easily get clean data, direct from text or Python source',
@@ -45,6 +45,7 @@ setup(
         Programming Language :: Python :: 3.4
         Programming Language :: Python :: 3.5
         Programming Language :: Python :: 3.6
+        Programming Language :: Python :: 3.7ß
         Programming Language :: Python :: Implementation :: CPython
         Programming Language :: Python :: Implementation :: PyPy
         Topic :: Software Development :: Libraries :: Python Modules
