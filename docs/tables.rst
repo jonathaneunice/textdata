@@ -2,7 +2,9 @@
 Tables
 ======
 
-Much data comes in tabular format.
+Much data comes in tabular format. The ``table()`` and ``records()``
+functions help you extract it in convenient ways...either as a list
+of lists, or as a list of dictionaries.
 
 .. code-block:: pycon
 
@@ -25,7 +27,7 @@ Much data comes in tabular format.
      {'name': 'Jill', 'age': 12, 'strengths': 'slingshot'},
      {'name': 'Meg', 'age': 13, 'strengths': 'snark, snapchat'}]
 
-Note that ``tables()`` works even if you have a table with a lot of extra fluff:
+Note that ``table()`` works even if you have a table with a lot of extra fluff:
 
 .. code-block:: pycon
 
@@ -41,20 +43,16 @@ Note that ``tables()`` works even if you have a table with a lot of extra fluff:
     >>> assert table(text) == table(fancy)
     >>> assert records(text) == records(fancy)
 
-The parsing algorithm is heuristic, but works
-well with tables formatted in a variety of
-conventional ways
-including Markdown, RST, ANSI/Unicode line drawing
-characters, plain text columns and borders, ....
-See the table tests for dozens of samples of formats
-that work.
+The parsing algorithm is heuristic, but works well with tables formatted in a
+variety of conventional ways including Markdown, RST, ANSI/Unicode line drawing
+characters, plain text columns and borders, .... See the table tests for dozens
+of samples of formats that work.
 
-What constitutes table columns are contiguous bits of text, without
-intervening whitespace. Typographic "rivers" of whitespace define
-column breaks. For this reason, it's recommended that every table
-column have a separator line, usually consistng of ``'-'``, ``'='``,
-or Unicode box drawing characters, to control column width.
+What constitutes table columns are contiguous bits of text, without intervening
+whitespace. Typographic "rivers" of whitespace define column breaks. For this
+reason, it's recommended that every table column have a separator line, usually
+consistng of ``'-'``, ``'='``, or Unicode box drawing characters, to control
+column width.
 
-If there are ``'#'`` characters in your table data, best
-to pass ``cstrip=False`` so that they will not be
-erroneously interpreted as comments.
+If there are ``'#'`` characters in your table data, best to pass
+``cstrip=False`` so that they will not be erroneously interpreted as comments.

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+**2.0.2**  (July 3, 2018)
+
+    Documentation tweaks.
+
+
 **2.0.1** 
 
     Updated for new pypi.org URLs.
