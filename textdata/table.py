@@ -154,7 +154,6 @@ def discover_table(text, evaluate=True, cstrip=True):
         row = []
         for r, col_evaluate in zip(column_indices, evaluates):
             segment = l[r[0]:r[1]]
-            print('segment:', repr(segment))
             row.append(evaluation(segment, col_evaluate))
         rows.append(row)
     return rows

@@ -1,5 +1,12 @@
 -
     version: 2.0.2
+    date: July 4, 2018
+    notes: >
+        Removed debugging statement inadverntaently left in code.
+
+
+-
+    version: 2.0.2
     date: July 3, 2018
     notes: >
         Documentation tweaks.
