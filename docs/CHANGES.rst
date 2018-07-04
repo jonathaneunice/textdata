@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+**2.1.0**  (July 4, 2018)
+
+    Removed debugging statement inadverntaently left in code.
+
+    Improve documentation, esp. for APIs.
+
+    Enable ``attrs``, ``table``, and ``records`` to take the same
+    string or sequence of lines input as the outher routines.
+
+    Cleaned up exported names. ``OrderedDict`` no longer exported as a
+    convenience.
+
+
 **2.0.2**  (July 3, 2018)
 
     Documentation tweaks.

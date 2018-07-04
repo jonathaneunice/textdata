@@ -27,7 +27,10 @@ of lists, or as a list of dictionaries.
      {'name': 'Jill', 'age': 12, 'strengths': 'slingshot'},
      {'name': 'Meg', 'age': 13, 'strengths': 'snark, snapchat'}]
 
-Note that ``table()`` works even if you have a table with a lot of extra fluff:
+The ``table()`` function returns a list of lists, while the ``records()`` function
+returns a list of dictionaries.
+
+Note that ``table()`` and ``records()`` work even if you have a lot of extra fluff:
 
 .. code-block:: pycon
 
@@ -45,7 +48,7 @@ Note that ``table()`` works even if you have a table with a lot of extra fluff:
 
 The parsing algorithm is heuristic, but works well with tables formatted in a
 variety of conventional ways including Markdown, RST, ANSI/Unicode line drawing
-characters, plain text columns and borders, .... See the table tests for dozens
+characters, plain text columns and borders, .... See the table tests for *dozens*
 of samples of formats that work.
 
 What constitutes table columns are contiguous bits of text, without intervening
@@ -56,3 +59,18 @@ column width.
 
 If there are ``'#'`` characters in your table data, best to pass
 ``cstrip=False`` so that they will not be erroneously interpreted as comments.
+
+Records and Keys
+----------------
+
+Records depends on there being a header row available.
+
+Many tables use natural language headers, such as ``First Name`` and ``Item Price``.
+When retrieving records (dicts), this is not impossible, but it's often also not 
+entirely convenient--especially for attribute-accessible dictionary keys. So ``records()``
+provides a ``keyclean`` feature that passes each key through a cleanup function. 
+By default whitespace at the start and end of the key are removed, multiple interior
+whitespace characters are collapsed and replaced with underscore characters (`_`).
+
+You can provide your own custom keyclean function if you like, or ``None`` if you
+like your keys as-is.

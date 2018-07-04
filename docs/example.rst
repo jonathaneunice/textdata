@@ -41,7 +41,7 @@ Note that while ``text`` returns a single string, it maintains the
 If you want to elide the newlines, use ``text(text, join=' ')`` and the
 newline characters will be replaced with spaces.
 
-A new ``textline`` call makes this even easier. It gives a single, no-breaks
+A ``textline`` call makes this even easier. It gives a single, no-breaks
 string by default. It's particularly useful for rendering single, very long
 lines.
 

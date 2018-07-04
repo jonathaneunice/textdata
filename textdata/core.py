@@ -6,9 +6,11 @@ import os
 import re
 from itertools import groupby
 import sys
-from io import StringIO
+import warnings
+
 
 __all__ = 'lines text textlines textline words paras'.split()
+
 
 _PY2 = sys.version_info[0] == 2
 if not _PY2:
@@ -101,7 +103,7 @@ def text(source, **kwargs):
     because of the nice cleanups ``lines()`` does.
 
     :param str|lines source:  Text (or list of text lines) to be processed
-    :param str join: String to join lines with. Typically "\n" for line-oriented
+    :param str join: String to join lines with. Typically newline for line-oriented
         text but change to " " for a single continous line.
     :return: the cleaned string
     :rtype: str
@@ -110,7 +112,12 @@ def text(source, **kwargs):
     return lines(source, **kwargs)
 
 
-textlines = text
+def textlines(*args, **kwargs):
+    """
+    Deprecated alias for ``test``. Use it instead.
+    """
+    warnings.warn('Depreacted alias for text(). Use it instead.', DeprecationWarning)
+    return text(*args, **kwargs)
 
 
 def textline(source, cstrip=True):

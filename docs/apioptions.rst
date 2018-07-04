@@ -1,5 +1,5 @@
-Lines and Textlines
-===================
+Lines and Text
+==============
 
 Both ``lines`` and ``text`` provide provide routinely-needed cleanups:
 

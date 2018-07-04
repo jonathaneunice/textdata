@@ -1,11 +1,8 @@
 
 import warnings
-try:
-    from collections import OrderedDict
-except ImportError:
-    pass
+
 from .eval import evaluation
-from .core import CSTRIP
+from .core import CSTRIP, ensure_text
 
 
 # see something, say something
@@ -39,32 +36,33 @@ def isQuote(s):
     return s in quoteChars
 
 
-def attrs(text, evaluate='natural', dict=dict,
+def attrs(source, 
+          evaluate='natural', 
+          dict=dict,
           cstrip=True,
-          literal=True, astype=None):
+          literal=True, 
+          astype=None):
     """
-    Parse attribute strings into a dict, which is returned. Optionally
-    (and by default) evaluate literals (e.g. turn numbers into real
-    int and float instances, not just strings of same). Quoted values
-    are always strings, never evaluated.
-
-    Unquoted: x=1 y=3
-    Quoted:  x="1 and 2" y='3'
-
-    Partial: x=
-    Partial: x
-    CSS style: x: 1; y: 3
-    CSS style quoted: x: "1 and 2"; y: '3'
-
+    Parse attribute strings into a dict (or other mapping type).
+    By default evaluates literals as natural to Python, e.g. turning
+    what looks like numbers into into real ``int`` and ``float`` instances, 
+    not just strings). 
+    Quoted values are always treated as strings, never evaluated.
 
     Args:
-        text (str|unicode): Text to parse
-        evaluate (str|bool): How to evaluate resullting values
+        source (Union[str, List[str]]): Text to parse (as string or list of lines)
+        evaluate (Union[str, bool]): How to evaluate resulting values
         dict (type): Type of mapping to return
-        cstrip (bool): Should comments be removed?
+        cstrip (bool): Remove comments from string before interpretation?
+        astyle: Deprecated. Use ``dict`` parameter instead.
+        literal: Deprecated. Use ``evaluate`` parameter instead.
+
     Returns:
         dict (or given dict type)
     """
+
+    text = ensure_text(source)
+
     # deprecated API warnings and patchups
     if astype is not None:
         dict = astype
@@ -131,7 +129,8 @@ class Dict(dict):
     """
     Attribute-accessible dict subclass. Does whatever a dict does, but its
     keys are also accessible via .attribute notation. Provided here as a
-    convenience.
+    convenience. Recommend you use `items.Item <https://pypi.org/project/items/>`_
+    instead. It is more robust and complete.
     """
     def __init__(self, *args, **kwargs):
         super(Dict, self).__init__(*args, **kwargs)

@@ -2,19 +2,19 @@
 
 from __future__ import print_function, division, unicode_literals
 import re
-from intspan import intspan
 import textwrap
-from pprint import pprint
+import sys
 
-try:
-    basestring
-    # Python 2
-except NameError:
-    # Python 3
-    basestring = str
+from intspan import intspan
 
 from .eval import evaluation
-from .core import CSTRIP
+from .core import CSTRIP, ensure_text, words
+from .attrs import Dict
+
+
+_PY2 = sys.version_info[0] == 2
+if not _PY2:
+    basestring = str
 
 
 def all_indices(s, substr):
@@ -159,13 +159,13 @@ def discover_table(text, evaluate=True, cstrip=True):
     return rows
 
 
-def table(text, header=None, evaluate=True, cstrip=True):
+def table(source, header=None, evaluate=True, cstrip=True):
     """
     Return a list of lists representing a table.
 
     Args:
-        text (basestring): text in which to find table
-        header (str|list|None): Header for the table
+        source (Union[str, List[str]]): Text to parse (as string or list of lines)
+        header (Union[str, List, None]): Header for the table
         evaluate (Union[str, function, None]): Indicates how to post-process
             table cells. By default, True or "natural" means as Python literals.
             Other options are False or 'minimal' (just string trimming), or
@@ -175,99 +175,49 @@ def table(text, header=None, evaluate=True, cstrip=True):
         List of lists, where each inner list represents a row.
     """
 
+    text = ensure_text(source)
+
     rows = discover_table(text, evaluate, cstrip)
 
     if header:
         if isinstance(header, basestring):
-            header = header.split()
-        if isinstance(header, list):
-            rows.insert(0, header)
+            header = words(header)
+        rows.insert(0, header)
 
     return rows
 
 
-def records(t, dict=dict, keyclean=None, **kwargs):
-    rows = table(t, **kwargs)
+def keyclean(key):
+    """
+    Default way to clean table headers so they make good
+    dictionary keys.
+    """
+    clean = re.sub(r'\s+', '_', key.strip())
+    return clean
+
+keyclean.lc = lambda k: keyclean(k).lower()
+
+
+def records(source, dict=Dict, keyclean=keyclean, **kwargs):
+    """
+    Alternate table parser. Renders not a list of lists, but a list of
+    attribute-accessible Dict (dict subclasses).
+
+    Args:
+        source (Union[str, List[str]]): Text to parse (as string or list of lines)
+        dict (type): dictionary subtype in which to return results
+        keyclean (Union[Function, None]): function to clean table headers
+            into more suitable dictionary keys
+        **kwargs: All other kw args passed to textdata.table
+
+    Returns:
+        list of dictionaries, one per non-header row
+    """
+    text = ensure_text(source)
+
+    rows = table(text, **kwargs)
     header, rows = rows[0], rows[1:]
     if keyclean:
         header = [keyclean(h) for h in header]
 
     return [dict(zip(header, row)) for row in rows]
-
-
-if __name__ == '__main__':   # pragma: no cover
-    from pprint import pprint
-    import sys
-    sys.path.insert(0, '../test')
-    from test_table import samples
-
-
-    text="""
-+-----------+--------+-------------+------------------------+---------+
-| User Name | Salary | Designation |         Address        |  Lucky# |
-+-----------+--------+-------------+------------------------+---------+
-|       Ram |   2000 |     Manager |        #99, Silk board |    1111 |
-|       Sri |  12000 |   Developer |             BTM Layout |   22222 |
-|    Prasad |  42000 |        Lead | #66, Viaya Bank Layout |  333333 |
-|       Anu | 132000 |          QA |             #22, Vizag | 4444444 |
-|       Sai |  62000 |   Developer |         #3-3, Kakinada |         |
-|    Venkat |   2000 |     Manager |                        |         |
-|       Raj |  62000 |             |                        |         |
-|       BTC |        |             |                        |         |
-+-----------+--------+-------------+------------------------+---------+
-"""
-    expected=[
-            ['User Name', 'Salary', 'Designation', 'Address', 'Lucky#'],
-            ['Ram', 2000, 'Manager', '#99, Silk board', 1111],
-            ['Sri', 12000, 'Developer', 'BTM Layout', 22222],
-            ['Prasad', 42000, 'Lead', '#66, Viaya Bank Layout', 333333],
-            ['Anu', 132000, 'QA', '#22, Vizag', 4444444],
-            ['Sai', 62000, 'Developer', '#3-3, Kakinada', ''],
-            ['Venkat', 2000, 'Manager', '', ''],
-            ['Raj', 62000, '', '', ''],
-            ['BTC', '', '', '', '']
-        ]
-    pprint(table(text))
-
-    if False:
-        # multi table test
-        count = 0
-        from tabsample import samples
-        for t in samples:
-            # if t.expected:
-            #     continue
-            print()
-            print('Name:  ', t.name)
-            # print('Source:', t.source)
-            print()
-            print(t.text)
-            print()
-            options = t.options if hasattr(t, 'options') else {}
-            rows = table(t.text, **options)
-            pprint(rows)
-            if t.expected:
-                assert rows == t.expected
-                count += 1
-
-            print()
-            print('===')
-            print()
-        print()
-        print(count, 'successful tests')
-
-    if False:
-
-        from textdata.attrs import Dict
-
-        from collections import OrderedDict
-        t5 = getattr(tabsample, 't5')
-        pprint(records(t5))
-        print('---')
-        pprint(records(t5, dict=OrderedDict))
-        print('---')
-        pprint(records(t5, dict=Dict))
-        print('---')
-        kc = lambda h: h.lower().replace(' ', '_')
-        # https://pypi.org/project/pydentifier/0.1.3
-        # for the full identifier cleanup
-        pprint(records(t5, dict=Dict, keyclean=kc))

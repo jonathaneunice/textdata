@@ -80,17 +80,17 @@ effective, lacked a clean literal form. ``attrs`` can help.:
 
 .. code-block:: pycon
 
+    >>> from collections import OrdredDict
     >>> attrs("a=1 b=2 c='something more'", dict=OrderedDict)
     OrderedDict([('a', 1), ('b', 2), ('c', 'something more')])
 
 Which is terse, yet returns an ``OrderedDict`` with its
-keys in the expected order. For convenience, ``textdata``
-exports ``collections.OrderedDict`` implicitly if you
-use ``from textdata import *``. Or you can import it yourself
-if you don't use a wildcard import.
+keys in the expected order. 
 
 ``attrs`` also exports ``Dict``, an attribute-accessible
-ddictionary subclass.
+dictionary subclass. (Note, in future versions this will been
+replaced with `items.Item <https://pypi.org/project/items/>`_,
+an inherently ordered, attribute-accessible dictionary.
 
 .. code-block:: pycon
 
@@ -108,11 +108,9 @@ ddictionary subclass.
 Deprecations
 ------------
 
-Previous versions of ``attrs`` supported keyword
-options ``literal`` to turn on/off interpretation
-into Python values, and ``astype`` to control the
-type of the dictionary returned. Those options have
-been superceeded by ``evaluate`` (set ``evaluate='natural'``
-for the old ``literal=True`` or
+Previous versions of ``attrs`` supported keyword options ``literal`` to turn
+on/off interpretation into Python values, and ``astype`` to control the type of
+the dictionary returned. Those options have been superceeded by ``evaluate``
+(set ``evaluate='natural'`` for the old ``literal=True`` or
 ``evaluate='minimal'`` or ``evaluate=False``) for the old ``literal=False``).
 ``dict`` for ``astype`` is just a name change.

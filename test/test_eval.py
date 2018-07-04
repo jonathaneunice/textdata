@@ -62,3 +62,9 @@ def test_evaluation_func():
         return x.strip().upper()
     assert evaluation('  haPpIly  ', custom) == 'HAPPILY'
     assert evaluation('  haPpIly  ', custom2) == 'HAPPILY'
+
+
+def test_evaluation_exception():
+    def broken():
+        raise ValueError
+    assert evaluation(' mostly   ', broken) == 'mostly'

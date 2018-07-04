@@ -9,6 +9,27 @@ import pytest
 
 _PY2 = sys.version_info[0] == 2
 
+def test_custom_header():
+    source = """
+        Joe   12   woodworking
+        Jill  12   slingshot
+        Meg   13   snark, snapchat
+    """
+    t1 = table(source)
+    assert t1 == [['Joe', 12, 'woodworking'],
+                  ['Jill', 12, 'slingshot'],
+                  ['Meg', 13, 'snark, snapchat']]
+
+    # use words() for splitting string
+    t2 = table(source, 'name age "favorite hobbies"') 
+    assert t2 == [['name', 'age', 'favorite hobbies'],
+                  ['Joe', 12, 'woodworking'],
+                  ['Jill', 12, 'slingshot'],
+                  ['Meg', 13, 'snark, snapchat']]
+
+    t3 = table(source, header=['name', 'age', "favorite hobbies"])
+    assert t2 == t3
+
 
 samples = [
     Dict(name='t000',
@@ -1149,7 +1170,6 @@ def py2_patches(name, expected):
         for r in expected:
             if r[0].startswith('0'):
                 r[0] = int(r[0].lstrip('0'))
-
 
 
 

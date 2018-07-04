@@ -3,6 +3,7 @@
 from textdata import *
 from textdata.core import ensure_text, noquotes
 import sys
+import pytest
 
 
 def _print(*args, **kwargs):
@@ -33,9 +34,9 @@ def test_ensure_text():
 
 
 def test_noquotes():
-	assert noquotes('"this"') == 'this'
-	assert noquotes("'this'") == 'this'
-	assert noquotes('this') == 'this'
+    assert noquotes('"this"') == 'this'
+    assert noquotes("'this'") == 'this'
+    assert noquotes('this') == 'this'
 
 
 def test_basic():
@@ -128,18 +129,18 @@ def test_cstrip():
     """
 
     assert lines(t) == lines(tc)
-    assert textlines(t) == textlines(tc)
+    assert text(t) == text(tc)
 
 
 def test_malindented_blank_lines():
 
-    assert textlines(noblanks=False, source="""
+    assert lines(noblanks=False, source="""
         this
 
         is
         ok
 
-    """) == "this\n\nis\nok\n"
+    """) == "this\n\nis\nok\n\n".splitlines()
 
 
 def test_extra_start_space():
@@ -162,29 +163,7 @@ def test_extra_start_space():
          "  which isn't common"]
 
 
-def test_textlines():
-    data = """
-
-
-    This is a test of lines
-
-    here there should be no blanks
-     but some that start wiht a little extra space ok?
-      which isn't common
-
-
-
-          """
-
-    assert lines(data) == textlines(data).splitlines()
-    assert lines(data, join=True) == lines(data, join='')
-    assert lines(data, join=True) == ''.join(textlines(data).splitlines())
-    assert lines(data, join=' ') == ' '.join(textlines(data).splitlines())
-    assert lines(data, join='\n') == textlines(data)
-    assert len(lines(data)) == 4
-
-
-def test_text_and_textlines():
+def test_lines():
     data = """
 
 
@@ -206,19 +185,58 @@ def test_text_and_textlines():
     assert len(lines(data)) == 4
 
 
+def test_text():
+    data = """
+
+
+    This is a test of lines
+
+    here there should be no blanks
+     but some that stetart wiht a little extra space ok?
+      which isn't common
+
+
+
+          """
+
+    assert lines(data) == text(data).splitlines()
+    assert lines(data, join=True) == lines(data, join='')
+    assert lines(data, join=True) == ''.join(text(data).splitlines())
+    assert lines(data, join=' ') == ' '.join(text(data).splitlines())
+    assert lines(data, join='\n') == text(data)
+    assert len(lines(data)) == 4
+
+
+def test_text_textlines_equivalence():
+    data = """
+
+
+    This is a test of lines
+
+    here there should be no blanks
+     but some that stetart wiht a little extra space ok?
+      which isn't common
+
+
+
+          """
+    with pytest.warns(DeprecationWarning):
+        assert text(data) == textlines(data)
+
+
 def test_tricky_prefix():
     """
     Common prefixes need not be all spaces. This tests if common non-blank
     prefixes are properly handled.
     """
 
-    t = textlines("""
+    t = text("""
         something
         something else
     """)
     assert t == "something\nsomething else"
 
-    t2 = textlines("""
+    t2 = text("""
 xxx y
 xxx z
 """)
@@ -243,7 +261,7 @@ def test_words():
 
     assert words("don't be blue don't") == ["don't", "be", "blue", "don't"]
     assert words(""" "'this'" works '"great"' """) == \
-				 ["'this'", 'works', '"great"']
+                 ["'this'", 'works', '"great"']
 
 
 def test_words_cstrip():
