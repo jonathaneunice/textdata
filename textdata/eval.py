@@ -4,6 +4,7 @@ natural Python values.
 """
 
 from ast import literal_eval as ast_literal_eval
+from core import noquotes
 
 
 def literal_eval(s):
@@ -22,6 +23,7 @@ def literal_eval(s):
 identity = lambda s: s
 minimal  = lambda s: s.strip()
 natural  = lambda s: literal_eval(s.strip())
+full     = lambda s: literal_eval(noquotes(s.strip()))
 
 
 # mapping of evaluate parameter to evaluation functions
@@ -34,6 +36,8 @@ EVALUATE = {
 
     'natural': natural,
     True:      natural,
+
+    'full':    full,
 }
 
 
