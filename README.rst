@@ -163,6 +163,10 @@ XML, easy peasy! No text editing required.
     >>> attrs("a: 1, b: 2, c: 'something more'")
     {'a': 1, 'b': 2, 'c': 'something more'}
 
+    >>> # JSON
+    >>> attrs('"a": 1, "b": 2, "c": "something more"')
+    {'a': 1, 'b': 2, 'c': 'something more'}
+
     >>> # HTML or XML
     >>> attrs('a="1" b="2" c="something more"')
     {'a': 1, 'b': 2, 'c': 'something more'}

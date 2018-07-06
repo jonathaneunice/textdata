@@ -8,14 +8,14 @@ import sys
 from intspan import intspan
 
 from .eval import evaluation
-from .core import CSTRIP, ensure_text, words
+from .util import CSTRIP, ensure_text, _PY2
+from .core import words
 from .attrs import Dict
 
 
-_PY2 = sys.version_info[0] == 2
 if not _PY2:
     basestring = str
-
+    
 
 def all_indices(s, substr):
     """

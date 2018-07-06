@@ -8,6 +8,11 @@ from itertools import groupby
 import sys
 import warnings
 
+from .util import noquotes, ensure_text, CSTRIP, _PY2
+
+if not _PY2:
+    basestring = str
+
 
 __all__ = 'lines text textlines textline words paras'.split()
 

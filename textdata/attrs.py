@@ -2,7 +2,7 @@
 import warnings
 
 from .eval import evaluation
-from .core import CSTRIP, ensure_text
+from .util import CSTRIP, ensure_text
 
 
 # see something, say something

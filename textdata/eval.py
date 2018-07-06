@@ -4,7 +4,7 @@ natural Python values.
 """
 
 from ast import literal_eval as ast_literal_eval
-from core import noquotes
+from .util import noquotes
 
 
 def literal_eval(s):
