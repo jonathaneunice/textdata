@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, division, unicode_literals
+
 from textdata import *
 from pprint import pprint
 from datetime import datetime, date
 import sys
 import pytest
+
 
 _PY2 = sys.version_info[0] == 2
 
@@ -29,6 +31,53 @@ def test_custom_header():
 
     t3 = table(source, header=['name', 'age', "favorite hobbies"])
     assert t2 == t3
+
+    source2 = """
+    |--:|----:|----|-----|-------:|----------|
+    |  0| 0.10|hoge|True |       0|2017-01-01|
+    |  2|-2.23|foo |False|        |2017-12-23|
+    |  3| 0.00|bar |True |      33|2017-03-03|
+    |-10|-9.90|    |False|    50.5|2017-01-01|
+    """
+
+    import datetime
+    dateparse = lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').date()
+    floatparse = lambda s, empty=0.0: float(s) if s.strip() else empty
+    t4 = table(source2, evaluate=('natural', 'natural', str, 'natural', floatparse, dateparse))
+    assert t4 == [[0, 0.1, 'hoge', True, 0.0, datetime.date(2017, 1, 1)],
+                  [2, -2.23, 'foo ', False, 0.0, datetime.date(2017, 12, 23)],
+                  [3, 0.0, 'bar ', True, 33.0, datetime.date(2017, 3, 3)],
+                  [-10, -9.9, '    ', False, 50.5, datetime.date(2017, 1, 1)]]
+
+    source3 = """
+    |int|float|str |bool |     mix|date      |
+    |--:|----:|----|-----|-------:|----------|
+    |  0| 0.10|hoge|True |       0|2017-01-01|
+    |  2|-2.23|foo |False|        |2017-12-23|
+    |  3| 0.00|bar |True |      33|2017-03-03|
+    |-10|-9.90|    |False|    50.5|2017-01-01|
+    """
+    t5 = table(source3, header=True, evaluate=('natural', 'natural', str, 'natural', floatparse, dateparse))
+    assert t5 == [['int', 'float', 'str', 'bool', 'mix', 'date'],
+                  [0, 0.1, 'hoge', True, 0.0, datetime.date(2017, 1, 1)],
+                  [2, -2.23, 'foo ', False, 0.0, datetime.date(2017, 12, 23)],
+                  [3, 0.0, 'bar ', True, 33.0, datetime.date(2017, 3, 3)],
+                  [-10, -9.9, '    ', False, 50.5, datetime.date(2017, 1, 1)]]
+
+
+def test_multiple_evaluates():
+    source = """
+        Joe   12   woodworking
+        Jill  12   slingshot
+        Meg   13   snark, snapchat
+    """
+    t1 = table(source, evaluate=(lambda s: s.strip().upper(), float, 'minimal'))    
+    assert t1 == [['JOE', 12.0, 'woodworking'],
+                  ['JILL', 12.0, 'slingshot'],
+                  ['MEG', 13.0, 'snark, snapchat']]
+
+    t2 = table(source, evaluate=(lambda s: s.strip().upper(), float))
+    assert t1 == t2
 
 
 samples = [

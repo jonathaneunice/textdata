@@ -27,10 +27,10 @@ of lists, or as a list of dictionaries.
      {'name': 'Jill', 'age': 12, 'strengths': 'slingshot'},
      {'name': 'Meg', 'age': 13, 'strengths': 'snark, snapchat'}]
 
-The ``table()`` function returns a list of lists, while the ``records()`` function
-returns a list of dictionaries.
+The ``table()`` function returns a list of lists, while the ``records()``
+function uses the table header as keys and returns a list of dictionaries.
 
-Note that ``table()`` and ``records()`` work even if you have a lot of extra fluff:
+``table()`` and ``records()`` work even if you have a lot of extra fluff:
 
 .. code-block:: pycon
 

@@ -1,8 +1,9 @@
 
-
-from numbers import Number
 import sys
+from numbers import Number
+
 import pytest
+
 from textdata import *
 from textdata.attrs import *
 
@@ -55,18 +56,19 @@ def test_html_style_attrs():
     # should render attrs
     assert attrs('a=12 b=23') == { 'a': 12, 'b': 23 }
     assert attrs('a=12 b=23', evaluate='minimal') == { 'a': '12', 'b': '23' }
-    with pytest.warns(DeprecationWarning):
-        assert attrs('a=12 b=23', literal=False) == { 'a': '12', 'b': '23' }
+
 
     # should render attrs with quotes
     assert attrs("""a="12" b='23' """) == { 'a': '12', 'b': '23' }
     assert attrs("""a="12" b='23' """, evaluate='minimal') == { 'a': '12', 'b': '23' }
-    with pytest.warns(DeprecationWarning):
-        assert attrs("""a="12" b='23' """, literal=False) == { 'a': '12', 'b': '23' }
+    assert attrs("""a="12" b='23' """, evaluate='natural') == { 'a': '12', 'b': '23' }
+    assert attrs("""a="12" b='23' """, evaluate='full') == { 'a': 12, 'b': 23 }
+
 
     # should render attrs with spaces in quotes
     assert attrs("""a="12 to 13" b='23 or more'""") == \
                      { 'a': '12 to 13', 'b': '23 or more' }
+
 
 def test_css_style_attrs():
     # should render css attrs with quotes
@@ -79,14 +81,11 @@ def test_css_style_attrs():
     # should render attrs with : format
     assert attrs('a:12 b:23') == { 'a': 12, 'b': 23 }
     assert attrs('a:12 b:23', evaluate='minimal') == { 'a': '12', 'b': '23' }
-    with pytest.warns(DeprecationWarning):
-        assert attrs('a:12 b:23', literal=False) == { 'a': '12', 'b': '23' }
 
     # should render attrs with : format separated with ;
     assert attrs('a:12; b:23') == { 'a': 12, 'b': 23 }
     assert attrs('a:12; b:23', evaluate='minimal') == { 'a': '12', 'b': '23' }
-    with pytest.warns(DeprecationWarning):
-        assert attrs('a:12; b:23', literal=False) == { 'a': '12', 'b': '23' }
+
 
 def test_partial_attrs():
     # should render partial attrs
@@ -199,35 +198,48 @@ def test_literal_or_not():
     assert attrs('b=2e3', evaluate='minimal') == { 'b': '2e3' }
     assert attrs('c=3j', evaluate='minimal')  == { 'c': '3j' }
 
-    with pytest.warns(DeprecationWarning):
-        assert attrs('a=None', literal=False) == { 'a': 'None' }
 
-    with pytest.warns(DeprecationWarning):
-        assert attrs('b=1.5', literal=False) == { 'b': '1.5' }
+def test_explicit_dict_type():
 
-    with pytest.warns(DeprecationWarning):
-        assert attrs('b=2e3', literal=False) == { 'b': '2e3' }
-
-    with pytest.warns(DeprecationWarning):
-        assert attrs('c=3j', literal=False)  == { 'c': '3j' }
-
-
-@pytest.mark.skipif(_PYVER < (2,7),
-                    reason="no OrderedDict type")
-def test_astype():
-
-    # astype should return a dict by default
     a = attrs('a=toast b:eggs c:9')
     assert a == { 'a': 'toast', 'b': 'eggs', 'c': 9}
-    assert a == attrs('a=toast b:eggs c:9', astype=dict)
+    assert a == attrs('a=toast b:eggs c:9', dict=dict)
     assert isinstance(a, dict)
 
-    # astype should return an OrderedDict if desired
     from collections import OrderedDict
-    oa = attrs('a=toast b:eggs c:9', astype = OrderedDict)
+    oa = attrs('a=toast b:eggs c:9', dict=OrderedDict)
     assert oa == a
     assert isinstance(oa, OrderedDict)
     assert list(oa.keys()) == ['a', 'b', 'c']
+
+    d = attrs('a=toast b:eggs c:9', dict=Dict)
+    assert d == a
+    assert isinstance(d, Dict)
+    assert set(d.keys()) == set(['a', 'b', 'c'])
+
+
+def test_docs():
+    """Test examples from the docs"""
+
+    # JavaScript
+    assert attrs("a: 1, b: 2, c: 'something more'") == {'a': 1, 'b': 2, 'c': 'something more'}
+
+    # JSON
+    assert attrs('"a": 1, "b": 2, "c": "something more"') == {'a': 1, 'b': 2, 'c': 'something more'}
+
+    # HTML or XML
+    assert attrs('a="1" b="2" c="something more"') == {'a': '1', 'b': '2', 'c': 'something more'}
+
+    # 'full' evaluation needed to transform strings into values
+    assert attrs('a="1" b="2" c="something more"', evaluate='full') == {'a': 1, 'b': 2, 'c': 'something more'}
+
+    # CSS
+    assert attrs("a: 1; b: 2; c: 'something more'") == {'a': 1, 'b': 2, 'c': 'something more'}
+
+
+def test_unclosed_quote():
+    with pytest.raises(ValueError):
+        attrs("a: 1, b: 2, c: 'something more")
 
 
 def test_Dict():

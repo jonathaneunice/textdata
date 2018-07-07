@@ -1,9 +1,9 @@
 
 import warnings
+from collections import OrderedDict
 
 from .eval import evaluation
 from .util import CSTRIP, ensure_text
-
 
 # see something, say something
 warnings.simplefilter('once', DeprecationWarning)
@@ -39,9 +39,7 @@ def isQuote(s):
 def attrs(source, 
           evaluate='natural', 
           dict=dict,
-          cstrip=True,
-          literal=True, 
-          astype=None):
+          cstrip=True):
     """
     Parse attribute strings into a dict (or other mapping type).
     By default evaluates literals as natural to Python, e.g. turning
@@ -62,16 +60,6 @@ def attrs(source,
     """
 
     text = ensure_text(source)
-
-    # deprecated API warnings and patchups
-    if astype is not None:
-        dict = astype
-        msg = 'astype= parameter deprecated; use dict= instead'
-        warnings.warn(msg, DeprecationWarning)
-    if literal is not True:
-        evaluate = 'minimal'
-        msg = 'literal= parameter deprecated; use evaluate= instead'
-        warnings.warn(msg, DeprecationWarning)
 
     # trim comments (optionally) and excess whitespace at ends
     if cstrip:
@@ -107,9 +95,13 @@ def attrs(source,
             return res
         elif isQuote(text[rcursor]):
             # find the end of quote as boundary of value
-            endQuoteIndex = text.index(text[rcursor], rcursor+1)
-            res[left] = text[rcursor + 1:endQuoteIndex]
-            cursor = endQuoteIndex + 1
+            try:
+                endQuoteIndex = text.index(text[rcursor], rcursor+1)
+                valueStr = text[rcursor+1:endQuoteIndex]
+                cursor = endQuoteIndex + 1
+            except ValueError:
+                raise ValueError('unclosed quote ({}) at index {}'.format(text[rcursor], rcursor))
+            res[left] = valueStr if evaluate in ('natural', 'minimal') else evaluation(valueStr, evaluate)
         else:
             # no quote value, ends with terminating whitespace or ; or ,
             endValueIndex = indexOfAny(text, [';', ',', ' ', '\t', '\n'], rcursor + 1);
@@ -127,14 +119,17 @@ def attrs(source,
 
 class Dict(dict):
     """
-    Attribute-accessible dict subclass. Does whatever a dict does, but its
-    keys are also accessible via .attribute notation. Provided here as a
-    convenience. Recommend you use `items.Item <https://pypi.org/project/items/>`_
-    instead. It is more robust and complete.
+    Attribute-accessible ``dict`` subclass. Does whatever ``dict`` does, but
+    its keys accessible via .attribute notation. Provided as a convenience. In
+    future, will use the inherently ordered `items.Item
+    <https://pypi.org/project/items/>`_ instead. It is more robust and
+    complete, though only supporting Python 2 at the moment. But if you're on
+    Python 3, ``Items`` recommended over ``Dict``.
     """
     def __init__(self, *args, **kwargs):
         super(Dict, self).__init__(*args, **kwargs)
         self.__dict__ = self
+        
     def __repr__(self):
         clsname = self.__class__.__name__
         inner = ', '.join('{0}={1!r}'.format(k,v) for k,v in self.items())

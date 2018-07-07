@@ -2,7 +2,7 @@ textdata
 ========
 
 ``textdata`` makes it easy to have clean, nicely-whitespaced data specified in
-your program (or separate text file).
+your program (or a separate text file).
 
 It helps manage both formatting and data type conversions, keeping extra code,
 gratuitious whitespaces, and data-specification syntax out of your way.
@@ -20,13 +20,12 @@ wheel-reinvention.
 .. toctree::
    :titlesonly:
 
-   example
-   apioptions
+   Lines and Text <lines_text>
    Words <words>
-   Comments <comments>
    Paragraphs <paragraphs>
    Attributes (Dicts) <attrs>
    Tables <tables>
+   Comments <comments>
    Unicode and Encodings <unicode>
    Alternate Data Paths <alternate>
    API Details <api>

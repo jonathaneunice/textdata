@@ -21,7 +21,7 @@
     :alt: Wheel packaging support
     :target: https://pypi.org/project/textdata
 
-.. |coverage| image:: https://img.shields.io/badge/test_coverage-98%25-blue.svg
+.. |coverage| image:: https://img.shields.io/badge/test_coverage-99%25-blue.svg
     :alt: Test line coverage
     :target: https://pypi.org/project/textdata
 
@@ -154,7 +154,7 @@ grab::
     >>> attrs("a=1 b=2 c='something more'")
     {'a': 1, 'b': 2, 'c': 'something more'}
 
-If you want to cut and paste data directly from JavaScript, HTML, CSS, or
+If you want to cut and paste data directly from JavaScript, JSON, HTML, CSS, or
 XML, easy peasy! No text editing required.
 
 .. code-block:: pycon
@@ -169,6 +169,11 @@ XML, easy peasy! No text editing required.
 
     >>> # HTML or XML
     >>> attrs('a="1" b="2" c="something more"')
+    {'a': '1', 'b': '2', 'c': 'something more'}
+
+    >>> # above returns strings, because values quoted, which denotes strings
+    >>> # 'full' evaluation needed to transform strings into values
+    >>> attrs('a="1" b="2" c="something more"', evaluate='full')
     {'a': 1, 'b': 2, 'c': 'something more'}
 
     >>> # CSS
@@ -218,9 +223,11 @@ This works even if you have a table with a lot of extra fluff:
     >>> assert table(tabledata) == table(fancy)
     >>> assert records(tabledata) == records(fancy)
 
-It works with tables formatted in a variety of ways
-including Markdown, RST, ANSI/Unicode line drawing
-characters, plain text columns and borders, ...
+It works with tables formatted in a variety of ways including Markdown, RST,
+ANSI/Unicode line drawing characters, plain text columns and borders.... You'd
+might think table parsing would be a dicey proposition, prone to failure, but
+``textdata`` has *dozens* of tests, including rather complex cases, showing
+it's a reliable, high-probability heuristic.
 
 In Summary
 ----------

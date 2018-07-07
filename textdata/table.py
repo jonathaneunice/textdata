@@ -19,7 +19,7 @@ if not _PY2:
 
 def all_indices(s, substr):
     """
-    Find all indices in s where substr begins.
+    Find all indices in ``s`` where ``substr`` begins.
     Returns results in list.
     """
     indices = []
@@ -70,9 +70,9 @@ def find_columns(lines):
     This is a high-probability heuristic. There are some cases
     where all rows happen to include aligned spaces that do *not*
     signify a column break. In this case, recommend you modify the
-    table with a separator line (e.g. using --- characters showing)
+    table with a separator line (e.g. using --- characters) showing
     where the columns should be. Since separators are stripped out,
-    adding an explicit set of separators will not alter the result data.
+    adding an explicit set of separators will not alter result data.
     """
     # Partition lines into seps (separators and blank lines) and nonseps (content)
     seps, nonseps = [], []
@@ -116,11 +116,10 @@ def find_columns(lines):
     return seps, nonseps, hranges
 
 
-def discover_table(text, evaluate=True, cstrip=True):
+def discover_table(text, header=False, evaluate=True, cstrip=True):
     """
     Return a list of lists representing a table.
     """
-
     if cstrip:
         text = CSTRIP.sub('', text)
 
@@ -150,12 +149,22 @@ def discover_table(text, evaluate=True, cstrip=True):
     # construct table based on discovered understanding
     # of where column breaks are
     rows = []
+    if header is True:
+        # use header from table; remove before evaluation
+        header = []
+        for c in column_indices:
+            segment = nonseps[0][c[0]:c[1]]
+            header.append(evaluation(segment, 'minimal'))
+        nonseps = nonseps[1:]
+
     for l in nonseps:
         row = []
-        for r, col_evaluate in zip(column_indices, evaluates):
-            segment = l[r[0]:r[1]]
+        for c, col_evaluate in zip(column_indices, evaluates):
+            segment = l[c[0]:c[1]]
             row.append(evaluation(segment, col_evaluate))
         rows.append(row)
+    if header:
+        rows.insert(0, header)
     return rows
 
 
@@ -171,18 +180,18 @@ def table(source, header=None, evaluate=True, cstrip=True):
             Other options are False or 'minimal' (just string trimming), or
             None or 'none'.  Can also provide a custom function.
         cstrip (bool): strip comments?
+        
     Returns:
         List of lists, where each inner list represents a row.
     """
 
     text = ensure_text(source)
 
-    rows = discover_table(text, evaluate, cstrip)
-
     if header:
         if isinstance(header, basestring):
             header = words(header)
-        rows.insert(0, header)
+
+    rows = discover_table(text, header=header, evaluate=evaluate, cstrip=True)
 
     return rows
 
@@ -193,6 +202,7 @@ def keyclean(key):
     dictionary keys.
     """
     clean = re.sub(r'\s+', '_', key.strip())
+    clean = re.sub(r'[^\w]', '', clean)
     return clean
 
 keyclean.lc = lambda k: keyclean(k).lower()

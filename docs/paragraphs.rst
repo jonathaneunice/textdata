@@ -34,11 +34,10 @@ Or if you'd like each paragraph in a single string:
      'The cat and the fiddle,\nThe cow jumped over the moon.\nThe little dog laughed,\nTo see such sport,',
      'And the dish ran away with the spoon.']
 
-Setting ``join`` to a space will of course
-concatenate the lines of each paragraph with
-a space. This can be useful for converting from line-oriented paragraphs
-into each-paragraph as a (potentially very long) single line, a format
-useful for cut-and-pasting into many editors and text entry boxes on the
+Setting ``join`` to a space will of course concatenate the lines of each
+paragraph with a space. This can be useful for converting from line-oriented
+paragraphs into each-paragraph as a (potentially very long) single line, a
+format useful for cut-and-pasting into many editors and text entry boxes on the
 Web, or for email systems.
 
 On the off chance you want to preserve the exact intra-paragraph spacing,

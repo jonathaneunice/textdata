@@ -47,8 +47,14 @@ def evaluation(value, how='natural'):
     Python literal encoding.
     """
     if hasattr(how, '__call__'):
+        evaluator = how
+    else:
         try:
-            return how(value)
-        except Exception:
-            return minimal(value)
-    return EVALUATE[how](value)
+            evaluator = EVALUATE[how]
+        except KeyError:
+            raise ValueError('{!r} not a known evaluation mode'.format(how))
+    try:
+        return evaluator(value)
+    except Exception as e:
+        print(e)
+        return minimal(value)

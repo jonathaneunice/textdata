@@ -1,6 +1,25 @@
 Change Log
 ==========
 
+**2.2.0**  (July 7, 2018)
+
+    Reorganized code. Tidied and improved comments.
+
+    Improved key cleaning for ``records()``
+
+    Added ``full`` evaluation mode.
+
+    Strengthened table evaluations.
+
+    Improved tests and docs.
+
+    Dropped deprecated ``astype`` and ``literal`` parameters to
+    ``attrs()``.
+
+    Drops support for Python 2.6. Mainstream support ended 5 years
+    ago. Upgrade already!
+
+
 **2.1.0**  (July 4, 2018)
 
     Removed debugging statement inadverntaently left in code.

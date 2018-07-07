@@ -4,17 +4,16 @@ Unicode and Encodings
 .. |star| unicode:: 0x2605 .. star
     :trim:
 
-``textdata`` doesn't have any unique friction with Unicode
-characters and encodings. That said, any time you use Unicode characters
-in Python 2 source files, care is warranted.
+``textdata`` doesn't have any unique friction with Unicode characters and
+encodings. That said, any time you use Unicode characters in Python 2 source
+files, care is warranted.
 
-Best advice is: It's time to upgrade already! Python 3 is lovely
-and ever-improving. Python 2 is now showing its age.
+Best advice is: It's time to upgrade already! Python 3 is lovely and
+ever-improving. Python 2 is now showing its age.
 
-If you do need to continue supporting Python 2, either
-make sure your literal strings are marked with a "u" prefix:
-``u"`` |star| ``"``. To turn Unicode literal processing on
-by default:
+If you do need to continue supporting Python 2, either make sure your literal
+strings are marked with a "u" prefix: ``u"`` |star| ``"``. To turn Unicode
+literal processing on by default.
 
 .. code-block: python
 
@@ -26,15 +25,6 @@ by default:
 You can explicitly mark strings as unicode in Python 3.3 and following,
 though it's only necessary if you're maintaing backwards portability,
 since Python 3 strings are by default Unicode strings.
-
-There was a dropout of compatibility in early Python 3 releases (3.0, 3.1,
-and 3.2), making it much harder to
-maintain a unified source base with them in the mix. A
-compatibility function such as ``six.u`` from
-`six <https://pypi.org/project/six>`_
-can help alleviate much--though certainly not all--of the pain.
-Best advice is: Avoid Python 3 before 3.3 *at all costs*. They're thoroughly
-obsolte--in many ways, even more than Python 2.7 is. Run!
 
 It can also be helpful (amd in Python 2, often strictly necessary)
 to declare your source encoding by putting a specially-formatted
@@ -57,5 +47,5 @@ supports automatic encoding (which is built-in to Python 3). E.g.::
     with open('filepath', encoding='utf-8') as f:
         data = f.read()
 
-This construction works across Python 2 and 3. Just
-add a ``mode='w'`` for writing.
+This construction works across Python 2 and 3. Just add a ``mode='w'`` for
+writing.ß
