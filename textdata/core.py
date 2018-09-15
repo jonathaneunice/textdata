@@ -19,7 +19,7 @@ __all__ = 'lines text textlines textline words paras'.split()
 
 
 def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
-          cstrip=True, join=False):
+          expandtabs=False, cstrip=True, join=False):
     """
     Grab lines from a string. Discard initial and final lines if blank.
 
@@ -27,8 +27,9 @@ def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
     :param bool dedent:   a common prefix should be stripped from each line (default `True`)
     :param bool noblanks: allow no blank lines at all (default `True`)
     :param bool lstrip:   all left space be stripped from each line (default `False`);
-                     dedent and lstrip are mutualy exclusive
+                     dedent and lstrip are mutually exclusive
     :param bool rstrip:   all right space be stripped from each line (default `True`)
+    :param Union[bool,int] expandtabs: should all tabs be expanded? if int, by how much?
     :param bool cstrip:   strips comment strings from # to end of each line (like Python itself)
     :param bool|str join:     if False, no effect; otherwise a string used to join the lines
     :return: a list of strings
@@ -40,7 +41,11 @@ def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
     if cstrip:
         text = CSTRIP.sub('', text)
 
-    textlines = text.expandtabs().splitlines()
+    if expandtabs:
+        text = text.expandtabs() if expandtabs is False else text.expandtabs(expandtabs)
+
+    textlines = text.splitlines()
+    print('textlines', textlines)
 
     # remove blank lines if noblanks
     if noblanks:
@@ -56,7 +61,11 @@ def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
         # TODO: decided if these should be while loops, eating all prefix/suffix blank lines
 
     if dedent and not lstrip:
-        nonblanklines = [line for line in textlines if line.strip() != ""]
+        if expandtabs:
+            nonblanklines = [line for line in textlines if line.strip() != ""]
+        else:
+            # if not expanding all tabs, expand tabs at least for purpose of finding common prefix
+            nonblanklines = [line.expandtabs() for line in textlines if line.strip() != ""]
         prefix = os.path.commonprefix(nonblanklines)
         prelen, maxprelen = 0, len(prefix)
         while prelen < maxprelen and prefix[prelen] == ' ':
@@ -121,12 +130,11 @@ def textline(source, cstrip=True):
 WORDRE = re.compile(r"""\s*(?P<word>"[^"]*"|'[^']*'|\S+)\s*""")
 
 
-
 def words(source, cstrip=True):
     """
-    Returns a series of words, somewhat like Like qw() in Perl. Similar to
-    s.split(), except that it respects quoted spans (for the occasional
-    'word' with spaces included.) Like ``lines``, removes comment strings by
+    Returns a sequence of words, like qw() in Perl. Similar to s.split(),
+    except that it respects quoted spans for the occasional word (really,
+    phrase) with spaces included.) Like ``lines``, removes comment strings by
     default.
 
     :param str|list source: Text (or list of text lines) to gather words from

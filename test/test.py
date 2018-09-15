@@ -63,9 +63,21 @@ def test_encoding():
 
 def test_lstrip_and_rstrip():
     s = "  a \n b\n c\t\nd"
-    assert lines(s, lstrip=True, rstrip=False) == ['a ', 'b', 'c      ', 'd']
+    assert lines(s, lstrip=True, rstrip=False) == ['a ', 'b', 'c\t', 'd']
     assert lines(s, lstrip=False, rstrip=True) == ['  a', ' b', ' c', 'd']
     assert lines(s, lstrip=True, rstrip=True) == ['a', 'b', 'c', 'd']
+
+
+def test_expandtabs():
+    s = "    a\tb"
+    assert lines(s) == ['a\tb']
+    assert lines(s, expandtabs=True) == ['a b']
+    assert lines(s, expandtabs=4) == ['a   b']
+    s2 = """
+        a\tb
+        c\td
+    """
+    assert lines(s2) == ['a\tb', 'c\td']
 
 
 def test_mixed_indent():

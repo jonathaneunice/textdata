@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+**2.3.0**  (September 15, 2018)
+
+    Changed tab handling behavior. Previously used
+    ``str.expandtabs()`` uniformly. While useful for dedent (removing
+    common line indentation), could obscure important internal tabs.
+    Default behavior is now to NOT expandtabs unless explicitly
+    requested. However, leading tabs are still expanded for dedent
+    processing.
+
+
 **2.2.0**  (July 7, 2018)
 
     Reorganized code. Tidied and improved comments.
