@@ -45,7 +45,6 @@ def lines(source, noblanks=True, dedent=True, lstrip=False, rstrip=True,
         text = text.expandtabs() if expandtabs is False else text.expandtabs(expandtabs)
 
     textlines = text.splitlines()
-    print('textlines', textlines)
 
     # remove blank lines if noblanks
     if noblanks:

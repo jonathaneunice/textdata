@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+**2.3.2**  (September 20, 2018)
+
+    Removed ``print()`` inadvertently added in last release.
+
+
 **2.3.0**  (September 15, 2018)
 
     Changed tab handling behavior. Previously used
