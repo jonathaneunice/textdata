@@ -129,15 +129,22 @@ def textline(source, cstrip=True):
 WORDRE = re.compile(r"""\s*(?P<word>"[^"]*"|'[^']*'|\S+)\s*""")
 
 
-def words(source, cstrip=True):
+def words(source, cstrip=True, sep=None):
     """
     Returns a sequence of words, like qw() in Perl. Similar to s.split(),
     except that it respects quoted spans for the occasional word (really,
-    phrase) with spaces included.) Like ``lines``, removes comment strings by
+    phrase) with spaces included.) If the ``sep`` argument is provided,
+    words are split on that boundary (rather like ``str.split()``). Either 
+    the standard space and possibly-quoted word behavior should be used,
+    or the explicit separator. They don't cooperate well.
+    
+    Like ``lines``, removes comment strings by
     default.
+
 
     :param str|list source: Text (or list of text lines) to gather words from
     :param bool cstrip: Should comments be stripped? (default: ``True``)
+    :param Optional[str] sep: Optional explicit separator.
     :return: list of words/phrases
     :rtype: list
     """
@@ -147,9 +154,13 @@ def words(source, cstrip=True):
     if cstrip:
         text = CSTRIP.sub('', text)
 
-    text = text.strip()
-    parts = re.findall(WORDRE, text)
-    return [noquotes(p) for p in parts]
+    if sep is None:
+        text = text.strip()
+        parts = re.findall(WORDRE, text)
+        return [noquotes(p) for p in parts]
+    else:
+        parts = text.split(sep)
+        return [p.strip() for p in parts]
 
 
 def paras(source, keep_blanks=False, join=False, cstrip=True):

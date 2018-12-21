@@ -310,6 +310,15 @@ def test_words_cstrip_example():
              'artifacts', '.DS_Store', '#', 'platform', 'artifacts']
 
 
+def test_words_sep():
+    assert words('one/two/three', sep='/') == ['one', 'two', 'three']
+    assert words('one/two 2/three', sep='/') == ['one', 'two 2', 'three']
+    assert words('one / two 2 / three', sep='/') == ['one', 'two 2', 'three']
+    assert words('one / two 2 /\n three', sep='/') == ['one', 'two 2', 'three']
+    assert words("""one / two 2 /
+                    three / four""", sep='/') == ['one', 'two 2', 'three', 'four']
+
+
 def test_paras_example():
     rhyme = """
         Hey diddle diddle,

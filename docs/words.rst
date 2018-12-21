@@ -29,3 +29,19 @@ however, by embedded apostrophes and other common gotchas.
 ``words`` is a good choice for situations where you want a compact,
 friendly, whitespace-delimited data representation--but a few of your
 entries need more than just ``str.split()``.
+
+Explicit Separators
+-------------------
+
+There is a second mode of operation for ``words`` in which
+you provide explicit separators. This is handy if, for example,
+you have a number of phrases with embedded spaces. This happens often
+when importing data from spreadsheets.
+
+.. code-block:: pycon
+
+    >>> words('First Name / Last Name / Age / Best Feature', sep='/')
+    ['First Name', Last Name', 'Age', 'Best Feature']
+
+Here you have a very terse specification of the phrases, without
+the need to quote in order to preserve embedded spaces.
