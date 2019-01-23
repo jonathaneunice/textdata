@@ -11,6 +11,40 @@ import pytest
 
 _PY2 = sys.version_info[0] == 2
 
+def test_separators_set_columns():
+    """
+    Test example with bad placement of text rivers that would, absent separator
+    lines, yield a bad result. Ensure that the placement of separator lines does 
+    indeed yield desired column breaks.
+    """
+    text = """
+        id  art          source
+        === ============ ================
+        133 Kempo Karate Japan
+        201 Judo         Japan
+        217 BJJ          Brazil via Japan
+        322 Wushu        China
+    """
+
+    answer = [
+        ['id', 'art', 'source'],
+        [133, 'Kempo Karate', 'Japan'],
+        [201, 'Judo', 'Japan'],
+        [217, 'BJJ', 'Brazil via Japan'],
+        [322, 'Wushu', 'China']
+    ]
+
+    assert table(text) == answer
+    assert table(text.replace('=', '-')) == answer
+
+    # finally try with regular rather than separator characters;
+    # make sure result same (but have to remove the character-filled line
+    # before testing, as separator lines are removed by default)
+    result_x = table(text.replace('=', 'x'))
+    del result_x[1]
+    assert result_x == answer
+
+
 def test_custom_header():
     source = """
         Joe   12   woodworking

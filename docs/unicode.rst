@@ -48,4 +48,4 @@ supports automatic encoding (which is built-in to Python 3). E.g.::
         data = f.read()
 
 This construction works across Python 2 and 3. Just add a ``mode='w'`` for
-writing.ß
+writing.

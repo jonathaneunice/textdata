@@ -2,6 +2,11 @@
 import re
 import sys
 
+try:
+    from itertools import tee, filterfalse
+except ImportError:
+    # Accommodate prior name for filterfalse in Python 2
+    from itertools import tee, ifilterfalse as filterfalse
 
 _PY2 = sys.version_info[0] == 2
 if not _PY2:
@@ -42,3 +47,15 @@ def noquotes(s):
         return s.strip(s[0])
     else:
         return s
+
+
+def partition(pred, iterable):
+    """
+    Use a predicate to partition entries into false entries and true entries.
+    Derived from Python itertools cookbook at
+    https://docs.python.org/3/library/itertools.html
+    But unlike default definition, returns lists rather than generators.
+    """
+    # partition(is_odd, range(10)) --> 0 2 4 6 8   and  1 3 5 7 9
+    t1, t2 = tee(iterable)
+    return list(filterfalse(pred, t1)), list(filter(pred, t2))

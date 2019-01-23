@@ -18,7 +18,7 @@ Note that the "extra" newlines and leading spaces have been
 taken care of and discarded.
 
 In addition to ``lines``, ``text`` works similarly and with the same
-parameters, but joins the resulting lines into a unified string.::
+parameters, but joins the resulting lines into a unified string.
 
 .. code-block:: pycon
 

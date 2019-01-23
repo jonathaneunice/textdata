@@ -8,14 +8,14 @@ import sys
 from intspan import intspan
 
 from .eval import evaluation
-from .util import CSTRIP, ensure_text, _PY2
+from .util import CSTRIP, ensure_text, _PY2, partition
 from .core import words
 from .attrs import Dict
 
 
 if not _PY2:
     basestring = str
-    
+
 
 def all_indices(s, substr):
     """
@@ -40,8 +40,9 @@ def is_separator(line):
 
 def vertical_sep_in_line(line):
     """
-    Find the indices in a line which are potentially to probably
-    vertical separators.
+    Find the indices in a line which are potentially or probably
+    vertical separators (characters commonly used to indicate
+    the end of columns).
     """
     VERTICAL_SEP = r"[+|\.`'╔╦╗╠╬╣╚╩╝┌┬┐╞╪╡├┼┤└┴┘]"
     return [m.start() for m in re.finditer(VERTICAL_SEP, line)]
@@ -54,6 +55,7 @@ def col_break_indices(lines, combine='update'):
     """
     all_lines_indices = [vertical_sep_in_line(line) for line in lines]
     combined = intspan(all_lines_indices[0])
+
     update_func = getattr(combined, combine)
     for line_indices in all_lines_indices[1:]:
         update_func(line_indices)
@@ -67,49 +69,50 @@ def find_columns(lines):
     finding typographical "rivers" of spaces running vertically
     through text indicating column breaks.
 
-    This is a high-probability heuristic. There are some cases
-    where all rows happen to include aligned spaces that do *not*
-    signify a column break. In this case, recommend you modify the
-    table with a separator line (e.g. using --- characters) showing
-    where the columns should be. Since separators are stripped out,
-    adding an explicit set of separators will not alter result data.
+    This is a high-probability heuristic (based on the many tests performed on
+    it). There are some cases where all rows happen to include aligned spaces
+    that do *not* signify a column break. In this case, recommend you modify
+    the table with a separator line (e.g. using --- characters) showing where
+    the columns should be. Since separators are stripped out, adding an
+    explicit set of separators will not alter result data.
     """
     # Partition lines into seps (separators and blank lines) and nonseps (content)
-    seps, nonseps = [], []
-    for line in lines:
-        if is_separator(line):
-            seps.append(line)
-        else:
-            nonseps.append(line)
+    nonseps, seps = partition(is_separator, lines)
 
     # Find max length of content lines. This defines the "universe" of
-    # available content columns.
+    # available content columns. Use only non-separator lines because they
+    # are the content we care most about.
     maxlen = max(len(l) for l in nonseps)
     universe = intspan.from_range(0, maxlen - 1)
 
+    # If there are separators lines, try to find definitive vertical separation
+    # markers in them to define column boundaries.
     if seps:
         # If separators, try to find the column breaks in them
         indices = col_break_indices(seps)
         iranges = (universe - indices).ranges()
+    else:
+        indices = None
 
-    if not seps or (seps and not indices):
+
+    if not seps or not indices:
         # If horizontal separators not present, or if present but lack the vertical
         # separation indicators needed to determine column locations, look for
-        # vertical separators common to all rows. This a rare, but genuine case.
+        # vertical separators common to all rows. A rare, but genuine case.
         indices = col_break_indices(nonseps, 'intersection_update')
-        if indices:
-            iranges = (universe - indices).ranges()
-        else:
-            # No common vertical separators to speak of. Fall back to
-            # using vertical whitespace rivers as column separators.
-            # Find where spaces are in every column.
-            spaces = intspan.from_range(0, maxlen - 1)
-            for l in nonseps:
+        if not indices:
+            # Vertical separators not found. Fall back to using vertical
+            # whitespace rivers as column separators. Find where spaces are in
+            # every column.
+            indices = intspan.from_range(0, maxlen - 1)
+
+            for l in lines:
                 line_spaces = intspan(all_indices(l, ' '))
-                spaces.intersection_update(line_spaces)
-            # Spaces is now intspan showing where spaces are
-            # Find inclusive ranges wehre content would be
-            iranges = (universe - spaces).ranges()
+                indices.intersection_update(line_spaces)
+
+        # indices is now intspan showing where spaces or vertical seps are
+        # Find inclusive ranges where content would be
+        iranges = (universe - indices).ranges()
 
     # Convert inclusive ranges to half-open Python ranges
     hranges = [(s, e+1) for s,e in iranges]

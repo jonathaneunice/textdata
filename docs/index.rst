@@ -31,4 +31,4 @@ wheel-reinvention.
    API Details <api>
    Notes <notes>
    Installation <installation>
-   CHANGES
+   Change Log <CHANGES>

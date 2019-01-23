@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+**2.4.1**  (January 23, 2019)
+
+    Fixed error in ``table()`` parsing heuristic. Added tests. Tweaked
+    docs.
+
+
+**2.4.0**  (December 21, 2018)
+
+    Added explicit separator mode to ``words()``.
+
+
 **2.3.2**  (September 20, 2018)
 
     Removed ``print()`` inadvertently added in last release.

@@ -32,4 +32,3 @@ But you'd need more nitsy punctuation, and it's less compact.
 If however you want to capture comments (or other text that includes the
 hashmark / number sign character), set ``cstrip=False`` (though that is
 probably more useful with the ``lines`` and ``text`` APIs than for ``words``).
-ß
