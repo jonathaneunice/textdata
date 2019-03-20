@@ -21,7 +21,7 @@
     :alt: Wheel packaging support
     :target: https://pypi.org/project/textdata
 
-.. |coverage| image:: https://img.shields.io/badge/test_coverage-99%25-blue.svg
+.. |coverage| image:: https://img.shields.io/badge/test_coverage-100%25-6600CC.svg
     :alt: Test line coverage
     :target: https://pypi.org/project/textdata
 
